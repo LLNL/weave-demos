@@ -1,0 +1,6 @@
+jupyter
+llnl-sina
+matplotlib
+maestrowf
+seaborn
+nbconvert
