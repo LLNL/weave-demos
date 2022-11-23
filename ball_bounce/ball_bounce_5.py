@@ -12,7 +12,7 @@ import sys
 import csv
 
 DELIMETER = "%"
-TICKS_PER_SECOND = 20
+TICKS_PER_SECOND = 5
 
 # These can easily be varied, I'm just holding them fixed for visualizations.
 RUNTIME = 20  # TICKS_PER_SECOND * RUNTIME = length of your timeseries, choose wisely.
@@ -103,7 +103,7 @@ def run_ball_bounce(xpos_initial, ypos_initial, zpos_initial,
             y_vel_instant = 0
         
         time.append(RUNTIME*step/runtime)
-
+        
     return time, x_pos, y_pos, z_pos, x_vel_instant, y_vel_instant, z_vel_instant, num_bounces
 
 
