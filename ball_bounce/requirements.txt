@@ -4,3 +4,5 @@ matplotlib
 maestrowf
 seaborn
 nbconvert
+# ibis
+# trata

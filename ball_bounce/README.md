@@ -32,6 +32,7 @@ Starting files:
 - `ball_bounce_suite.yaml`: The maestro workflow description, containing all the information to run a set of ball bouncing simulations. Each set shares a starting position and gravity but differs on the initial velocities. 
 - `pgen.py`: A custom parameter generator for Maestro, which will generate random starting conditions for each suite
 - `visualization.ipynb`: A Jupyter notebook containing visualizations 
+- `uncertainty_quantification.ipynb`: A Jupyter notebook containing MCMC and sensitivity analysis as well as trace and autocorrelation plots
 - `requirements.txt`: Requirements used to build the virtual environment
 
 Files created by the demo:
