@@ -1,5 +1,7 @@
 .DS_Store
-.ipynb_checkpoints/
+.ipynb_checkpoints
+data
+images
 ball_bounce/ball_bounce_demo_venv/
-ball_bounce/__pycache__/
+__pycache__/
 

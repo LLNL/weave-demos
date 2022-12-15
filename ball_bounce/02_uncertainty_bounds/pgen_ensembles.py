@@ -7,15 +7,16 @@ import numpy as np
 from maestrowf.datastructures.core import ParameterGenerator
 
 BOX_SIDE_LENGTH = 100
+GRAVITY = 9.81
 coordinates = ["X", "Y", "Z"]
 positions = ["{}_POS_INITIAL".format(coord) for coord in coordinates]
 velocities = ["{}_VEL_INITIAL".format(coord) for coord in coordinates]
-NUM_STUDIES = 1000
+NUM_STUDIES = 1024
 
 def get_custom_generator(env, **kwargs):
     p_gen = ParameterGenerator()
     # All balls in a single run share a gravity
-    params = {"GRAVITY": {"values": [9.81]*NUM_STUDIES,
+    params = {"GRAVITY": {"values": [GRAVITY]*NUM_STUDIES,
                           "label": "GRAVITY.%%"},
 
               "BOX_SIDE_LENGTH": {"values": [BOX_SIDE_LENGTH]*NUM_STUDIES,
@@ -27,32 +28,24 @@ def get_custom_generator(env, **kwargs):
               "RUN_ID": {"values": list(range(1, NUM_STUDIES+1)),
                          "label": "RUN_ID.%%"},
 
-              "X_POS_INITIAL": {"values":  np.random.normal(49.0, 0.5, NUM_STUDIES),
+              "X_POS_INITIAL": {"values":  np.round(np.random.normal(49.0, 0.5, NUM_STUDIES),4),
                                  "label": "X_POS_INITIAL.%%"},
 
-              "Y_POS_INITIAL": {"values":  np.random.normal(50.0, 0.5, NUM_STUDIES),
+              "Y_POS_INITIAL": {"values":  np.round(np.random.normal(50.0, 0.5, NUM_STUDIES),4),
                                  "label": "Y_POS_INITIAL.%%"},
 
-              "Z_POS_INITIAL": {"values":  np.random.normal(51.0, 0.5, NUM_STUDIES),
+              "Z_POS_INITIAL": {"values":  np.round(np.random.normal(51.0, 0.5, NUM_STUDIES),4),
                                  "label": "Z_POS_INITIAL.%%"},
 
-              "X_VEL_INITIAL": {"values":  np.random.uniform(5.10, 5.40, NUM_STUDIES),
+              "X_VEL_INITIAL": {"values":  np.round(np.random.uniform(5.10, 5.40, NUM_STUDIES),4),
                                  "label": "X_VEL_INITIAL.%%"},
 
-              "Y_VEL_INITIAL": {"values":  np.random.uniform(4.75, 5.05, NUM_STUDIES),
+              "Y_VEL_INITIAL": {"values":  np.round(np.random.uniform(4.75, 5.05, NUM_STUDIES),4),
                                  "label": "Y_VEL_INITIAL.%%"},
 
-              "Z_VEL_INITIAL": {"values":  np.random.uniform(4.85, 5.15, NUM_STUDIES),
+              "Z_VEL_INITIAL": {"values":  np.round(np.random.uniform(4.85, 5.15, NUM_STUDIES),4),
                                  "label": "Z_VEL_INITIAL.%%"},                                        
             }
-    # # All balls in a single run start from the same location.
-    # for position in positions:
-    #     params[position] = {"values": [random.randint(1, BOX_SIDE_LENGTH-1)]*NUM_STUDIES,
-    #                         "label": "{}.%%".format(position)}
-    # # They differ by their initial velocities. 3 velocities apiece, 27 total runs.
-    # for velocity in velocities:
-    #     params[velocity] = {"values": [random.randint(-10, 10) for _ in range(NUM_STUDIES)],
-    #                         "label": "{}.%%".format(velocity)}
 
     for key, value in params.items():
         p_gen.add_parameter(key, value["values"], value["label"])
