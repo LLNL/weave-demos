@@ -9,7 +9,7 @@ BOX_SIDE_LENGTH = 100
 coordinates = ["X", "Y", "Z"]
 positions = ["{}_POS_INITIAL".format(coord) for coord in coordinates]
 velocities = ["{}_VEL_INITIAL".format(coord) for coord in coordinates]
-NUM_STUDIES = 10
+NUM_STUDIES = 1024
 
 def get_custom_generator(env, **kwargs):
     p_gen = ParameterGenerator()
