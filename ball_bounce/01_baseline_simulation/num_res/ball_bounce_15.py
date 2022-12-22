@@ -12,7 +12,7 @@ import sys
 import csv
 
 DELIMETER = "%"
-TICKS_PER_SECOND = 5
+TICKS_PER_SECOND = 15
 
 # These can easily be varied, I'm just holding them fixed for visualizations.
 RUNTIME = 20  # TICKS_PER_SECOND * RUNTIME = length of your timeseries, choose wisely.
