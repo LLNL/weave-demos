@@ -104,7 +104,7 @@ def run_ball_bounce(xpos_initial, ypos_initial, zpos_initial,
         
         time.append(RUNTIME*step/runtime)
         
-    return time, x_pos, y_pos, z_pos, x_vel_instant, y_vel_instant, z_vel_instant, num_bounces
+    return time, x_pos, y_pos, z_pos, x_pos_instant, y_pos_instant, z_pos_instant, x_vel_instant, y_vel_instant, z_vel_instant, num_bounces
 
 
 def set_params_and_launch(args):
@@ -125,8 +125,10 @@ if __name__ == "__main__":
         with open(sys.argv[1], 'w') as outfile:
             writer = csv.writer(outfile, delimiter=DELIMETER)
             # The ARGS[1:-1] is because we don't need to write the output file or run_id['s raw number].
-            names = ["id"]+ARGS[1:-1]+["time", "x_pos", "y_pos", "z_pos",
-                                     "x_vel_final", "y_vel_final", "z_vel_final", "num_bounces"]
+            names = ["id"]+ARGS[1:-1]+["time", "x_pos", "y_pos", "z_pos", 
+                                       "x_pos_final", "y_pos_final", "z_pos_final", 
+                                       "x_vel_final", "y_vel_final", "z_vel_final", 
+                                       "num_bounces"]
             writer.writerow(names)
             results = ["{}_{}".format(sys.argv[-2], sys.argv[-1])]  # id
             # We're not passing output_dir, group_id, or run_id
