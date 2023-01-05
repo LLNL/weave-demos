@@ -176,7 +176,7 @@ ax[0].legend(labels=['Simulation Mean','$\mu \pm 2 \sigma$','Validation Data'])
 ax[1].legend(labels=['Simulation Mean','$\mu \pm 2 \sigma$','Validation Data'])
 ax[2].legend(labels=['Simulation Mean','$\mu \pm 2 \sigma$','Validation Data'])
 
-fig.savefig(os.path.join(spec_root,"images/QoIs_u_input.png"))
+fig.savefig(os.path.join(spec_root,"../05_post-process_data/images/QoIs_u_input.png"))
 
 
 # # QoI point data violin and box plots
@@ -213,7 +213,7 @@ ax[1].set_xticklabels(["y_pos_final"])
 ax[2].set_title("z_pos_final")
 ax[2].set_xticklabels(["z_pos_final"])
 
-fig.savefig(os.path.join(spec_root,"images/QoIs_violin_box.png"))
+fig.savefig(os.path.join(spec_root,"../05_post-process_data/images/QoIs_violin_box.png"))
 
 
 # # QoI point data violin and box convergence plots
@@ -244,7 +244,7 @@ for scalar in scalars:
     ax.set_ylabel("Position")
     ax.set_xticklabels(convergence, rotation = 45)
 
-    fig.savefig(os.path.join(spec_root,f"images/QoIs_{scalar}_violin_box_convergence.png"))
+    fig.savefig(os.path.join(spec_root,f"../05_post-process_data/images/QoIs_{scalar}_violin_box_convergence.png"))
 
 
 # # QoI point data PDF and CDF plots
@@ -285,7 +285,7 @@ ax[2].set_title("z_pos_final")
 ax[2].set_xlabel("Position")
 ax[2].legend(lines + lines2, labels + labels2, loc='upper left')
 
-fig.savefig(os.path.join(spec_root,"images/QoIs_pdf_cdf.png"))
+fig.savefig(os.path.join(spec_root,"../05_post-process_data/images/QoIs_pdf_cdf.png"))
 
 
 # # QoI point data PDF and CDF convergence plots
@@ -333,7 +333,7 @@ ax[2].set_title("z_pos_final pdf")
 ax[2].set_xlabel("Position")
 ax[2].legend()
 
-fig.savefig(os.path.join(spec_root,"images/QoIs_pdf_convergence.png"))
+fig.savefig(os.path.join(spec_root,"../05_post-process_data/images/QoIs_pdf_convergence.png"))
 
 # x
 ax1[0].set_title("x_pos_final cdf")
@@ -350,7 +350,7 @@ ax1[2].set_title("z_pos_final cdf")
 ax1[2].set_xlabel("Position")
 ax1[2].legend()
 
-fig1.savefig(os.path.join(spec_root,"images/QoIs_cdf_convergence.png"))
+fig1.savefig(os.path.join(spec_root,"../05_post-process_data/images/QoIs_cdf_convergence.png"))
 
 
 # # QoI point data parameter correlation scatter plots
@@ -426,7 +426,7 @@ for i, runs in enumerate(convergence):
                     i += 1
                     
         if runs == convergence[-1]: # Just plot the last set of simulations
-            fig.savefig(os.path.join(spec_root,f"images/QoIs_{scalar}_correlation.png"))
+            fig.savefig(os.path.join(spec_root,f"../05_post-process_data/images/QoIs_{scalar}_correlation.png"))
 
 
 # # QoI point data parameter correlation heatmaps
@@ -463,7 +463,7 @@ ax.set_ylabel("Parameter")
 ax.set_yticks(np.arange(len(parameters)))
 ax.set_yticklabels(parameters, minor=False)
 
-fig.savefig(os.path.join(spec_root,'images/QoIs_correlation_heatmap'))
+fig.savefig(os.path.join(spec_root,'../05_post-process_data/images/QoIs_correlation_heatmap'))
 
 
 # In[ ]:
@@ -503,7 +503,7 @@ for scalar in scalars:
     ax.set_yticks(np.arange(len(parameters)))
     ax.set_yticklabels(parameters, minor=False)
 
-    fig.savefig(os.path.join(spec_root,f'images/QoIs_{scalar}_correlation_heatmap_convergence'))
+    fig.savefig(os.path.join(spec_root,f'../05_post-process_data/images/QoIs_{scalar}_correlation_heatmap_convergence'))
 
 
 # # Adding up the uncertainties
@@ -626,7 +626,7 @@ ax[0].legend()
 ax[1].legend()
 ax[2].legend()
 
-fig.savefig(os.path.join(spec_root,"images/QoIs_u_all.png"))
+fig.savefig(os.path.join(spec_root,"../05_post-process_data/images/QoIs_u_all.png"))
 
 
 # ## Plotting Validation Uncertainty
@@ -663,7 +663,7 @@ ax[2].set_ylabel("Position")
 ax[0].legend(labels=['Simulation Mean','$\mu \pm 2 \sigma$','Validation Data'])
 ax[1].legend(labels=['Simulation Mean','$\mu \pm 2 \sigma$','Validation Data'])
 ax[2].legend(labels=['Simulation Mean','$\mu \pm 2 \sigma$','Validation Data'])
-fig.savefig(os.path.join(spec_root,"images/QoIs_u_val.png"))
+fig.savefig(os.path.join(spec_root,"../05_post-process_data/images/QoIs_u_val.png"))
 
 
 # # Quantification of Margins and Uncertainties (QMU)
@@ -727,7 +727,7 @@ ax[0].legend(loc = 'lower left')
 ax[1].legend(loc = 'lower left')
 ax[2].legend(loc = 'lower left')
 
-fig.savefig(os.path.join(spec_root,"images/QoIs_QMU.png"))
+fig.savefig(os.path.join(spec_root,"../05_post-process_data/images/QoIs_QMU.png"))
 
 
 # 
