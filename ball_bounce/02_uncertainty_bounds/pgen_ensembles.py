@@ -22,7 +22,7 @@ def get_custom_generator(env, **kwargs):
               "BOX_SIDE_LENGTH": {"values": [BOX_SIDE_LENGTH]*NUM_STUDIES,
                                   "label": "BOX_SIDE_LENGTH.%%"},
 
-              "GROUP_ID": {"values": [str(uuid.uuid4())[0:6]]*NUM_STUDIES,
+              "GROUP_ID": {"values": ['47bcda']*NUM_STUDIES,
                            "label": "GROUP_ID.%%"},
 
               "RUN_ID": {"values": list(range(1, NUM_STUDIES+1)),
