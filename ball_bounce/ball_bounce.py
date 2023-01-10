@@ -31,17 +31,17 @@ def run_ball_bounce(xpos_initial, ypos_initial, zpos_initial,
                     xvel_initial, yvel_initial, zvel_initial,
                     gravity, box_side_length):
     """
-    Bounce a ball for RUNTIME seconds, at TICKS_PER_SECOND resolution. 
+    Bounce a ball for RUNTIME seconds, at TICKS_PER_SECOND resolution.
 
     Distance units are arbitrary, time units are seconds.
 
-    Our shape has a density, reference area, and mass of 1, so acceleration 
+    Our shape has a density, reference area, and mass of 1, so acceleration
     due to drag is (dragcoeff*vel^2*1*1)/2=1/a, a=dragcoeff*vel^2/2.
 
     May or may not be a (very small) spherical cow
 
     :returns: a timeseries of x,y, and z positions, the final x, y, and z velocities,
-              and the number of bounces 
+              and the number of bounces
     """
     ticks = float(TICKS_PER_SECOND)
     x_pos = []
@@ -66,12 +66,12 @@ def run_ball_bounce(xpos_initial, ypos_initial, zpos_initial,
         """Run a single timestep in a single axis."""
         nonlocal num_bounces
         pos_new = axis_pos + axis_vel
-        if(pos_new < 0):
+        if (pos_new < 0):
             axis_vel *= -1
             # axis_pos = -pos_new
             axis_pos = 0
             num_bounces += 1
-        elif(pos_new > dist):
+        elif (pos_new > dist):
             axis_vel *= -1
             # axis_pos = dist - (pos_new - dist)
             axis_pos = dist
@@ -82,7 +82,7 @@ def run_ball_bounce(xpos_initial, ypos_initial, zpos_initial,
         axis_vel = (max(0, axis_vel-drag) if axis_vel > 0 else min(0, axis_vel+drag))
         return (axis_pos, axis_vel)
 
-    time=[]
+    time = []
 
     for step in range(0, runtime):
         x_pos_instant, x_vel_instant = run_axis_tick(x_pos_instant,
@@ -99,9 +99,9 @@ def run_ball_bounce(xpos_initial, ypos_initial, zpos_initial,
         z_pos.append(z_pos_instant)
         y_vel_instant -= gravity
         # Extremely good physics
-        if(y_pos_instant == 0 and y_vel_instant < 0):
+        if (y_pos_instant == 0 and y_vel_instant < 0):
             y_vel_instant = 0
-        
+
         time.append(RUNTIME*step/runtime)
 
     return time, x_pos, y_pos, z_pos, x_pos_instant, y_pos_instant, z_pos_instant, x_vel_instant, y_vel_instant, z_vel_instant, num_bounces
@@ -114,20 +114,20 @@ def set_params_and_launch(args):
     all_args = args+[runtime, dragcoeff]
     for output in bouncing_ball(*all_args):
         all_args.append(output)
-    return(all_args)
+    return (all_args)
 
 
 if __name__ == "__main__":
     """Do a single run of a ball bounce and handle all the I/O associated."""
-    if(len(sys.argv) < 10):
-        print("This script takes a large number of args. Running it directly is not recommended. See README.md!") 
+    if (len(sys.argv) < 10):
+        print("This script takes a large number of args. Running it directly is not recommended. See README.md!")
     else:
         with open(sys.argv[1], 'w') as outfile:
             writer = csv.writer(outfile, delimiter=DELIMETER)
             # The ARGS[1:-1] is because we don't need to write the output file or run_id['s raw number].
-            names = ["id"]+ARGS[1:-1]+["time", "x_pos", "y_pos", "z_pos", 
-                                       "x_pos_final", "y_pos_final", "z_pos_final", 
-                                       "x_vel_final", "y_vel_final", "z_vel_final", 
+            names = ["id"]+ARGS[1:-1]+["time", "x_pos", "y_pos", "z_pos",
+                                       "x_pos_final", "y_pos_final", "z_pos_final",
+                                       "x_vel_final", "y_vel_final", "z_vel_final",
                                        "num_bounces"]
             writer.writerow(names)
             results = ["{}_{}".format(sys.argv[-2], sys.argv[-1])]  # id
