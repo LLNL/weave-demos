@@ -2,7 +2,7 @@
 
 This is a simple demonstration workflow orchestrated by Maestro that uses Sina to collect data and produce visualizations of simulation inputs and outputs.
 
-The simulation used here is `ball_bounce.py`, a (very) basic simulation of a "ball" (point) bouncing around in a 3D box. Maestro is used to generate sets of runs that share a(randomly chosen) gravity and starting position, but which differ by initial velocity. 
+The simulation used here is `ball_bounce.py`, a (very) basic simulation of a "ball" (point) bouncing around in a 3D box. Maestro is used to generate sets of runs that share a (randomly chosen) gravity and starting position, but which differ by initial velocity.
 
 By default, each simulation runs for 20 seconds, or 400 ticks.
 
@@ -32,6 +32,7 @@ Starting files:
 - `ball_bounce_suite.yaml`: The maestro workflow description, containing all the information to run a set of ball bouncing simulations. Each set shares a starting position and gravity but differs on the initial velocities. 
 - `pgen.py`: A custom parameter generator for Maestro, which will generate random starting conditions for each suite
 - `visualization.ipynb`: A Jupyter notebook containing visualizations 
+- `uncertainty_quantification.ipynb`: A Jupyter notebook containing MCMC and sensitivity analysis as well as trace and autocorrelation plots
 - `requirements.txt`: Requirements used to build the virtual environment
 
 Files created by the demo:

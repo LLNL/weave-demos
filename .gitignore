@@ -4,4 +4,5 @@ data
 images
 ball_bounce/ball_bounce_demo_venv/
 __pycache__/
-
+output/
+*.sqlite

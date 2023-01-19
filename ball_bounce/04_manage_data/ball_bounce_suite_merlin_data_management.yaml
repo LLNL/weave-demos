@@ -1,0 +1,43 @@
+description:
+    name: ball-bounce 
+    description: A workflow that simulates a ball bouncing in a box over several input sets.
+
+env:
+    variables:
+        OUTPUT_PATH: ./03_simulation_ensembles/data
+        SIM_SCRIPT_PATH: ../ball_bounce.py
+        PROCESS_SCRIPT_PATH: ../dsv_to_sina.py
+        OUTPUT_DS_PATH: ./data/ensembles_output.sqlite
+
+user:
+    study:
+        run:
+            run_ball_bounce: &run_ball_bounce
+                cmd: |
+                  python $(SPECROOT)/$(SIM_SCRIPT_PATH) output.dsv $(X_POS_INITIAL) $(Y_POS_INITIAL) $(Z_POS_INITIAL) $(X_VEL_INITIAL) $(Y_VEL_INITIAL) $(Z_VEL_INITIAL) $(GRAVITY) $(BOX_SIDE_LENGTH) $(GROUP_ID) $(RUN_ID)
+                max_retries: 1
+
+study:
+    - name: run-ball-bounce
+      description: Run a family of simulations of a ball in a box. 
+      run:
+          <<: *run_ball_bounce
+
+    - name: ingest-ball-bounce
+      description: Ingest the outputs from the previous step
+      run:
+          cmd: |
+            python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(OUTPUT_PATH) $(SPECROOT)/$(OUTPUT_DS_PATH)
+          depends: [run-ball-bounce_*]
+
+merlin:
+    resources:
+        task_server: celery
+        overlap: False
+        workers:
+            ball_bounce_worker:
+                args: -l INFO --concurrency 4 --prefetch-multiplier 2 -O fair
+                steps: [run-ball-bounce]
+            other_worker:
+                args: -l INFO --concurrency 1 --prefetch-multiplier 1 -O fair
+                steps: [ingest-ball-bounce]

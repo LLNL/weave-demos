@@ -44,7 +44,7 @@ database_baseline = os.path.join(spec_root, '../01_baseline_simulation/baseline/
 datastore_baseline = create_datastore(database_baseline)
 recs_baseline = datastore_baseline.records
 group_id = '47bcda'
-val = recs_baseline.get(group_id+'_0')
+val = recs_baseline.get(group_id + '_0')
 print(val.data.keys())  # since there are no embedded keys we can just use this
 # print(val.curve_sets) # no curve sets
 
@@ -116,12 +116,12 @@ mean_rec.add_data('x_pos_mean_minus_std', [x_mean[i] - x_std[i] for i in range(l
 mean_rec.add_data('y_pos_mean_minus_std', [y_mean[i] - y_std[i] for i in range(len(time_true))])
 mean_rec.add_data('z_pos_mean_minus_std', [z_mean[i] - z_std[i] for i in range(len(time_true))])
 
-mean_rec.add_data('x_pos_mean_plus_2std', [x_mean[i] + 2*x_std[i] for i in range(len(time_true))])
-mean_rec.add_data('y_pos_mean_plus_2std', [y_mean[i] + 2*y_std[i] for i in range(len(time_true))])
-mean_rec.add_data('z_pos_mean_plus_2std', [z_mean[i] + 2*z_std[i] for i in range(len(time_true))])
-mean_rec.add_data('x_pos_mean_minus_2std', [x_mean[i] - 2*x_std[i] for i in range(len(time_true))])
-mean_rec.add_data('y_pos_mean_minus_2std', [y_mean[i] - 2*y_std[i] for i in range(len(time_true))])
-mean_rec.add_data('z_pos_mean_minus_2std', [z_mean[i] - 2*z_std[i] for i in range(len(time_true))])
+mean_rec.add_data('x_pos_mean_plus_2std', [x_mean[i] + 2 * x_std[i] for i in range(len(time_true))])
+mean_rec.add_data('y_pos_mean_plus_2std', [y_mean[i] + 2 * y_std[i] for i in range(len(time_true))])
+mean_rec.add_data('z_pos_mean_plus_2std', [z_mean[i] + 2 * z_std[i] for i in range(len(time_true))])
+mean_rec.add_data('x_pos_mean_minus_2std', [x_mean[i] - 2 * x_std[i] for i in range(len(time_true))])
+mean_rec.add_data('y_pos_mean_minus_2std', [y_mean[i] - 2 * y_std[i] for i in range(len(time_true))])
+mean_rec.add_data('z_pos_mean_minus_2std', [z_mean[i] - 2 * z_std[i] for i in range(len(time_true))])
 
 recs.insert(mean_rec)  # need to update or else won't save!!!!!
 
@@ -226,7 +226,7 @@ for scalar in scalars:
 
     for i, runs in enumerate(convergence):
 
-        convergence_ids = [group_id+"_"+str(x+1) for x in range(runs)]  # We can do this because IDs have the run number
+        convergence_ids = [group_id + "_" + str(x + 1) for x in range(runs)]  # We can do this because IDs have the run number
 
         if runs == convergence[-1]:  # Will error if all ids are present
             final_data = recs.get_data(scalars)
@@ -297,7 +297,7 @@ fig1, ax1 = plt.subplots(nrows=1, ncols=3, figsize=(20, 5))
 
 for i, runs in enumerate(convergence[5:]):  # Depending on number of runs, can obscure the rest
 
-    convergence_ids = [group_id+"_"+str(x+1) for x in range(runs)]  # We can do this because IDs have the run number
+    convergence_ids = [group_id + "_" + str(x + 1) for x in range(runs)]  # We can do this because IDs have the run number
 
     if runs == convergence[-1]:  # Will error if all ids are present
         final_data = recs.get_data(scalars)
@@ -365,7 +365,7 @@ corrcoefs = {}  # Correlation Coefficient Dictionary that will be used in the ne
 
 for i, runs in enumerate(convergence):
 
-    convergence_ids = [group_id+"_"+str(x+1) for x in range(runs)]  # We can do this because IDs have the run number
+    convergence_ids = [group_id + "_" + str(x + 1) for x in range(runs)]  # We can do this because IDs have the run number
 
     if runs == convergence[-1]:  # will error if all ids are present
         final_data = recs.get_data(all_scalars)
@@ -378,7 +378,7 @@ for i, runs in enumerate(convergence):
 
         if runs == convergence[-1]:  # Just plot the last set of simulations
 
-            fig, ax = plt.subplots(nrows=rows_cols, ncols=rows_cols, figsize=(rows_cols*5, rows_cols*5))
+            fig, ax = plt.subplots(nrows=rows_cols, ncols=rows_cols, figsize=(rows_cols * 5, rows_cols * 5))
 
             fig.suptitle(scalar)
 
@@ -402,7 +402,7 @@ for i, runs in enumerate(convergence):
                 m, b = np.polyfit(parameter_values, scalar_values, 1)
                 print(m, r)
                 x = np.linspace(min(parameter_values), max(parameter_values))
-                y = m*x+b
+                y = m * x + b
 
 #                 slope, intercept, r, p, se = stats.linregress(x, y)
 
@@ -410,7 +410,7 @@ for i, runs in enumerate(convergence):
                 ax[j, i].plot(x, y, color=colors[1], linewidth=2.0)
                 ax[j, i].set_title(f"{parameter} r={round(r, 2)}")
 
-                if i == rows_cols-1:  # Cycling through subplots
+                if i == rows_cols - 1:  # Cycling through subplots
 
                     i = 0
                     j += 1
@@ -582,9 +582,9 @@ u_D_y = [statistics.mean([x, y]) for x, y in zip(y_pos_std_num_res, y_pos_std_co
 u_D_z = [statistics.mean([x, y]) for x, y in zip(z_pos_std_num_res, z_pos_std_common)]
 
 # Validation Uncertainty (u_val)
-u_val_x = np.sqrt(np.square(x_pos_std_num_res)+np.square(x_pos_std_common)+np.square(u_D_x))
-u_val_y = np.sqrt(np.square(y_pos_std_num_res)+np.square(y_pos_std_common)+np.square(u_D_y))
-u_val_z = np.sqrt(np.square(z_pos_std_num_res)+np.square(z_pos_std_common)+np.square(u_D_z))
+u_val_x = np.sqrt(np.square(x_pos_std_num_res) + np.square(x_pos_std_common) + np.square(u_D_x))
+u_val_y = np.sqrt(np.square(y_pos_std_num_res) + np.square(y_pos_std_common) + np.square(u_D_y))
+u_val_z = np.sqrt(np.square(z_pos_std_num_res) + np.square(z_pos_std_common) + np.square(u_D_z))
 
 # Plotting
 fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(15, 5))
@@ -635,9 +635,9 @@ ax[0].plot(time_common, x_pos_mean_common)
 ax[1].plot(time_common, y_pos_mean_common)
 ax[2].plot(time_common, z_pos_mean_common)
 
-ax[0].fill_between(time_common, x_pos_mean_common+2*u_val_x, x_pos_mean_common-2*u_val_x, alpha=0.25)
-ax[1].fill_between(time_common, y_pos_mean_common+2*u_val_y, y_pos_mean_common-2*u_val_y, alpha=0.25)
-ax[2].fill_between(time_common, z_pos_mean_common+2*u_val_z, z_pos_mean_common-2*u_val_z, alpha=0.25)
+ax[0].fill_between(time_common, x_pos_mean_common + 2 * u_val_x, x_pos_mean_common - 2 * u_val_x, alpha=0.25)
+ax[1].fill_between(time_common, y_pos_mean_common + 2 * u_val_y, y_pos_mean_common - 2 * u_val_y, alpha=0.25)
+ax[2].fill_between(time_common, z_pos_mean_common + 2 * u_val_z, z_pos_mean_common - 2 * u_val_z, alpha=0.25)
 
 ax[0].plot(time_true, x_true)
 ax[1].plot(time_true, y_true)
@@ -669,14 +669,14 @@ fig.savefig(os.path.join(spec_root, "../05_post-process_data/images/QoIs_u_val.p
 # Gathering Data
 
 # Data spanning 4 standard deviations
-x_list = np.linspace(x_pos_mean_common[-1]-4*u_val_x[-1], x_pos_mean_common[-1]+4*u_val_x[-1])
-y_list = np.linspace(y_pos_mean_common[-1]-4*u_val_y[-1], y_pos_mean_common[-1]+4*u_val_y[-1])
-z_list = np.linspace(z_pos_mean_common[-1]-4*u_val_z[-1], z_pos_mean_common[-1]+4*u_val_z[-1])
+x_list = np.linspace(x_pos_mean_common[-1] - 4 * u_val_x[-1], x_pos_mean_common[-1] + 4 * u_val_x[-1])
+y_list = np.linspace(y_pos_mean_common[-1] - 4 * u_val_y[-1], y_pos_mean_common[-1] + 4 * u_val_y[-1])
+z_list = np.linspace(z_pos_mean_common[-1] - 4 * u_val_z[-1], z_pos_mean_common[-1] + 4 * u_val_z[-1])
 
 # Normal Distribution
-x_dist = 1/(np.sqrt(2 * np.pi * u_val_x[-1]**2)) * np.exp(- (x_list - x_pos_mean_common[-1])**2 / (2 * u_val_x[-1]**2))
-y_dist = 1/(np.sqrt(2 * np.pi * u_val_y[-1]**2)) * np.exp(- (y_list - y_pos_mean_common[-1])**2 / (2 * u_val_y[-1]**2))
-z_dist = 1/(np.sqrt(2 * np.pi * u_val_z[-1]**2)) * np.exp(- (z_list - z_pos_mean_common[-1])**2 / (2 * u_val_z[-1]**2))
+x_dist = 1 / (np.sqrt(2 * np.pi * u_val_x[-1]**2)) * np.exp(- (x_list - x_pos_mean_common[-1])**2 / (2 * u_val_x[-1]**2))
+y_dist = 1 / (np.sqrt(2 * np.pi * u_val_y[-1]**2)) * np.exp(- (y_list - y_pos_mean_common[-1])**2 / (2 * u_val_y[-1]**2))
+z_dist = 1 / (np.sqrt(2 * np.pi * u_val_z[-1]**2)) * np.exp(- (z_list - z_pos_mean_common[-1])**2 / (2 * u_val_z[-1]**2))
 
 # Requirement
 Req_x = 75
@@ -684,9 +684,9 @@ Req_y = 5
 Req_z = 80
 
 # Margin Factor
-MF_x = (Req_x-x_pos_mean_common[-1])/u_val_x[-1]
-MF_y = (Req_y-y_pos_mean_common[-1])/u_val_y[-1]
-MF_z = (Req_z-z_pos_mean_common[-1])/u_val_z[-1]
+MF_x = (Req_x - x_pos_mean_common[-1]) / u_val_x[-1]
+MF_y = (Req_y - y_pos_mean_common[-1]) / u_val_y[-1]
+MF_z = (Req_z - z_pos_mean_common[-1]) / u_val_z[-1]
 
 print(MF_x, MF_y, MF_z)
 
@@ -723,4 +723,3 @@ ax[1].legend(loc='lower left')
 ax[2].legend(loc='lower left')
 
 fig.savefig(os.path.join(spec_root, "../05_post-process_data/images/QoIs_QMU.png"))
-

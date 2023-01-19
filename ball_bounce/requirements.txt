@@ -2,5 +2,8 @@ jupyter
 llnl-sina
 matplotlib
 maestrowf
+merlin
 seaborn
 nbconvert
+# ibis
+# trata
