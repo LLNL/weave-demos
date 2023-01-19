@@ -400,7 +400,7 @@ for i, runs in enumerate(convergence):
             if runs == convergence[-1]:  # Just plot the last set of simulations
 
                 m, b = np.polyfit(parameter_values, scalar_values, 1)
-                print(m, r)
+                print(f"m: {m}, r: {r}")
                 x = np.linspace(min(parameter_values), max(parameter_values))
                 y = m * x + b
 
@@ -460,6 +460,8 @@ ax.set_yticklabels(parameters, minor=False)
 
 fig.savefig(os.path.join(spec_root, '../05_post-process_data/images/QoIs_correlation_heatmap'))
 
+
+# # QoI point data parameter correlation convergence heatmaps
 
 # In[ ]:
 
@@ -723,3 +725,4 @@ ax[1].legend(loc='lower left')
 ax[2].legend(loc='lower left')
 
 fig.savefig(os.path.join(spec_root, "../05_post-process_data/images/QoIs_QMU.png"))
+
