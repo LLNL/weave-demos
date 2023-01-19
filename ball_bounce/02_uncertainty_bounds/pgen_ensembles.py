@@ -13,6 +13,7 @@ positions = ["{}_POS_INITIAL".format(coord) for coord in coordinates]
 velocities = ["{}_VEL_INITIAL".format(coord) for coord in coordinates]
 NUM_STUDIES = 1024
 
+
 def get_custom_generator(env, **kwargs):
     p_gen = ParameterGenerator()
     # All balls in a single run share a gravity
@@ -28,24 +29,23 @@ def get_custom_generator(env, **kwargs):
               "RUN_ID": {"values": list(range(1, NUM_STUDIES+1)),
                          "label": "RUN_ID.%%"},
 
-              "X_POS_INITIAL": {"values":  np.round(np.random.normal(49.0, 0.5, NUM_STUDIES),4),
-                                 "label": "X_POS_INITIAL.%%"},
+              "X_POS_INITIAL": {"values":  list(np.round(np.random.normal(49.0, 0.5, NUM_STUDIES), 4)),
+                                "label": "X_POS_INITIAL.%%"},
 
-              "Y_POS_INITIAL": {"values":  np.round(np.random.normal(50.0, 0.5, NUM_STUDIES),4),
-                                 "label": "Y_POS_INITIAL.%%"},
+              "Y_POS_INITIAL": {"values":  list(np.round(np.random.normal(50.0, 0.5, NUM_STUDIES), 4)),
+                                "label": "Y_POS_INITIAL.%%"},
 
-              "Z_POS_INITIAL": {"values":  np.round(np.random.normal(51.0, 0.5, NUM_STUDIES),4),
-                                 "label": "Z_POS_INITIAL.%%"},
+              "Z_POS_INITIAL": {"values":  list(np.round(np.random.normal(51.0, 0.5, NUM_STUDIES), 4)),
+                                "label": "Z_POS_INITIAL.%%"},
 
-              "X_VEL_INITIAL": {"values":  np.round(np.random.uniform(5.10, 5.40, NUM_STUDIES),4),
-                                 "label": "X_VEL_INITIAL.%%"},
+              "X_VEL_INITIAL": {"values":  list(np.round(np.random.uniform(5.10, 5.40, NUM_STUDIES), 4)),
+                                "label": "X_VEL_INITIAL.%%"},
 
-              "Y_VEL_INITIAL": {"values":  np.round(np.random.uniform(4.75, 5.05, NUM_STUDIES),4),
-                                 "label": "Y_VEL_INITIAL.%%"},
+              "Y_VEL_INITIAL": {"values":  list(np.round(np.random.uniform(4.75, 5.05, NUM_STUDIES), 4)),
+                                "label": "Y_VEL_INITIAL.%%"},
 
-              "Z_VEL_INITIAL": {"values":  np.round(np.random.uniform(4.85, 5.15, NUM_STUDIES),4),
-                                 "label": "Z_VEL_INITIAL.%%"},                                        
-            }
+              "Z_VEL_INITIAL": {"values":  list(np.round(np.random.uniform(4.85, 5.15, NUM_STUDIES), 4)),
+                                "label": "Z_VEL_INITIAL.%%"}}
 
     for key, value in params.items():
         p_gen.add_parameter(key, value["values"], value["label"])
