@@ -1,0 +1,14 @@
+THEMIS - INFO - 2023-01-24 19:02:07,467 - Running on pascal83 for 0.000000 minutes, stopping run submission 0 minutes early
+THEMIS - INFO - 2023-01-24 19:02:07,468 - Running with parallelism 0
+THEMIS - INFO - 2023-01-24 19:02:07,479 - No prep_ensemble to call. Proceeding...
+THEMIS - INFO - 2023-01-24 19:02:07,791 - Set up server BackendServer() running on ('192.168.128.83', '38631')
+THEMIS - INFO - 2023-01-24 19:02:07,791 - Entering new worker round
+THEMIS - INFO - 2023-01-24 19:02:08,107 - "POST topic=new_runs HTTP/1.1" 200 -
+THEMIS - INFO - 2023-01-24 19:02:12,965 - "POST topic=new_runs HTTP/1.1" 200 -
+THEMIS - INFO - 2023-01-24 19:02:42,977 - "GET topic=runs_to_kill HTTP/1.1" 200 -
+THEMIS - INFO - 2023-01-24 19:02:42,990 - "POST topic=set_run_status HTTP/1.1" 200 -
+THEMIS - INFO - 2023-01-24 19:03:01,381 - "POST topic=new_runs HTTP/1.1" 200 -
+THEMIS - INFO - 2023-01-24 19:03:01,411 - "POST topic=set_run_status HTTP/1.1" 200 -
+THEMIS - INFO - 2023-01-24 19:03:01,785 - Worker round complete. Checking for overall completion...
+THEMIS - INFO - 2023-01-24 19:03:01,791 - No post_ensemble/on_completion to call. Exiting...
+THEMIS - DEBUG - 2023-01-24 19:03:01,916 - Enabling runs {1, 2, 3, 4, 5, 6, ...}

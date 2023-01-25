@@ -1,0 +1,510 @@
+THEMIS - INFO - 2023-01-24 19:08:33,491 - Worker starting...
+THEMIS - INFO - 2023-01-24 19:08:33,491 - Received args Namespace(id='0', max_concurrency=100, server_args=['192.168.128.83', '39927'], setup_dir='/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/setup/.ens_37_setup')
+THEMIS - INFO - 2023-01-24 19:08:33,494 - Maximum concurrent runs: 100
+THEMIS - INFO - 2023-01-24 19:08:33,497 - Using database: BackendClient(<ssl.SSLContext object at 0x2aaab0a4fa08>, '192.168.128.83', 39927)
+THEMIS - DEBUG - 2023-01-24 19:08:33,511 - Using resource manager Slurm()
+THEMIS - INFO - 2023-01-24 19:08:38,533 - Beginning to submit runs.
+THEMIS - INFO - 2023-01-24 19:08:38,534 - Server listening on ('192.168.128.83', '42224')
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,551 - Launching run 1
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/1/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/1/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,565 - Launching run 2
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/2/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/2/.
+source/executors.py submit
+THEMIS - INFO - 2023-01-24 19:08:38,579 - Launching run 3
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/3/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/3/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,594 - Launching run 4
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/4/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/4/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,608 - Launching run 5
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/5/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/5/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,624 - Launching run 6
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/6/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/6/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,638 - Launching run 7
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/7/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/7/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/8/.)THEMIS - INFO - 2023-01-24 19:08:38,651 - Launching run 8
+
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/8/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,665 - Launching run 9
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/9/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/9/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,678 - Launching run 10
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/10/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/10/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,690 - Launching run 11
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/11/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/11/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,703 - Launching run 12
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/12/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/12/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/13/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/13/.THEMIS - INFO - 2023-01-24 19:08:38,717 - Launching run 13
+
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,729 - Launching run 14
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/14/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/14/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,743 - Launching run 15
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/15/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/15/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,755 - Launching run 16
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/16/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/16/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/17/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/17/.THEMIS - INFO - 2023-01-24 19:08:38,770 - Launching run 17
+
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,784 - Launching run 18
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/18/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/18/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/19/.)
+THEMIS - INFO - 2023-01-24 19:08:38,801 - Launching run 19
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/19/.
+source/executors.py submit
+THEMIS - INFO - 2023-01-24 19:08:38,814 - Launching run 20
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/20/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/20/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,827 - Launching run 21
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/21/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/21/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/22/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/22/.
+THEMIS - INFO - 2023-01-24 19:08:38,843 - Launching run 22
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,855 - Launching run 23
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/23/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/23/.
+source/executors.py submit
+THEMIS - INFO - 2023-01-24 19:08:38,868 - Launching run 24
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/24/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/24/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,882 - Launching run 25
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/25/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/25/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,898 - Launching run 26
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/26/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/26/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/27/.)THEMIS - INFO - 2023-01-24 19:08:38,912 - Launching run 27
+
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/27/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,927 - Launching run 28
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/28/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/28/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,941 - Launching run 29
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/29/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/29/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/30/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/30/.
+THEMIS - INFO - 2023-01-24 19:08:38,954 - Launching run 30
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/31/.)THEMIS - INFO - 2023-01-24 19:08:38,967 - Launching run 31
+
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/31/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,980 - Launching run 32
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/32/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/32/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:38,994 - Launching run 33
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/33/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/33/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,011 - Launching run 34
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/34/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/34/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,026 - Launching run 35
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/35/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/35/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,040 - Launching run 36
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/36/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/36/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/37/.)THEMIS - INFO - 2023-01-24 19:08:39,054 - Launching run 37
+
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/37/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/38/.)THEMIS - INFO - 2023-01-24 19:08:39,068 - Launching run 38
+
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/38/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,080 - Launching run 39
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/39/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/39/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,095 - Launching run 40
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/40/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/40/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,107 - Launching run 41
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/41/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/41/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,123 - Launching run 42
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/42/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/42/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,138 - Launching run 43
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/43/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/43/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,152 - Launching run 44
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/44/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/44/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,166 - Launching run 45
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/45/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/45/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,184 - Launching run 46
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/46/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/46/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,198 - Launching run 47
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/47/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/47/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,213 - Launching run 48
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/48/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/48/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,226 - Launching run 49
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/49/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/49/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,242 - Launching run 50
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/50/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/50/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,257 - Launching run 51
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/51/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/51/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,274 - Launching run 52
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/52/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/52/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,289 - Launching run 53
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/53/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/53/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,303 - Launching run 54
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/54/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/54/.
+source/executors.py submit
+THEMIS - INFO - 2023-01-24 19:08:39,315 - Launching run 55
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/55/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/55/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,331 - Launching run 56
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/56/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/56/.
+source/executors.py submit
+THEMIS - INFO - 2023-01-24 19:08:39,346 - Launching run 57
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/57/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/57/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,363 - Launching run 58
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/58/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/58/.
+source/executors.py submit
+THEMIS - INFO - 2023-01-24 19:08:39,377 - Launching run 59
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/59/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/59/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,392 - Launching run 60
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/60/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/60/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,408 - Launching run 61
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/61/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/61/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,426 - Launching run 62
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/62/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/62/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,446 - Launching run 63
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/63/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/63/.
+source/executors.py submit
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/64/.)THEMIS - INFO - 2023-01-24 19:08:39,458 - Launching run 64
+
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/64/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,476 - Launching run 65
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/65/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/65/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,492 - Launching run 66
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/66/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/66/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,508 - Launching run 67
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/67/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/67/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,524 - Launching run 68
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/68/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/68/.
+source/executors.py submit
+THEMIS - INFO - 2023-01-24 19:08:39,540 - Launching run 69
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/69/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/69/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,551 - Launching run 70
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/70/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/70/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,562 - Launching run 71
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/71/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/71/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,576 - Launching run 72
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/72/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/72/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,589 - Launching run 73
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/73/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/73/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,602 - Launching run 74
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/74/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/74/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,617 - Launching run 75
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/75/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/75/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,630 - Launching run 76
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/76/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/76/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,643 - Launching run 77
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/77/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/77/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,657 - Launching run 78
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/78/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/78/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,669 - Launching run 79
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/79/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/79/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,692 - Launching run 80
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/80/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/80/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,710 - Launching run 81
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/81/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/81/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,725 - Launching run 82
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/82/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/82/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,741 - Launching run 83
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/83/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/83/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,753 - Launching run 84
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/84/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/84/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,767 - Launching run 85
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/85/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/85/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,783 - Launching run 86
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/86/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/86/.
+source/executors.py submit
+THEMIS - INFO - 2023-01-24 19:08:39,797 - Launching run 87
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/87/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/87/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,811 - Launching run 88
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/88/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/88/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,823 - Launching run 89
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/89/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/89/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,840 - Launching run 90
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/90/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/90/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,853 - Launching run 91
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/91/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/91/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,869 - Launching run 92
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/92/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/92/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,883 - Launching run 93
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/93/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/93/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,897 - Launching run 94
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/94/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/94/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,913 - Launching run 95
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/95/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/95/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,931 - Launching run 96
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/96/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/96/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,945 - Launching run 97
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/97/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/97/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,959 - Launching run 98
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/98/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/98/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,974 - Launching run 99
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/99/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/99/.
+source/executors.py submitTHEMIS - INFO - 2023-01-24 19:08:39,988 - Launching run 100
+
+Step(args=['/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce', '--input_deck', 'input_deck'], tasks=1, cores_per_task=1, gpus_per_task=0, timeout=0, batch_script=False, cwd=/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/100/.)
+/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_37/100/.
+THEMIS - INFO - 2023-01-24 19:08:39,996 - Run 1 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,996 - Run 2 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,996 - Run 3 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 4 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 5 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 6 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 7 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 8 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 9 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 10 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 11 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 12 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 13 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 14 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,997 - Run 15 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,998 - Run 16 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,998 - Run 17 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,998 - Run 18 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,998 - Run 19 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,998 - Run 20 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:39,998 - Run 22 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:40,102 - Run 21 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:40,127 - Run 23 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:40,206 - Run 24 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:40,213 - Run 25 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:40,246 - Run 26 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:40,494 - Run 27 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:40,821 - Run 28 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:41,297 - Run 30 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:41,498 - Run 29 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:42,431 - Run 31 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:43,227 - Run 32 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:43,417 - Run 33 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:43,765 - Run 34 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:44,427 - Run 35 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:44,517 - Run 36 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:44,856 - Run 37 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:46,263 - Run 39 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:46,448 - Run 38 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:47,592 - Run 40 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:47,770 - Run 41 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:47,898 - Run 42 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:48,534 - Run 43 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:48,702 - Run 44 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:48,968 - Run 45 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:49,645 - Run 46 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:49,677 - Run 47 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:49,927 - Run 48 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:51,131 - Run 50 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:51,157 - Run 49 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:51,249 - Run 51 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:52,229 - Run 52 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:54,490 - Run 54 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:54,548 - Run 53 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:54,776 - Run 55 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:54,818 - Run 56 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:54,926 - Run 57 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:55,685 - Run 58 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:55,997 - Run 59 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:56,112 - Run 60 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:56,222 - Run 61 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:56,427 - Run 62 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:56,762 - Run 63 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:56,885 - Run 64 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:57,438 - Run 65 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:58,129 - Run 66 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:58,411 - Run 67 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:58,577 - Run 68 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:58,998 - Run 69 completed successfully
+THEMIS - INFO - 2023-01-24 19:08:59,688 - Run 70 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:00,109 - Run 71 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:00,789 - Run 72 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:01,097 - Run 73 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:01,226 - Run 74 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:01,614 - Run 75 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:01,628 - Run 76 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:02,714 - Run 77 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:02,972 - Run 78 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:03,301 - Run 79 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:04,041 - Run 80 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:05,918 - Run 81 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:06,378 - Run 82 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:06,679 - Run 83 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:06,997 - Run 84 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:07,126 - Run 85 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:07,646 - Run 86 completed successfully
+THEMIS - DEBUG - 2023-01-24 19:09:08,553 - Killing runs deque([])
+THEMIS - INFO - 2023-01-24 19:09:08,560 - Run 87 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:08,707 - Run 88 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:08,883 - Run 89 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:09,071 - Run 90 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:09,590 - Run 91 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:10,014 - Run 92 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:10,846 - Run 93 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:10,992 - Run 94 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:11,244 - Run 95 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:11,730 - Run 96 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:11,990 - Run 97 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:12,494 - Run 98 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:13,095 - Run 99 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:14,478 - Run 100 completed successfully
+THEMIS - INFO - 2023-01-24 19:09:14,548 - Ensemble complete. Shutting down and exiting...
+THEMIS - INFO - 2023-01-24 19:09:14,591 - Exited cleanly.

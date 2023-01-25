@@ -1,0 +1,8 @@
+gravity = 0.5
+x_pos_initial = 10.635849650884078
+y_pos_initial = 34.18732857360011
+z_pos_initial = 25.89987496599371
+x_vel_initial = 4.887780868867228
+y_vel_initial = -6.356455672267508
+z_vel_initial = -2.7494794763946153
+num_bounces = 14

@@ -1,0 +1,28 @@
+{
+    "on_completion": null,
+    "root_dir": "/g/g20/eljurf1/weave_demos/ball_bounce",
+    "save_interval": 30,
+    "application": "/g/g20/eljurf1/weave_demos/ball_bounce/dist/ball_bounce",
+    "run_parse": [
+        "/g/g20/eljurf1/weave_demos/ball_bounce/input_deck"
+    ],
+    "run_symlink": [],
+    "run_copy": [],
+    "version_created": 3,
+    "app_interface": null,
+    "resource_mgr": "slurm",
+    "flux_path": null,
+    "setup_dir": "/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/setup/.ens_8_setup",
+    "run_dir_names": "/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/ensemble/ens_8/{run_id}",
+    "max_restarts": 0,
+    "max_failed_runs": -1,
+    "app_is_batch_script": false,
+    "database": {
+        "type": "sqlite",
+        "path": "/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/setup/.ens_8_setup/ensemble_database.db",
+        "files": [
+            "/g/g20/eljurf1/weave_demos/ball_bounce/03_simulation_ensembles/themis_ensembles/setup/.ens_8_setup/ensemble_database.db"
+        ]
+    },
+    "abort_on": []
+}
