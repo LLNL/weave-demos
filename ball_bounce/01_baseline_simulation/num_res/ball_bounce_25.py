@@ -12,7 +12,7 @@ import sys
 import csv
 
 DELIMETER = "%"
-TICKS_PER_SECOND = 20
+TICKS_PER_SECOND = 25
 
 # These can easily be varied, I'm just holding them fixed for visualizations.
 RUNTIME = 20  # TICKS_PER_SECOND * RUNTIME = length of your timeseries, choose wisely.
@@ -114,7 +114,7 @@ def set_params_and_launch(args):
     all_args = args+[runtime, dragcoeff]
     for output in bouncing_ball(*all_args):
         all_args.append(output)
-    return (all_args)
+    return all_args
 
 
 if __name__ == "__main__":

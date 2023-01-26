@@ -1,2 +1,8 @@
 .DS_Store
-.ipynb_checkpoints/
+.ipynb_checkpoints
+data
+images
+ball_bounce/ball_bounce_demo_venv/
+__pycache__/
+output/
+*.sqlite

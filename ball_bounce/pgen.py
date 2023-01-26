@@ -11,6 +11,7 @@ positions = ["{}_POS_INITIAL".format(coord) for coord in coordinates]
 velocities = ["{}_VEL_INITIAL".format(coord) for coord in coordinates]
 NUM_STUDIES = 10
 
+
 def get_custom_generator(env, **kwargs):
     p_gen = ParameterGenerator()
     # All balls in a single run share a gravity
