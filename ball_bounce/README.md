@@ -17,7 +17,7 @@ Run `setup.sh` to create a virtual environment with all necessary dependencies a
 
 Run `source ball_bounce_demo_venv/bin/activate` to enter the virtual environment (you can `deactivate` when you've finished the demo to exit it)
 
-Run `maestro run ball_bounce_suite.yaml --pgen pgen.py` to generate the studies, then y to launch. By default, this will run 20 simulations and ingest them all into the database. Once it completes, re-run the maestro command as many times as you like to continue adding runs. It should take around 2 minutes to finish each.
+Run `maestro run ball_bounce_suite.yaml --pgen pgen.py` to generate the studies, then y to launch. By default, this will run 10 simulations and ingest them all into the database. Once it completes, re-run the maestro command as many times as you like to continue adding runs. It should take around 2 minutes to finish each.
 
 Run `jupyter notebook` and open `visualization.ipynb` in the resulting browser window to access the visualizations.
 
