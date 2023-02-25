@@ -1,10 +1,12 @@
 jupyter
 llnl-sina
+kosh
 matplotlib
 maestrowf
 merlin
 seaborn
 nbconvert
 themis
+scipy
 # ibis
 # trata

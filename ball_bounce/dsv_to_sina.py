@@ -15,8 +15,8 @@ import sys
 import csv
 import ast
 import os
-
-from sina.datastore import create_datastore
+import json
+import sina
 from sina.model import Record
 DELIMETER = "%"
 csv.field_size_limit(sys.maxsize)
@@ -36,16 +36,27 @@ def record_from_csv(source_path):
         # while still having an excuse to show a file "converter".
         record_data = next(datareader)
         record = Record(id=record_data[0], type="csv_rec")
+        cs = record.add_curve_set("time_series")
         for index, entry in enumerate(record_data[1:]):
+            nm = names[index+1]
             try:
                 val = float(entry)
+                record.data[nm] = {"value": val}
             except ValueError:
                 # We know the UUID won't have [. Still a bit hacky.
                 if "[" in entry:
                     val = ast.literal_eval(entry)
+                    if nm == "time":
+                        cs.add_independent(nm, val)
+                    else:
+                        cs.add_dependent(nm, val)
                 else:  # just a normal string
                     val = entry
-            record.data[names[index+1]] = {"value": val}
+                    record.data[nm] = {"value": val}
+        json_name = os.path.join(os.path.dirname(source_path), os.path.basename(source_path)[:-3]+"json")
+        print(json_name)
+        with open(json_name, "w") as f:
+            f.write(record.to_json().decode())
         return record
 
 
@@ -53,7 +64,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Usage: scriptname source_path dest_sql")
     else:
-        datastore = create_datastore(sys.argv[2])
+        datastore = sina.connect(sys.argv[2])
+        datastore.delete_all_contents(force="SKIP PROMPT")
         records = []
         for root, dirs, files in os.walk(sys.argv[1]):
             for file_name in files:

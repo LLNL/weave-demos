@@ -10,13 +10,11 @@ Creates DSV.
 
 import sys
 import csv
+import argparse
+
+
 
 DELIMETER = "%"
-TICKS_PER_SECOND = 20
-
-# These can easily be varied, I'm just holding them fixed for visualizations.
-RUNTIME = 20  # TICKS_PER_SECOND * RUNTIME = length of your timeseries, choose wisely.
-DRAG_COEFF = 0.1
 
 # The expected args in the expected order. Expressed here so I only have to type it once-ish.
 ARGS = ["output_file", "x_pos_initial", "y_pos_initial", "z_pos_initial",
@@ -29,7 +27,8 @@ ARGS = ["output_file", "x_pos_initial", "y_pos_initial", "z_pos_initial",
 
 def run_ball_bounce(xpos_initial, ypos_initial, zpos_initial,
                     xvel_initial, yvel_initial, zvel_initial,
-                    gravity, box_side_length):
+                    gravity, box_side_length, TICKS_PER_SECOND,
+                    RUNTIME, DRAG_COEFF):
     """
     Bounce a ball for RUNTIME seconds, at TICKS_PER_SECOND resolution.
 
@@ -119,21 +118,39 @@ def set_params_and_launch(args):
 
 if __name__ == "__main__":
     """Do a single run of a ball bounce and handle all the I/O associated."""
-    if (len(sys.argv) < 10):
-        print("This script takes a large number of args. Running it directly is not recommended. See README.md!")
-    else:
-        with open(sys.argv[1], 'w') as outfile:
-            writer = csv.writer(outfile, delimiter=DELIMETER)
-            # The ARGS[1:-1] is because we don't need to write the output file or run_id['s raw number].
-            names = ["id"]+ARGS[1:-1]+["time", "x_pos", "y_pos", "z_pos",
-                                       "x_pos_final", "y_pos_final", "z_pos_final",
-                                       "x_vel_final", "y_vel_final", "z_vel_final",
-                                       "num_bounces"]
-            writer.writerow(names)
-            results = ["{}_{}".format(sys.argv[-2], sys.argv[-1])]  # id
-            # We're not passing output_dir, group_id, or run_id
-            numerical_inputs = [float(x) for x in sys.argv[2:-2]]
-            results.extend(numerical_inputs)
-            results.append(sys.argv[-2])  # add group_id as an input
-            results.extend(run_ball_bounce(*numerical_inputs))
-            writer.writerow(results)
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--xpos", "-x", help="initial x position", default=0., type=float)
+    parser.add_argument("--ypos", "-y", help="initial y position", default=0., type=float)
+    parser.add_argument("--zpos", "-z", help="initial z position", default=0., type=float)
+    parser.add_argument("--xvel", "-X", help="initial x velocity", default=0., type=float)
+    parser.add_argument("--yvel", "-Y", help="initial y velocity", default=0., type=float)
+    parser.add_argument("--zvel", "-Z", help="initial z velocity", default=0., type=float)
+    parser.add_argument("--gravity", "-g", help="gravity", type=float, default=9.81)
+    parser.add_argument("--box_side_length", "-b", help="length of the box's sides", type=float, default=10)
+    parser.add_argument("--runtime", "-r" , help="length of time we let the simualtion run for", type=float, default=20)
+    parser.add_argument("--frequency", "--ticks_per_seconds", default=20, help="sampling rate", type=float)
+    parser.add_argument("--drag", "-d", type=float, help="drag coefficient", default=0.1)
+    parser.add_argument("--output","-o", help="output file")
+    parser.add_argument("--group", "-G", help="group id", default="group")
+    parser.add_argument("--run", "-R", help="run id", type=int, default=1)
+
+    args = parser.parse_args()
+    with open(args.output, 'w') as outfile:
+        writer = csv.writer(outfile, delimiter=DELIMETER)
+        # The ARGS[1:-1] is because we don't need to write the output file or run_id['s raw number].
+        names = ["id"]+ARGS[1:-1]+["time", "x_pos", "y_pos", "z_pos",
+                                    "x_pos_final", "y_pos_final", "z_pos_final",
+                                    "x_vel_final", "y_vel_final", "z_vel_final",
+                                    "num_bounces"]
+        writer.writerow(names)
+        results = [f"{args.group}_{args.run}"]  # id
+        # We're not passing output_dir, group_id, or run_id
+        numerical_inputs = [args.xpos, args.ypos, args.zpos,
+                            args.xvel, args.yvel, args.zvel,
+                            args.gravity, args.box_side_length,
+                            ]
+        inputs = numerical_inputs + [args.frequency, args.runtime, args.drag]
+        results.extend(numerical_inputs)
+        results.append(args.group)  # add group_id as an input
+        results.extend(run_ball_bounce(*inputs))
+        writer.writerow(results)

@@ -14,10 +14,44 @@ study:
       description: Run a family of simulations of a ball in a box. 
       run:
           cmd: |
-            python $(SPECROOT)/$(SIM_SCRIPT_PATH) output.dsv $(X_POS_INITIAL) $(Y_POS_INITIAL) $(Z_POS_INITIAL) $(X_VEL_INITIAL) $(Y_VEL_INITIAL) $(Z_VEL_INITIAL) $(GRAVITY) $(BOX_SIDE_LENGTH) $(GROUP_ID) $(RUN_ID)
+            python $(SPECROOT)/$(SIM_SCRIPT_PATH) -o output.dsv -x $(X_POS_INITIAL) -y $(Y_POS_INITIAL) -z $(Z_POS_INITIAL) \
+             -X $(X_VEL_INITIAL) -Y $(Y_VEL_INITIAL) -Z $(Z_VEL_INITIAL) -g $(GRAVITY) -b $(BOX_SIDE_LENGTH) \
+             -G $(GROUP_ID) -R $(RUN_ID)
     - name: ingest-ball-bounce
       description: Ingest the outputs from the previous step
       run:
           cmd: |
-            python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) ../run-ball-bounce $(SPECROOT)/$(OUTPUT_DS_PATH)
+            python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(SPECROOT)/output $(SPECROOT)/$(OUTPUT_DS_PATH)
           depends: [run-ball-bounce_*]
+
+global.parameters:
+    X_POS_INITIAL:
+        values: [1., 2.]
+        label: X_POS_INITAL.%%
+    Y_POS_INITIAL:
+        values: [1., 2.]
+        label: Y_POS_INITAL.%%
+    Z_POS_INITIAL:
+        values: [1., 2.]
+        label: Z_POS_INITAL.%%
+    X_VEL_INITIAL:
+        values: [1., 2.]
+        label: X_VEL_INITAL.%%
+    Y_VEL_INITIAL:
+        values: [1., 2.]
+        label: Y_VEL_INITAL.%%
+    Z_VEL_INITIAL:
+        values: [1., 2.]
+        label: Z_VEL_INITAL.%%
+    GRAVITY:
+        values: [9., 10.]
+        label: GRAVITY.%%
+    BOX_SIDE_LENGTH:
+        values: [10., 15.]
+        label: BOX_SIDE_LENGTH.%%
+    GROUP_ID:
+        values: [1,2]
+        label: GROUP_ID.%%
+    RUN_ID:
+        values: [1,2]
+        label: RUN_ID.%%
