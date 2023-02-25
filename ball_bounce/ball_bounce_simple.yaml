@@ -1,0 +1,51 @@
+description:
+    name: ball-bounce 
+    description: A workflow that simulates a ball bouncing in a box over several input sets.
+
+env:
+    variables:
+        OUTPUT_PATH: ./output
+        SIM_SCRIPT_PATH: ./ball_bounce.py
+        PROCESS_SCRIPT_PATH: ./dsv_to_sina.py
+        OUTPUT_DS_PATH: ./output.sqlite
+
+study:
+    - name: run-ball-bounce
+      description: Run a family of simulations of a ball in a box. 
+      run:
+          cmd: |
+            python $(SPECROOT)/$(SIM_SCRIPT_PATH) -o output.dsv -x $(X_POS_INITIAL) -y $(Y_POS_INITIAL) -z $(Z_POS_INITIAL) \
+             -X $(X_VEL_INITIAL) -Y $(Y_VEL_INITIAL) -Z $(Z_VEL_INITIAL) -g $(GRAVITY) -b $(BOX_SIDE_LENGTH) \
+             -G $(GROUP_ID) -R $(RUN_ID)
+
+global.parameters:
+    X_POS_INITIAL:
+        values: [1., 2.]
+        label: X_POS_INITAL.%%
+    Y_POS_INITIAL:
+        values: [1., 2.]
+        label: Y_POS_INITAL.%%
+    Z_POS_INITIAL:
+        values: [1., 2.]
+        label: Z_POS_INITAL.%%
+    X_VEL_INITIAL:
+        values: [1., 2.]
+        label: X_VEL_INITAL.%%
+    Y_VEL_INITIAL:
+        values: [1., 2.]
+        label: Y_VEL_INITAL.%%
+    Z_VEL_INITIAL:
+        values: [1., 2.]
+        label: Z_VEL_INITAL.%%
+    GRAVITY:
+        values: [9., 10.]
+        label: GRAVITY.%%
+    BOX_SIDE_LENGTH:
+        values: [10., 15.]
+        label: BOX_SIDE_LENGTH.%%
+    GROUP_ID:
+        values: [1,2]
+        label: GROUP_ID.%%
+    RUN_ID:
+        values: [1,2]
+        label: RUN_ID.%%
