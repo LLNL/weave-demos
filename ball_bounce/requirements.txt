@@ -8,5 +8,6 @@ seaborn
 nbconvert
 themis
 scipy
+h5py
 # ibis
 # trata
