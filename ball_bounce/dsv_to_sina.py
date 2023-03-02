@@ -17,7 +17,7 @@ import ast
 import os
 
 from sina.datastore import create_datastore
-from sina.model import Record
+from sina.model import Record, CurveSet
 DELIMETER = "%"
 csv.field_size_limit(sys.maxsize)
 
@@ -36,16 +36,24 @@ def record_from_csv(source_path):
         # while still having an excuse to show a file "converter".
         record_data = next(datareader)
         record = Record(id=record_data[0], type="csv_rec")
+        cycle_set = CurveSet("physics_cycle_series")
+        encountered_series = False
         for index, entry in enumerate(record_data[1:]):
             try:
                 val = float(entry)
+                record.data[names[index+1]] = {"value": val}
             except ValueError:
                 # We know the UUID won't have [. Still a bit hacky.
                 if "[" in entry:
                     val = ast.literal_eval(entry)
+                    if not encountered_series:
+                        cycle_set.add_independent("cycle", list(range(0, len(val))))
+                        encountered_series = True
+                    cycle_set.add_dependent(names[index+1], val)
                 else:  # just a normal string
                     val = entry
-            record.data[names[index+1]] = {"value": val}
+                    record.data[names[index+1]] = {"value": val}
+        record.add_curve_set(cycle_set)
         return record
 
 
