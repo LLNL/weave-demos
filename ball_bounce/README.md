@@ -20,7 +20,7 @@ Base example on how to use some of the WEAVE Tools.
 
 2. Run `source ball_bounce_demo_venv/bin/activate` to enter the virtual environment (you can `deactivate` when you've finished the demo to exit it)
 
-3. Run `maestro run ball_bounce_suite.yaml --pgen pgen.py` to launch the studies. By default, this will run 20 simulations and ingest them all into the database. You can re-run the maestro command as many times as you like to continue adding runs.
+3. Run `maestro run ball_bounce_suite.yaml --pgen pgen.py` to generate the studies, then y to launch. By default, this will run 10 simulations and ingest them all into the database. Once it completes, re-run the maestro command as many times as you like to continue adding runs. It should take around 2 minutes to finish each.
 
 4. Run `jupyter notebook` and open `visualization.ipynb` in the resulting browser window to access the visualizations.
 
