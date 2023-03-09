@@ -6,6 +6,6 @@ merlin
 seaborn
 nbconvert
 themis
-kosh
+# kosh
 # ibis
 # trata
