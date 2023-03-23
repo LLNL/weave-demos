@@ -67,10 +67,12 @@ WEAVE Workflow Example that uses all the WEAVE Tools.
 - `01_baseline_simulation/`
   - `baseline/`
     - `baseline.sh`: Runs four simulations to find the baseline simulation which will be used in the numerical resolution study and simulation ensemble.
-    - `visualization_baseline.ipynb`: A Jupyter notebook to visualize the baseline simulation.
+    - `visualization_baseline_sina.ipynb`: A Jupyter notebook to visualize the baseline simulation using Sina.
+    - `visualization_baseline_kosh.ipynb`: A Jupyter notebook to visualize the baseline simulation using Kosh.
   - `num_res/`
     - `num_res.sh`: Runs three simulations at different time steps to see the effect on the baseline simulation resolution.
-    - `visualization_num_res.ipynb`: A Jupyter notebook to visualize the baseline simulation numerical resolution.
+    - `visualization_num_res_sina.ipynb`: A Jupyter notebook to visualize the baseline simulation numerical resolution using Sina.
+    - `visualization_num_res_kosh.ipynb`: A Jupyter notebook to visualize the baseline simulation numerical resolution using Kosh.
     - `ball_bounce_15.py`: Sets the timestep to 15 ticks per second whereas baseline simulation is 20 ticks per second.
     - `ball_bounce_25.py`: Sets the timestep to 25 ticks per second whereas baseline simulation is 20 ticks per second.
 - `02_uncertainty_bounds/`
@@ -84,13 +86,15 @@ WEAVE Workflow Example that uses all the WEAVE Tools.
 - `05_post-process_data/`
   - `ball_bounce_suite_maestro_post-process_data.yaml`: The Maestro workflow description for running the baseline simulation ensemble, consolidating the data into a datastore, and post-processing the simulation ensemble.
   - `ball_bounce_suite_merlin_post-process_data.yaml`: The Merlin workflow description for running the baseline simulation ensemble, consolidating the data into a datastore, and post-processing the simulation ensemble.
-  - `visualization_ensembles.ipynb`: A Jupyter notebook to visualize the baseline simulation ensemble data from the datastore.
-  - `visualization_ensembles.py`: The Jupyter notebook converted to a Python script so the Maestro and Merlin workflow can process it.
+  - `visualization_ensembles_sina.ipynb`: A Jupyter notebook to visualize the baseline simulation ensemble data from the datastore using Sina.
+  - `visualization_ensembles_kosh.ipynb`: A Jupyter notebook to visualize the baseline simulation ensemble data from the datastore using Kosh.
+  - `visualization_ensembles_sina.py`: The Jupyter notebook converted to a Python script so the Maestro and Merlin workflow can process it using Sina.
 - `06_surrogate_model/`
   - `ball_bounce_suite_maestro_surrogate_model.yaml`: The Maestro workflow description for running the baseline simulation ensemble, consolidating the data into a datastore, post-processing the simulation ensemble, and creating the surrogate_model.
   - `ball_bounce_suite_merlin_surrogate_model.yaml`: The Merlin workflow description for running the baseline simulation ensemble, consolidating the data into a datastore, post-processing the simulation ensemble, and creating the surrogate_model.
-  - `visualization_surrogate_model.ipynb`: A Jupyter notebook to visualize the baseline simulation ensemble surrogate model data.
-  - `visualization_surrogate_model.py`: The Jupyter notebook converted to a Python script so the Maestro and Merlin workflow can process it.
+  - `visualization_surrogate_model_sina.ipynb`: A Jupyter notebook to visualize the baseline simulation ensemble surrogate model data using Sina.
+  - `visualization_surrogate_model_kosh.ipynb`: A Jupyter notebook to visualize the baseline simulation ensemble surrogate model data using Kosh.
+  - `visualization_surrogate_model_sina.py`: The Jupyter notebook converted to a Python script so the Maestro and Merlin workflow can process it using Sina.
 
 #### Files created by the demo:
 
