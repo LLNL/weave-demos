@@ -34,28 +34,39 @@ else:
 # Ensembles Initialization
 database = os.path.join(spec_root, '../04_manage_data/data/ensembles_output.sqlite')
 target_type = "csv_rec"
-datastore = create_datastore(database)
+datastore = sina.connect(database)
 recs = datastore.records
 vis = Visualizer(datastore)
 print("Sina is ready!")
 
 # Baseline Initialization
 database_baseline = os.path.join(spec_root, '../01_baseline_simulation/baseline/data/baseline_output.sqlite')
-datastore_baseline = create_datastore(database_baseline)
+datastore_baseline = sina.connect(database_baseline)
 recs_baseline = datastore_baseline.records
 group_id = '47bcda'
 val = recs_baseline.get(group_id + '_0')
-print(val.data.keys())  # since there are no embedded keys we can just use this
-# print(val.curve_sets) # no curve sets
+# Printing Data and Curvesets
+print('Data:')
+for data in val.data.keys():
+    print('\t',data)
+print('\n')
+print('Curve Sets:')
+for curve_set in val.curve_sets:
+    print('\t',curve_set)
+    for cs_type in val.curve_sets[curve_set]:
+        print('\t\t',cs_type)
+        for curve in val.curve_sets[curve_set][cs_type]:
+            print('\t\t\t',curve)
 
-x_true = val.data['x_pos']['value']
-y_true = val.data['y_pos']['value']
-z_true = val.data['z_pos']['value']
-time_true = val.data['time']['value']
+cycle_set = val.get_curve_set("physics_cycle_series")
+x_true = cycle_set.get_dependent('x_pos')['value']
+y_true = cycle_set.get_dependent('y_pos')['value']
+z_true = cycle_set.get_dependent('z_pos')['value']
+time_true = cycle_set.get_dependent('time')['value']
 
 # Numerical Resolution Initialization
 database_num_res = os.path.join(spec_root, '../01_baseline_simulation/num_res/data/num_res_output.sqlite')
-datastore_num_res = create_datastore(database_num_res)
+datastore_num_res = sina.connect(database_num_res)
 recs_num_res = datastore_num_res.records
 
 
@@ -82,9 +93,10 @@ for i, t in enumerate(time_true):
 
     for rec in recs.get_all():
 
-        x_pred = rec.data['x_pos']['value'][i]
-        y_pred = rec.data['y_pos']['value'][i]
-        z_pred = rec.data['z_pos']['value'][i]
+        cycle_set = rec.get_curve_set("physics_cycle_series")
+        x_pred = cycle_set.get_dependent('x_pos')['value'][i]
+        y_pred = cycle_set.get_dependent('y_pos')['value'][i]
+        z_pred = cycle_set.get_dependent('z_pos')['value'][i]
 
         x_temp.append(x_pred)
         y_temp.append(y_pred)
@@ -101,27 +113,28 @@ for i, t in enumerate(time_true):
     y_temp = []
     z_temp = []
 
-mean_rec.add_data('time', time_true)
-mean_rec.add_data('x_pos_mean', x_mean)
-mean_rec.add_data('y_pos_mean', y_mean)
-mean_rec.add_data('z_pos_mean', z_mean)
-mean_rec.add_data('x_pos_std', x_std)
-mean_rec.add_data('y_pos_std', y_std)
-mean_rec.add_data('z_pos_std', z_std)
+mean_set = mean_rec.add_curve_set("mean_data")
+mean_set.add_independent('time', time_true)
+mean_set.add_dependent('x_pos_mean', x_mean)
+mean_set.add_dependent('y_pos_mean', y_mean)
+mean_set.add_dependent('z_pos_mean', z_mean)
+mean_set.add_dependent('x_pos_std', x_std)
+mean_set.add_dependent('y_pos_std', y_std)
+mean_set.add_dependent('z_pos_std', z_std)
 
-mean_rec.add_data('x_pos_mean_plus_std', [x_mean[i] + x_std[i] for i in range(len(time_true))])
-mean_rec.add_data('y_pos_mean_plus_std', [y_mean[i] + y_std[i] for i in range(len(time_true))])
-mean_rec.add_data('z_pos_mean_plus_std', [z_mean[i] + z_std[i] for i in range(len(time_true))])
-mean_rec.add_data('x_pos_mean_minus_std', [x_mean[i] - x_std[i] for i in range(len(time_true))])
-mean_rec.add_data('y_pos_mean_minus_std', [y_mean[i] - y_std[i] for i in range(len(time_true))])
-mean_rec.add_data('z_pos_mean_minus_std', [z_mean[i] - z_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('x_pos_mean_plus_std', [x_mean[i] + x_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('y_pos_mean_plus_std', [y_mean[i] + y_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('z_pos_mean_plus_std', [z_mean[i] + z_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('x_pos_mean_minus_std', [x_mean[i] - x_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('y_pos_mean_minus_std', [y_mean[i] - y_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('z_pos_mean_minus_std', [z_mean[i] - z_std[i] for i in range(len(time_true))])
 
-mean_rec.add_data('x_pos_mean_plus_2std', [x_mean[i] + 2 * x_std[i] for i in range(len(time_true))])
-mean_rec.add_data('y_pos_mean_plus_2std', [y_mean[i] + 2 * y_std[i] for i in range(len(time_true))])
-mean_rec.add_data('z_pos_mean_plus_2std', [z_mean[i] + 2 * z_std[i] for i in range(len(time_true))])
-mean_rec.add_data('x_pos_mean_minus_2std', [x_mean[i] - 2 * x_std[i] for i in range(len(time_true))])
-mean_rec.add_data('y_pos_mean_minus_2std', [y_mean[i] - 2 * y_std[i] for i in range(len(time_true))])
-mean_rec.add_data('z_pos_mean_minus_2std', [z_mean[i] - 2 * z_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('x_pos_mean_plus_2std', [x_mean[i] + 2 * x_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('y_pos_mean_plus_2std', [y_mean[i] + 2 * y_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('z_pos_mean_plus_2std', [z_mean[i] + 2 * z_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('x_pos_mean_minus_2std', [x_mean[i] - 2 * x_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('y_pos_mean_minus_2std', [y_mean[i] - 2 * y_std[i] for i in range(len(time_true))])
+mean_set.add_dependent('z_pos_mean_minus_2std', [z_mean[i] - 2 * z_std[i] for i in range(len(time_true))])
 
 recs.insert(mean_rec)  # need to update or else won't save!!!!!
 
@@ -146,14 +159,16 @@ n_bins = int(math.sqrt(convergence[-1]))
 # Gathering Data
 
 mean = recs.get('mean')
-time = mean.data['time']['value']
-x_pos_mean_plus_2std = mean.data['x_pos_mean_plus_2std']['value']
-y_pos_mean_plus_2std = mean.data['y_pos_mean_plus_2std']['value']
-z_pos_mean_plus_2std = mean.data['z_pos_mean_plus_2std']['value']
 
-x_pos_mean_minus_2std = mean.data['x_pos_mean_minus_2std']['value']
-y_pos_mean_minus_2std = mean.data['y_pos_mean_minus_2std']['value']
-z_pos_mean_minus_2std = mean.data['z_pos_mean_minus_2std']['value']
+mean_set = mean.get_curve_set("mean_data")
+time = mean_set.get_independent('time')['value']
+x_pos_mean_plus_2std = mean_set.get_dependent('x_pos_mean_plus_2std')['value']
+y_pos_mean_plus_2std = mean_set.get_dependent('y_pos_mean_plus_2std')['value']
+z_pos_mean_plus_2std = mean_set.get_dependent('z_pos_mean_plus_2std')['value']
+
+x_pos_mean_minus_2std = mean_set.get_dependent('x_pos_mean_minus_2std')['value']
+y_pos_mean_minus_2std = mean_set.get_dependent('y_pos_mean_minus_2std')['value']
+z_pos_mean_minus_2std = mean_set.get_dependent('z_pos_mean_minus_2std')['value']
 
 # Plotting
 
@@ -513,17 +528,19 @@ for scalar in scalars:
 # Numerical Resolution
 # Be sure to run 01_baseline_simulation/num_res/visualization_num_res.ipynb to acquire necessary data
 mean_num_res = recs_num_res.get('mean')
-time_num_res = mean_num_res.data['time_common']['value']
+mean_set_num_res = mean_num_res.get_curve_set("mean_data")
+time_num_res = mean_set_num_res.get_independent('time_common')['value']
 
 # Ensembles
 mean = recs.get('mean')
-time = mean.data['time']['value']
-x_pos_mean = mean.data['x_pos_mean']['value']
-y_pos_mean = mean.data['y_pos_mean']['value']
-z_pos_mean = mean.data['z_pos_mean']['value']
-x_pos_std = mean.data['x_pos_std']['value']
-y_pos_std = mean.data['y_pos_std']['value']
-z_pos_std = mean.data['z_pos_std']['value']
+mean_set = mean.get_curve_set("mean_data")
+time = mean_set.get_independent('time')['value']
+x_pos_mean = mean_set.get_dependent('x_pos_mean')['value']
+y_pos_mean = mean_set.get_dependent('y_pos_mean')['value']
+z_pos_mean = mean_set.get_dependent('z_pos_mean')['value']
+x_pos_std = mean_set.get_dependent('x_pos_std')['value']
+y_pos_std = mean_set.get_dependent('y_pos_std')['value']
+z_pos_std = mean_set.get_dependent('z_pos_std')['value']
 
 x_pos_mean_common = []
 y_pos_mean_common = []
@@ -547,13 +564,14 @@ for i, t in enumerate(time):
             z_pos_std_common.append(z_pos_std[i])
             time_common.append(time[i])
 
-mean.add_data('time_common', time_common)
-mean.add_data('x_pos_mean_common', x_pos_mean_common)
-mean.add_data('y_pos_mean_common', y_pos_mean_common)
-mean.add_data('z_pos_mean_common', z_pos_mean_common)
-mean.add_data('x_pos_std_common', x_pos_std_common)
-mean.add_data('y_pos_std_common', y_pos_std_common)
-mean.add_data('z_pos_std_common', z_pos_std_common)
+common_set = mean.add_curve_set("common_data")
+common_set.add_independent('time_common', time_common)
+common_set.add_dependent('x_pos_mean_common', x_pos_mean_common)
+common_set.add_dependent('y_pos_mean_common', y_pos_mean_common)
+common_set.add_dependent('z_pos_mean_common', z_pos_mean_common)
+common_set.add_dependent('x_pos_std_common', x_pos_std_common)
+common_set.add_dependent('y_pos_std_common', y_pos_std_common)
+common_set.add_dependent('z_pos_std_common', z_pos_std_common)
 
 recs.update(mean)  # need to update or else won't save!!!!!
 
@@ -565,18 +583,17 @@ recs.update(mean)  # need to update or else won't save!!!!!
 
 # Numerical Resolution: Numerical Uncertainty (u_num)
 # Be sure to run 01_baseline_simulation/num_res/visualization_num_res.ipynb to acquire necessary data
-x_pos_std_num_res = mean_num_res.data['x_pos_std']['value']
-y_pos_std_num_res = mean_num_res.data['y_pos_std']['value']
-z_pos_std_num_res = mean_num_res.data['z_pos_std']['value']
+x_pos_std_num_res = mean_set_num_res.get_dependent('x_pos_std')['value']
+y_pos_std_num_res = mean_set_num_res.get_dependent('y_pos_std')['value']
+z_pos_std_num_res = mean_set_num_res.get_dependent('z_pos_std')['value']
 
 # Ensembles: Input Uncertainty (u_input)
-x_pos_mean_common = mean.data['x_pos_mean_common']['value']
-x_pos_mean_common = mean.data['x_pos_mean_common']['value']
-y_pos_mean_common = mean.data['y_pos_mean_common']['value']
-z_pos_mean_common = mean.data['z_pos_mean_common']['value']
-x_pos_std_common = mean.data['x_pos_std_common']['value']
-y_pos_std_common = mean.data['y_pos_std_common']['value']
-z_pos_std_common = mean.data['z_pos_std_common']['value']
+x_pos_mean_common = common_set.get_dependent('x_pos_mean_common')['value']
+y_pos_mean_common = common_set.get_dependent('y_pos_mean_common')['value']
+z_pos_mean_common = common_set.get_dependent('z_pos_mean_common')['value']
+x_pos_std_common = common_set.get_dependent('x_pos_std_common')['value']
+y_pos_std_common = common_set.get_dependent('y_pos_std_common')['value']
+z_pos_std_common = common_set.get_dependent('z_pos_std_common')['value']
 
 # Experiment: Experimental Uncertainty (u_D)
 u_D_x = [statistics.mean([x, y]) for x, y in zip(x_pos_std_num_res, x_pos_std_common)]
@@ -725,4 +742,10 @@ ax[1].legend(loc='lower left')
 ax[2].legend(loc='lower left')
 
 fig.savefig(os.path.join(spec_root, "../05_post-process_data/images/QoIs_QMU.png"))
+
+
+# In[ ]:
+
+
+
 

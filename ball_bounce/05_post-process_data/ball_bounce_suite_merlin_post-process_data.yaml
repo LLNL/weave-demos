@@ -8,7 +8,7 @@ env:
         SIM_SCRIPT_PATH: ../ball_bounce.py
         PROCESS_SCRIPT_PATH: ../dsv_to_sina.py
         OUTPUT_DS_PATH: ../04_manage_data/data/ensembles_output.sqlite
-        POST_PROCESS_SCRIPT_PATH: ./visualization_ensembles.py
+        POST_PROCESS_SCRIPT_PATH: ./visualization_ensembles_sina.py
 
 user:
     study:
