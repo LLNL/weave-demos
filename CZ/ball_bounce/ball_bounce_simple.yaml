@@ -17,12 +17,6 @@ study:
             python $(SPECROOT)/$(SIM_SCRIPT_PATH) -o output.dsv -x $(X_POS_INITIAL) -y $(Y_POS_INITIAL) -z $(Z_POS_INITIAL) \
              -X $(X_VEL_INITIAL) -Y $(Y_VEL_INITIAL) -Z $(Z_VEL_INITIAL) -g $(GRAVITY) -b $(BOX_SIDE_LENGTH) \
              -G $(GROUP_ID) -R $(RUN_ID)
-    - name: ingest-ball-bounce
-      description: Ingest the outputs from the previous step
-      run:
-          cmd: |
-            python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(SPECROOT)/output $(SPECROOT)/$(OUTPUT_DS_PATH)
-          depends: [run-ball-bounce_*]
 
 global.parameters:
     X_POS_INITIAL:

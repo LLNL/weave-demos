@@ -15,7 +15,8 @@ import sys
 import csv
 import ast
 import os
-
+import json
+import sina
 from sina.datastore import create_datastore
 from sina.model import Record, CurveSet
 DELIMETER = "%"
@@ -39,6 +40,7 @@ def record_from_csv(source_path):
         cycle_set = CurveSet("physics_cycle_series")
         encountered_series = False
         for index, entry in enumerate(record_data[1:]):
+            nm = names[index+1]
             try:
                 val = float(entry)
                 record.data[names[index+1]] = {"value": val}
@@ -61,7 +63,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Usage: scriptname source_path dest_sql")
     else:
-        datastore = create_datastore(sys.argv[2])
+        datastore = sina.connect(sys.argv[2])
+        datastore.delete_all_contents(force="SKIP PROMPT")
         records = []
         for root, dirs, files in os.walk(sys.argv[1]):
             for file_name in files:
