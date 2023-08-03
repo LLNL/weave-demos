@@ -15,7 +15,7 @@ GRAVITY=9.81
 BOX_SIDE_LENGTH=100
 GROUP_ID=47bcda
 RUN_ID=0
-python $SCRIPT $OUT_FILE $X_POS_INITIAL $Y_POS_INITIAL $Z_POS_INITIAL $X_VEL_INITIAL $Y_VEL_INITIAL $Z_VEL_INITIAL $GRAVITY $BOX_SIDE_LENGTH $GROUP_ID $RUN_ID
+python $SCRIPT --output $OUT_FILE --xpos $X_POS_INITIAL --ypos $Y_POS_INITIAL --zpos $Z_POS_INITIAL --xvel $X_VEL_INITIAL --yvel $Y_VEL_INITIAL --zvel $Z_VEL_INITIAL --gravity $GRAVITY --box_side_length $BOX_SIDE_LENGTH --group $GROUP_ID --run $RUN_ID
 
 OUT_FILE=./01_baseline_simulation/baseline/data/baseline_1_output.dsv
 X_POS_INITIAL=50
@@ -28,7 +28,7 @@ GRAVITY=9.81
 BOX_SIDE_LENGTH=100
 GROUP_ID=47bcda
 RUN_ID=1
-python $SCRIPT $OUT_FILE $X_POS_INITIAL $Y_POS_INITIAL $Z_POS_INITIAL $X_VEL_INITIAL $Y_VEL_INITIAL $Z_VEL_INITIAL $GRAVITY $BOX_SIDE_LENGTH $GROUP_ID $RUN_ID
+python $SCRIPT --output $OUT_FILE --xpos $X_POS_INITIAL --ypos $Y_POS_INITIAL --zpos $Z_POS_INITIAL --xvel $X_VEL_INITIAL --yvel $Y_VEL_INITIAL --zvel $Z_VEL_INITIAL --gravity $GRAVITY --box_side_length $BOX_SIDE_LENGTH --group $GROUP_ID --run $RUN_ID
 
 OUT_FILE=./01_baseline_simulation/baseline/data/baseline_2_output.dsv
 X_POS_INITIAL=51
@@ -41,7 +41,7 @@ GRAVITY=9.81
 BOX_SIDE_LENGTH=100
 GROUP_ID=47bcda
 RUN_ID=2
-python $SCRIPT $OUT_FILE $X_POS_INITIAL $Y_POS_INITIAL $Z_POS_INITIAL $X_VEL_INITIAL $Y_VEL_INITIAL $Z_VEL_INITIAL $GRAVITY $BOX_SIDE_LENGTH $GROUP_ID $RUN_ID
+python $SCRIPT --output $OUT_FILE --xpos $X_POS_INITIAL --ypos $Y_POS_INITIAL --zpos $Z_POS_INITIAL --xvel $X_VEL_INITIAL --yvel $Y_VEL_INITIAL --zvel $Z_VEL_INITIAL --gravity $GRAVITY --box_side_length $BOX_SIDE_LENGTH --group $GROUP_ID --run $RUN_ID
 
 OUT_FILE=./01_baseline_simulation/baseline/data/baseline_3_output.dsv
 X_POS_INITIAL=49
@@ -54,6 +54,6 @@ GRAVITY=9.81
 BOX_SIDE_LENGTH=100
 GROUP_ID=47bcda
 RUN_ID=3
-python $SCRIPT $OUT_FILE $X_POS_INITIAL $Y_POS_INITIAL $Z_POS_INITIAL $X_VEL_INITIAL $Y_VEL_INITIAL $Z_VEL_INITIAL $GRAVITY $BOX_SIDE_LENGTH $GROUP_ID $RUN_ID
+python $SCRIPT --output $OUT_FILE --xpos $X_POS_INITIAL --ypos $Y_POS_INITIAL --zpos $Z_POS_INITIAL --xvel $X_VEL_INITIAL --yvel $Y_VEL_INITIAL --zvel $Z_VEL_INITIAL --gravity $GRAVITY --box_side_length $BOX_SIDE_LENGTH --group $GROUP_ID --run $RUN_ID
 
 python ./dsv_to_sina.py ./01_baseline_simulation/baseline/data ./01_baseline_simulation/baseline/data/baseline_output.sqlite

@@ -17,7 +17,7 @@ user:
         run:
             run_ball_bounce: &run_ball_bounce
                 cmd: |
-                  python $(SPECROOT)/$(SIM_SCRIPT_PATH) output.dsv $(X_POS_INITIAL) $(Y_POS_INITIAL) $(Z_POS_INITIAL) $(X_VEL_INITIAL) $(Y_VEL_INITIAL) $(Z_VEL_INITIAL) $(GRAVITY) $(BOX_SIDE_LENGTH) $(GROUP_ID) $(RUN_ID)
+                  python $(SPECROOT)/$(SIM_SCRIPT_PATH) --output output.dsv --xpos $(X_POS_INITIAL) --ypos $(Y_POS_INITIAL) --zpos $(Z_POS_INITIAL) --xvel $(X_VEL_INITIAL) --yvel $(Y_VEL_INITIAL) --zvel $(Z_VEL_INITIAL) --gravity $(GRAVITY) --box_side_length $(BOX_SIDE_LENGTH) --group $(GROUP_ID) --run $(RUN_ID)
                 max_retries: 1
 
 study:
