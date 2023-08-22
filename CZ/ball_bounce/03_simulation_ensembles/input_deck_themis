@@ -1,7 +1,0 @@
-gravity = %%gravity%%
-x_pos_initial = %%x_pos_initial%%
-y_pos_initial = %%y_pos_initial%%
-z_pos_initial = %%z_pos_initial%%
-x_vel_initial = %%x_vel_initial%%
-y_vel_initial = %%y_vel_initial%%
-z_vel_initial = %%z_vel_initial%%
