@@ -8,9 +8,8 @@ env:
         SIM_SCRIPT_PATH: ../ball_bounce.py
         PROCESS_SCRIPT_PATH: ../dsv_to_sina.py
         OUTPUT_DS_PATH: ../04_manage_data/data/ensembles_output.sqlite
-        POST_PROCESS_SCRIPT_PATH: ../05_post-process_data/visualization_ensembles.py
-        SURROGATE_SCRIPT_PATH: ./surrogate_model.py
-        SOBOL_SCRIPT_PATH: ./sobol_script.py
+        POST_PROCESS_SCRIPT_PATH: ../05_post-process_data/visualization_ensembles_sina.py
+        SURROGATE_SCRIPT_PATH: ./visualization_surrogate_model.py
 
 user:
     study:
@@ -44,15 +43,8 @@ study:
       description: Create the surrogate model from the simulation data
       run:
           cmd: |
-              python $(SPECROOT)/$(SURROGATE_SCRIPT_PATH) $(SPECROOT)/$(OUTPUT_DS_PATH)
+              python $(SPECROOT)/$(SURROGATE_SCRIPT_PATH) $(SPECROOT)
           depends: [post_process-ball-bounce]
-
-    - name: extract-sobol-ball-bounce
-      description: Run sensitivity analysis via Sobol indices
-      run:
-          cmd: |
-              python $(SPECROOT)/$(SOBOL_SCRIPT_PATH) $(SPECROOT)/$(OUTPUT_DS_PATH)
-          depends: [create-surrogate-ball-bounce]
 
 merlin:
     resources:
