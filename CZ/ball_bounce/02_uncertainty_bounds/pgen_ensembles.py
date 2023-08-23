@@ -3,9 +3,10 @@
 import random
 import uuid
 import numpy as np
-
+from trata import sampler
 from maestrowf.datastructures.core import ParameterGenerator
 
+seed = 1777
 BOX_SIDE_LENGTH = 100
 GRAVITY = 9.81
 coordinates = ["X", "Y", "Z"]
@@ -13,10 +14,12 @@ positions = ["{}_POS_INITIAL".format(coord) for coord in coordinates]
 velocities = ["{}_VEL_INITIAL".format(coord) for coord in coordinates]
 NUM_STUDIES = 1024
 
-
 def get_custom_generator(env, **kwargs):
+
     p_gen = ParameterGenerator()
-    # All balls in a single run share a gravity
+    LHCsampler = sampler.LatinHyperCubeSampler()
+
+    # All balls in a single run share gravity, box side length, and group ID
     params = {"GRAVITY": {"values": [GRAVITY]*NUM_STUDIES,
                           "label": "GRAVITY.%%"},
 
@@ -29,23 +32,24 @@ def get_custom_generator(env, **kwargs):
               "RUN_ID": {"values": list(range(1, NUM_STUDIES+1)),
                          "label": "RUN_ID.%%"},
 
-              "X_POS_INITIAL": {"values":  list(np.round(np.random.normal(49.0, 0.5, NUM_STUDIES), 4)),
+              "X_POS_INITIAL": {"values":  [np.round(item, 4) for sublist in LHCsampler.sample_points(num_points=NUM_STUDIES, box=[[47.5, 50.5]], seed=seed) for item in sublist],
                                 "label": "X_POS_INITIAL.%%"},
 
-              "Y_POS_INITIAL": {"values":  list(np.round(np.random.normal(50.0, 0.5, NUM_STUDIES), 4)),
+              "Y_POS_INITIAL": {"values":  [np.round(item, 4) for sublist in LHCsampler.sample_points(num_points=NUM_STUDIES, box=[[48.5, 51.5]], seed=seed) for item in sublist],
                                 "label": "Y_POS_INITIAL.%%"},
 
-              "Z_POS_INITIAL": {"values":  list(np.round(np.random.normal(51.0, 0.5, NUM_STUDIES), 4)),
+              "Z_POS_INITIAL": {"values":  [np.round(item, 4) for sublist in LHCsampler.sample_points(num_points=NUM_STUDIES, box=[[49.5, 52.5]], seed=seed) for item in sublist],
                                 "label": "Z_POS_INITIAL.%%"},
 
-              "X_VEL_INITIAL": {"values":  list(np.round(np.random.uniform(5.10, 5.40, NUM_STUDIES), 4)),
+              "X_VEL_INITIAL": {"values":  [np.round(item, 4) for sublist in LHCsampler.sample_points(num_points=NUM_STUDIES, box=[[5.10, 5.40]], seed=seed) for item in sublist],
                                 "label": "X_VEL_INITIAL.%%"},
 
-              "Y_VEL_INITIAL": {"values":  list(np.round(np.random.uniform(4.75, 5.05, NUM_STUDIES), 4)),
+              "Y_VEL_INITIAL": {"values":  [np.round(item, 4) for sublist in LHCsampler.sample_points(num_points=NUM_STUDIES, box=[[4.75, 5.05]], seed=seed) for item in sublist],
                                 "label": "Y_VEL_INITIAL.%%"},
 
-              "Z_VEL_INITIAL": {"values":  list(np.round(np.random.uniform(4.85, 5.15, NUM_STUDIES), 4)),
-                                "label": "Z_VEL_INITIAL.%%"}}
+              "Z_VEL_INITIAL": {"values":  [np.round(item, 4) for sublist in LHCsampler.sample_points(num_points=NUM_STUDIES, box=[[4.85, 5.15]], seed=seed) for item in sublist],
+                                "label": "Z_VEL_INITIAL.%%"}
+             }
 
     for key, value in params.items():
         p_gen.add_parameter(key, value["values"], value["label"])

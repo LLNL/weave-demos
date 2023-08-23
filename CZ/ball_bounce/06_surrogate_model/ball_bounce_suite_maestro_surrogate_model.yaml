@@ -8,7 +8,8 @@ env:
         SIM_SCRIPT_PATH: ../ball_bounce.py
         PROCESS_SCRIPT_PATH: ../dsv_to_sina.py
         OUTPUT_DS_PATH: ../04_manage_data/data/ensembles_output.sqlite
-        POST_PROCESS_SCRIPT_PATH: ../05_post-process_data/visualization_ensembles.py
+        POST_PROCESS_SCRIPT_PATH: ../05_post-process_data/visualization_ensembles_sina.py
+        SURROGATE_SCRIPT_PATH: ./visualization_surrogate_model.py
 
 study:
     - name: run-ball-bounce
@@ -30,3 +31,10 @@ study:
           cmd: |
             python $(SPECROOT)/$(POST_PROCESS_SCRIPT_PATH) $(SPECROOT)
           depends: [ingest-ball-bounce]
+
+    - name: create-surrogate-ball-bounce
+      description: Create the surrogate model from the simulation data
+      run:
+          cmd: |
+              python $(SPECROOT)/$(SURROGATE_SCRIPT_PATH) $(SPECROOT)
+          depends: [post_process-ball-bounce]

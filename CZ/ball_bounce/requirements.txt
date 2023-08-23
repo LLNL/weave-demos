@@ -6,8 +6,7 @@ maestrowf
 merlin
 seaborn
 nbconvert
-themis
 scipy
 h5py
-# ibis
+llnl-ibis
 trata

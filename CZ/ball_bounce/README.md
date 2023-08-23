@@ -53,7 +53,18 @@ WEAVE Workflow Example that uses all the WEAVE Tools.
 
 2. Run `source ball_bounce_demo_venv/bin/activate` to enter the virtual environment (you can `deactivate` when you've finished the demo to exit it)
 
-3. Follow the [WEAVE Workflow Toy Tutorial](https://lc.llnl.gov/weave/diagram.html). The numbered folders in the Content Overview section below correspond to the WEAVE Workflow Toy Tutorial steps.
+3. Follow the [WEAVE Workflow Toy Tutorial](https://lc.llnl.gov/weave/diagram.html). The numbered folders in the Content Overview section below correspond to the WEAVE Workflow Toy Tutorial steps. If you don't have access to the tutorial, follow the steps below.
+   1. `sh 01_baseline_simulation/baseline/baseline.sh`
+   2. Run `01_baseline_simulation/baseline/visualization_baseline_sina.ipynb`
+   3. `sh 01_baseline_simulation/num_res/num_res.sh`
+   4. Run `01_baseline_simulation/num_res/visualization_num_res_sina.ipynb`
+   5. `maestro run 04_manage_data/ball_bounce_suite_maestro_data_management.yaml --pgen 02_uncertainty_bounds/pgen_ensembles.py`
+      1. Change `NUM_STUDIES = 1024` to a smaller number depending on computer capability  (e.g. 64) in `02_uncertainty_bounds/pgen_ensembles.py`
+   6. Run `05_post-process_data/visualization_ensembles_sina.ipynb`
+      1. Change `convergence = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]` to `convergence = [1, 2, 4, 8, 16, 32, 64]` to match step above
+   7. Run `06_surrogate_model/visualization_surrogate_model.ipynb`
+
+  * Note: If the notebooks for `05_post-process_data` and `06_surrogate_model` are to your liking, you can just run `maestro run 06_surrogate_model/ball_bounce_suite_maestro_surrogate_model.yaml --pgen 02_uncertainty_bounds/pgen_ensembles.py` for step 5 above and everything will run without having to run the `05_post-process_data` and `06_surrogate_model` notebooks individually. **Be sure to export these updated notebooks as Python scripts since that is what Maestro/Merlin are looking for.**
 
 4. Finally, run `teardown.sh` to delete the virtual environment, generated data, and the jupyter kernel. 
 

@@ -2,6 +2,7 @@
 # coding: utf-8
 
 # # Loading Data
+# **For more examples of what Sina can do visit [GitHub Examples](https://github.com/LLNL/Sina/tree/master/examples).**
 
 # In[ ]:
 
@@ -25,11 +26,11 @@ import os
 import sys
 
 
-if sys.argv[1] == '-f':  # Not sure why this returns '-f' if no arguments are passed?
+if sys.argv[1] == '-f':  # Running as notebook
     spec_root = ''
     get_ipython().run_line_magic('matplotlib', 'notebook')
 else:
-    spec_root = sys.argv[1]  # Modify path for Python script since this is running within its own step
+    spec_root = sys.argv[1]  # Running as script
 
 # Ensembles Initialization
 database = os.path.join(spec_root, '../04_manage_data/data/ensembles_output.sqlite')
@@ -310,7 +311,7 @@ fig.savefig(os.path.join(spec_root, "../05_post-process_data/images/QoIs_pdf_cdf
 fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(20, 5))
 fig1, ax1 = plt.subplots(nrows=1, ncols=3, figsize=(20, 5))
 
-for i, runs in enumerate(convergence[5:]):  # Depending on number of runs, can obscure the rest
+for i, runs in enumerate(convergence):  # Depending on number of runs, can obscure the rest
 
     convergence_ids = [group_id + "_" + str(x + 1) for x in range(runs)]  # We can do this because IDs have the run number
 
