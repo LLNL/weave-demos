@@ -1,0 +1,15 @@
+jupyter
+llnl-sina
+kosh
+matplotlib
+maestrowf
+merlin
+seaborn
+nbconvert
+scipy
+h5py
+llnl-ibis
+trata
+scikit-learn
+tensorflow
+llnl-pydv

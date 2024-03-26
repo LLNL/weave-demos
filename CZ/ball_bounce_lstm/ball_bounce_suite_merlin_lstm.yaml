@@ -1,0 +1,55 @@
+description:
+    name: ball-bounce-lstm
+    description: A workflow that simulates a ball bouncing in a box over several input sets to train an LSTM RNN.
+
+env:
+    variables:
+        SIM_SCRIPT_PATH: ./ball_bounce.py
+        PROCESS_SCRIPT_PATH: ./dsv_to_sina.py
+        OUTPUT_DS_PATH: ./ensembles_output.sqlite
+        LSTM_SCRIPT_PATH: ./visualization_lstm_kosh.py
+
+user:
+    study:
+        run:
+            run_ball_bounce: &run_ball_bounce
+                cmd: |
+                  python $(SPECROOT)/$(SIM_SCRIPT_PATH) --output output.dsv --xpos $(X_POS_INITIAL) --ypos $(Y_POS_INITIAL) --zpos $(Z_POS_INITIAL) --xvel $(X_VEL_INITIAL) --yvel $(Y_VEL_INITIAL) --zvel $(Z_VEL_INITIAL) --gravity $(GRAVITY) --box_side_length $(BOX_SIDE_LENGTH) --group $(GROUP_ID) --run $(RUN_ID)
+                max_retries: 1
+
+study:
+    - name: run-ball-bounce
+      description: Run a family of simulations of a ball in a box.
+      run:
+          <<: *run_ball_bounce
+
+    - name: ingest-ball-bounce
+      description: Ingest the outputs from the previous step
+      run:
+          cmd: |
+            python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(run-ball-bounce.workspace) $(OUTPUT_DS_PATH)
+            # When the safe loads are available change to depends: [run-ball-bounce]
+            # Also update ./dsv_to_sina.py to ./dsv_to_kosh.py
+            # python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(run-ball-bounce.workspace) ../$(OUTPUT_DS_PATH)
+          depends: [run-ball-bounce_*]
+
+    - name: lstm-ball-bounce
+      description: Create the lstm model from the simulation data
+      run:
+          cmd: |
+              jupyter nbconvert --to script $(SPECROOT)/*.ipynb
+              python $(SPECROOT)/$(LSTM_SCRIPT_PATH) $(MERLIN_WORKSPACE)
+              # When the safe loads are available change to depends: [ingest-ball-bounce_*]
+          depends: [ingest-ball-bounce]
+
+merlin:
+    resources:
+        task_server: celery
+        overlap: False
+        workers:
+            ball_bounce_worker:
+                args: -l INFO --concurrency 4 --prefetch-multiplier 2 -O fair
+                steps: [run-ball-bounce]
+            other_worker:
+                args: -l INFO --concurrency 1 --prefetch-multiplier 1 -O fair
+                steps: [ingest-ball-bounce, lstm-ball-bounce]
