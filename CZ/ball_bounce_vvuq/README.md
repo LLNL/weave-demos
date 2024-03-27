@@ -8,7 +8,7 @@ The simulation used here is the same as the ball bounce demo but with added step
 
 1. Run `setup.sh` in the top directory to create a virtual environment with all necessary dependencies and install the jupyter kernel.
 
-2. Run `source cz_tutorials_venv/bin/activate` to enter the virtual environment (you can `deactivate` when you've finished the demo to exit it) and `cd` back into this directory.
+2. Run `source weave_demos_venv/bin/activate` to enter the virtual environment (you can `deactivate` when you've finished the demo to exit it) and `cd` back into this directory.
 
 3. Follow the [Ball Bounce VVUQ](https://lc.llnl.gov/weave/tutorials/CZ/bouncing_ball_vvuq/1_baseline_simulation.html) tutorial. The numbered folders in the Content Overview section below correspond to the WEAVE Workflow Toy Tutorial steps. If you don't have access to the tutorial, follow the steps below.
    1. `sh 01_baseline_simulation/baseline/baseline.sh`

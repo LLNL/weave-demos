@@ -13,3 +13,7 @@ An extension of the Ball Bounce demo that generates ensembles of runs in order t
 ## Ball Bounce LSTM
 
 An extension of the Ball Bounce demo that generates ensembles of runs in order to train a Long Short-Term Memory (LSTM) Recurrent Neural Network (RNN) to predict the transient path of the bouncing ball.
+
+## Encore Optimization
+
+An Encore Workflow that uses SciPy to optimize a single Quantity of Interest with a single parameter or multiple parameters. The workflow has been generalized such that a user can pass in their own simulation.
