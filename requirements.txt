@@ -13,3 +13,8 @@ trata
 scikit-learn
 tensorflow
 llnl-pydv
+scipy
+pyaml
+pandas
+jinja2
+encorewf
