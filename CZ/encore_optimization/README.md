@@ -6,7 +6,7 @@ This is a generic tool using Encore and Scipy to find the minimum of a function/
 
 1. Run `setup.sh` in the top directory to create a virtual environment with all necessary dependencies and install the jupyter kernel.
 
-2. Run `source cz_tutorials_venv/bin/activate` to enter the virtual environment (you can `deactivate` when you've finished the demo to exit it) and `cd` back into this directory.
+2. Run `source weave_demos_venv/bin/activate` to enter the virtual environment (you can `deactivate` when you've finished the demo to exit it) and `cd` back into this directory.
 
 3. Follow the steps in the sections below.
 
