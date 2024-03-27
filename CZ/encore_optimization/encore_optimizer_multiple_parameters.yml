@@ -1,0 +1,31 @@
+description:
+    name: number_guesser
+    description: A simple study that guesses a number.
+
+env:
+    variables:
+      INITIAL_GUESS_AND_BOUNDS_PATH: /g/g20/moreno45/Projects/WEAVE/weave_demos/CZ/encore_optimization/initial_guess_and_bounds_multiple_parameters.yml
+
+study:
+    - name: simulation
+      description: Run simulations
+      run:
+        cmd: |
+            echo $(SPECROOT)
+            echo $(OUTPUT_PATH)
+            python $(SPECROOT)/simulation_multiple_parameters.py $(x) $(y)
+
+    - name: sim_end_res
+      description: Post process simulations and output end result into sim_end_res.csv
+      run:
+        cmd: |
+            cp $(simulation.workspace)/*/sim_end_res.csv .
+        depends: [simulation_*]
+
+    - name: decide
+      description: Check the guess.
+      run:
+        cmd: |
+            python $(SPECROOT)/check.py $(sim_end_res.workspace)/sim_end_res.csv $(OUTPUT_PATH) $(INITIAL_GUESS_AND_BOUNDS_PATH)
+
+        depends: [sim_end_res]
