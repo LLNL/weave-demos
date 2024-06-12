@@ -4,34 +4,33 @@ description:
 
 env:
     variables:
+        CREATE_STORE_SCRIPT: ./create_store.py
         SIM_SCRIPT_PATH: ./ball_bounce.py
-        PROCESS_SCRIPT_PATH: ./dsv_to_sina.py
+        PROCESS_SCRIPT_PATH: ./dsv_to_kosh.py
         OUTPUT_DS_PATH: ./ensembles_output.sqlite
         LSTM_SCRIPT_PATH: ./visualization_lstm_kosh.py
 
-user:
-    study:
-        run:
-            run_ball_bounce: &run_ball_bounce
-                cmd: |
-                  python $(SPECROOT)/$(SIM_SCRIPT_PATH) --output output.dsv --xpos $(X_POS_INITIAL) --ypos $(Y_POS_INITIAL) --zpos $(Z_POS_INITIAL) --xvel $(X_VEL_INITIAL) --yvel $(Y_VEL_INITIAL) --zvel $(Z_VEL_INITIAL) --gravity $(GRAVITY) --box_side_length $(BOX_SIDE_LENGTH) --group $(GROUP_ID) --run $(RUN_ID)
-                max_retries: 1
-
 study:
+    - name: create_initial_store
+      description: Create the initial store so that the parallel `ingest-ball-bounce` steps don't try to create it at the same time
+      run:
+          cmd: |
+            python $(SPECROOT)/$(CREATE_STORE_SCRIPT) $(MERLIN_WORKSPACE)/$(OUTPUT_DS_PATH)
+
     - name: run-ball-bounce
       description: Run a family of simulations of a ball in a box.
       run:
-          <<: *run_ball_bounce
+          cmd: |
+            python $(SPECROOT)/$(SIM_SCRIPT_PATH) --output output.dsv --xpos $(X_POS_INITIAL) --ypos $(Y_POS_INITIAL) --zpos $(Z_POS_INITIAL) --xvel $(X_VEL_INITIAL) --yvel $(Y_VEL_INITIAL) --zvel $(Z_VEL_INITIAL) --gravity $(GRAVITY) --box_side_length $(BOX_SIDE_LENGTH) --group $(GROUP_ID) --run $(RUN_ID)
+          max_retries: 1
+          depends: [create_initial_store]
 
     - name: ingest-ball-bounce
       description: Ingest the outputs from the previous step
       run:
           cmd: |
-            python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(run-ball-bounce.workspace) $(OUTPUT_DS_PATH)
-            # When the safe loads are available change to depends: [run-ball-bounce]
-            # Also update ./dsv_to_sina.py to ./dsv_to_kosh.py
-            # python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(run-ball-bounce.workspace) ../$(OUTPUT_DS_PATH)
-          depends: [run-ball-bounce_*]
+            python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(run-ball-bounce.workspace) $(MERLIN_WORKSPACE)/$(OUTPUT_DS_PATH)
+          depends: [run-ball-bounce]
 
     - name: lstm-ball-bounce
       description: Create the lstm model from the simulation data
@@ -39,8 +38,7 @@ study:
           cmd: |
               jupyter nbconvert --to script $(SPECROOT)/*.ipynb
               python $(SPECROOT)/$(LSTM_SCRIPT_PATH) $(MERLIN_WORKSPACE)
-              # When the safe loads are available change to depends: [ingest-ball-bounce_*]
-          depends: [ingest-ball-bounce]
+          depends: [ingest-ball-bounce_*]
 
 merlin:
     resources:
@@ -48,8 +46,8 @@ merlin:
         overlap: False
         workers:
             ball_bounce_worker:
-                args: -l INFO --concurrency 4 --prefetch-multiplier 2 -O fair
-                steps: [run-ball-bounce]
+                args: -l INFO --concurrency 100 --prefetch-multiplier 2 -O fair
+                steps: [run-ball-bounce, ingest-ball-bounce]
             other_worker:
                 args: -l INFO --concurrency 1 --prefetch-multiplier 1 -O fair
-                steps: [ingest-ball-bounce, lstm-ball-bounce]
+                steps: [create_initial_store, lstm-ball-bounce]
