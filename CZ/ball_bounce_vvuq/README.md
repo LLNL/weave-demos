@@ -32,6 +32,7 @@ The simulation used here is the same as the ball bounce demo but with added step
 - `01_baseline_simulation/`
   - `baseline/`
     - `baseline.sh`: Runs four simulations to find the baseline simulation which will be used in the numerical resolution study and simulation ensemble.
+    - `ball_bounce_experiment.py`: The "experiment" script, containing all the logic for bouncing the ball
     - `visualization_baseline_sina.ipynb`: A Jupyter notebook to visualize the baseline simulation using Sina.
     - `visualization_baseline_kosh.ipynb`: A Jupyter notebook to visualize the baseline simulation using Kosh.
   - `num_res/`
