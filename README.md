@@ -14,7 +14,7 @@ An extension of the Ball Bounce demo that generates ensembles of runs in order t
 
 ### Ball Bounce LSTM
 
-An extension of the Ball Bounce demo that generates ensembles of runs in order to train a Long Short-Term Memory (LSTM) Recurrent Neural Network (RNN) to predict the transient path of the bouncing ball.
+An extension of the Ball Bounce demo that generates ensembles of runs in order to train a Long Short-Term Memory (LSTM) Recurrent Neural Network (RNN) to predict the transient path of the bouncing ball. It uses the Kosh `threadsafe()` methods to safely call the Kosh store in parallel so that the parallel writes to the Kosh store don't block one another.
 
 ### Encore Optimization
 
