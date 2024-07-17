@@ -2,7 +2,10 @@
 .ipynb_checkpoints
 data
 images
-ball_bounce_demo_venv/
+cz_tutorials_venv/
+ball-bounce-lstm_*
 __pycache__/
 output/
 *.sqlite
+*.hdf5
+weave_demos_venv/

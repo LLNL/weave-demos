@@ -1,0 +1,61 @@
+description:
+    name: ball-bounce 
+    description: A workflow that simulates a ball bouncing in a box over several input sets.
+
+env:
+    variables:
+        OUTPUT_PATH: ./03_simulation_ensembles/data
+        SIM_SCRIPT_PATH: ../ball_bounce.py
+        PROCESS_SCRIPT_PATH: ../dsv_to_sina.py
+        OUTPUT_DS_PATH: ../04_manage_data/data/ensembles_output.sqlite
+        POST_PROCESS_SCRIPT_PATH: ../05_post-process_data/visualization_ensembles_sina.py
+        SURROGATE_SCRIPT_PATH: ./visualization_surrogate_model.py
+
+user:
+    study:
+        run:
+            run_ball_bounce: &run_ball_bounce
+                cmd: |
+                  mkdir $(SPECROOT)/../03_simulation_ensembles/data
+                  python $(SPECROOT)/$(SIM_SCRIPT_PATH) --output output.dsv --xpos $(X_POS_INITIAL) --ypos $(Y_POS_INITIAL) --zpos $(Z_POS_INITIAL) --xvel $(X_VEL_INITIAL) --yvel $(Y_VEL_INITIAL) --zvel $(Z_VEL_INITIAL) --gravity $(GRAVITY) --box_side_length $(BOX_SIDE_LENGTH) --group $(GROUP_ID) --run $(RUN_ID)
+                max_retries: 1
+
+study:
+    - name: run-ball-bounce
+      description: Run a family of simulations of a ball in a box. 
+      run:
+          <<: *run_ball_bounce
+
+    - name: ingest-ball-bounce
+      description: Ingest the outputs from the previous step
+      run:
+          cmd: |
+            mkdir $(SPECROOT)/../04_manage_data/data
+            python $(SPECROOT)/$(PROCESS_SCRIPT_PATH) $(run-ball-bounce.workspace) $(SPECROOT)/$(OUTPUT_DS_PATH)
+          depends: [run-ball-bounce_*]
+
+    - name: post_process-ball-bounce
+      description: Post process the simulation data
+      run:
+          cmd: |
+            python $(SPECROOT)/$(POST_PROCESS_SCRIPT_PATH) $(SPECROOT)
+          depends: [ingest-ball-bounce]
+
+    - name: create-surrogate-ball-bounce
+      description: Create the surrogate model from the simulation data
+      run:
+          cmd: |
+              python $(SPECROOT)/$(SURROGATE_SCRIPT_PATH) $(SPECROOT)
+          depends: [post_process-ball-bounce]
+
+merlin:
+    resources:
+        task_server: celery
+        overlap: False
+        workers:
+            ball_bounce_worker:
+                args: -l INFO --concurrency 4 --prefetch-multiplier 2 -O fair
+                steps: [run-ball-bounce]
+            other_worker:
+                args: -l INFO --concurrency 1 --prefetch-multiplier 1 -O fair
+                steps: [ingest-ball-bounce, post_process-ball-bounce, create-surrogate-ball-bounce]
