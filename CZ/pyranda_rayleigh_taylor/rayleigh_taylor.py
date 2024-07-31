@@ -100,6 +100,23 @@ def run_sim(args):
 
     ss.addUserDefinedFunction("xbar", meanXto3d)
 
+    def getPressure(pysim,p0):
+        dx       = pysim.dx
+        rho1d    = pysim.var('rho')[:,0,0]    
+        pressure = pysim.emptyScalar()
+        meshx    = pysim.mesh.coords[0].data
+        pbot     = p0 - numpy.trapz(rho1d*gx)*dx
+        
+        for i in range(meshx.shape[0]):
+            i_local = int(pysim.mesh.indices[0].data[i,0,0])
+            p_i     = pbot + numpy.trapz( rho1d[:i_local] * gx )*dx
+            pressure[i,:,:] = p_i
+    
+        return pressure
+
+    ss.addUserDefinedFunction("getPressure",getPressure)
+
+    
     # Define the equations of motion
     eom = """
     # Primary Equations of motion here
@@ -220,6 +237,10 @@ def run_sim(args):
     :u: = wgt * gbar( (random3D()-0.5)*u0 )
 
     :rho:       = rho_h * :Yh: + rho_l * :Yl:
+
+    # Solve hydro-static pressure
+    :p: = getPressure(p0)
+
     :cv:        = :Yh:*CVh + :Yl:*CVl
     :cp:        = :Yh:*CPh + :Yl:*CPl
     :gamma:     = :cp:/:cv:
@@ -239,6 +260,7 @@ def run_sim(args):
     """
 
     # Velocity free/shape only interface perturbatiosn
+    # NOTE: hydrostatic condition is function of y now, so need to tweak this variant
     ic_shape = """
     :gamma:= 5./3.
     p0     = 1.0
