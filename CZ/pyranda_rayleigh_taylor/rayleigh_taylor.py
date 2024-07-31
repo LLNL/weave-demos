@@ -56,18 +56,26 @@ def run_sim(args):
         )
         waveLength = 4
 
-    rho_l = 1.0  # Density of light fluid
-    rho_h = 3.0  # Density of heavy fluid
-    mwH = 3.0  # Mixing width heavy/light parameters?
-    mwL = 1.0
+    # Read in fluid properties
+    if numpy.abs(args.atwood_number - 1.0) < 1.e-6:
+        raise ValueError("Atwood number cannot be exactly 1: max is 1.0 - 1.e-6")
+
+    rho_l = args.light_density
+    rho_h = rho_l*(args.atwood_number + 1.0)/(1.0 - args.atwood_number) # NOTE: singularity here: safer to set via rho_h + atwood?  Would fluid over vacuum scenario even be handeld by the miranda model below?
+    print(f"{args.atwood_number=}")
+    print(f"{rho_l=}, {rho_h=}")
+    # rho_l = 1.0  # Density of light fluid
+    # rho_h = 3.0  # Density of heavy fluid
+    mwH = rho_h # 3.0  # Molar masses of heavy/light fluids?
+    mwL = rho_l # 1.0  # NOTE: should these really be the same as density? -> likely only for split exactly in half
     gx = (
         -0.01
     )  # NOTE: is this gravity?  if so lets switch to y to cutout using vist transforms to rotate
-    Runiv = 1.0  #
-    CPh = 1.4
-    CVh = 1.0
-    CPl = 1.4
-    CVl = 1.0
+    Runiv = 1.0  # Universal gas constant from ideal gas law: pV=nRT
+    CPh = 1.4    # Constant pressure specific heat of heavy gas
+    CVh = 1.0    # Constant volume specific heat of heavy gas
+    CPl = 1.4    # Constant pressure specific heat of light gas
+    CVl = 1.0    # Constant volume specific heat of light gas
 
     parm_dict = {
         "gx": gx,
@@ -396,7 +404,8 @@ def setup_argparse():
         "--atwood-number",
         type=float,
         default=0.5,
-        help="Atwood number to use for the simulation (density ratio).  Valid range is [0, 1]",
+        help="Atwood number to use for the simulation (density ratio).  Valid range is [0, 1). "
+        "Note: At=1 sets up a fluid on top of vacuum, which is not yet supported.",
     )
 
     parser.add_argument(
