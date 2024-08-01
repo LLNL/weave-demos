@@ -9,7 +9,8 @@ The first set of models demonstrate the phenomena and explore the effects of dif
 density ratios.  There are a variety of regimes that can be probed, but we'll focus on the configuration of multimode initial interface perturbations with miscible fluids.  In this
 setup, the mixing width grows with a form of ~ alpha*A*g*t, where A = atwood number, g = accleration (often gravity), t = time, and alpha is a ~constant factor.  There are some caveats,
 such as low wavenumber content in the initial condition (or large wavelength) tends to dominate and grow faster.  Thus this scaling law breaks down a bit in the presence of a lot of
-low wavenumber content.  The intial study will show some of these effects
+low wavenumber content.  The intial study will show some of these effects with a caveat that doing this in 2D can't quite give the right answer owing to the significant 3D effects in
+such problems.
 
 ### Use Maestro To Run Experiments with pyranda
 
