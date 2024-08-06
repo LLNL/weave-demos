@@ -389,7 +389,7 @@ def run_sim(args):
         stop_func = lambda time: time < tstop
         stop_arg = time
     elif args.stop_width_fraction:
-        stop_func = lambda mixw: 1.5*mixw[-1] < xwidth*args.stop_width_fraction
+        stop_func = lambda mixw: mixw[-1] < xwidth*args.stop_width_fraction
         stop_arg = mixW
 
     iter_cnt = 0
