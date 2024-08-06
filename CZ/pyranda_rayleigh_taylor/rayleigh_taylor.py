@@ -307,7 +307,9 @@ def run_sim(args):
     :dt: = dt.courant(:u:,:v:,:w:,:cs:)
     """
     # Set the initial conditions
-    numpy.random.seed(random_ic_seed)  # 1234 was previous default
+    # Ensure each rank has different ic to avoid periodic ics repeating across the ranks
+    numpy.random.seed(random_ic_seed + ss.PyMPI.comm.rank )
+    # numpy.random.seed(random_ic_seed)  # 1234 was previous default
 
     # INSERT SWITCHYARD FOR ALTERNATE IC'S WHEN THEY'RE WORKING
     ss.setIC(textwrap.dedent(ic_vel), parm_dict)
