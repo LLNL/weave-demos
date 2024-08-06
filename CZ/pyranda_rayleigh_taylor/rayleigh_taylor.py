@@ -308,7 +308,22 @@ def run_sim(args):
     """
     # Set the initial conditions
     # Ensure each rank has different ic to avoid periodic ics repeating across the ranks
-    numpy.random.seed(random_ic_seed + ss.PyMPI.comm.rank )
+    # ss.PyMPI.comm.rank
+    if not ss.PyMPI.master:
+        rank = ss.PyMPI.comm.rank
+        # rank = 1
+        # rank = 1
+    else:
+        rank = 0
+
+    if not random_ic_seed:
+        rng = numpy.random.default_rng()
+        random_ic_seed = rng.integers(1000000, size=1)[0]  # Get new base seed integer
+        
+    print(f"Using {random_ic_seed=} as the base for seeding random number generator.  Rank is added to this in parallel.")
+    
+    # print(f"seed {random_ic_seed}, seed + rank: {random_ic_seed + rank}")
+    numpy.random.seed(random_ic_seed + rank)
     # numpy.random.seed(random_ic_seed)  # 1234 was previous default
 
     # INSERT SWITCHYARD FOR ALTERNATE IC'S WHEN THEY'RE WORKING
