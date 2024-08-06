@@ -8,6 +8,13 @@ from matplotlib import cm
 from pyranda import pyrandaSim, pyrandaBC, pyrandaTimestep
 
 
+# Setup some defaults
+DEFAULTS = {
+    "tstop": 100.0,
+    "stop-width-fraction": 0.5,
+    "max_iter": 10000
+}
+
 def run_sim(args):
     Npts = args.num_points
     dim = args.dim
@@ -26,12 +33,18 @@ def run_sim(args):
 
     headless = args.headless
 
+    print(args)
+    if not args.tstop:
+        print("tstop not specified")
+    if not args.stop_width_fraction:
+        print("stop-width-fraction not specified")
     ## Define a mesh
     if is2D:
+        xwidth = 2.8*numpy.pi
         problem = "RAYLEIGH_TAYLOR_2D"
         imesh = (
             """
-        xdom = (0.0, 2.8*pi , int(Npts*1.4), periodic=False)
+        xdom = (0.0, xwidth , int(Npts*1.4), periodic=False)
         ydom = (0.0, 2*pi*FF,  Npts, periodic=True)
         zdom = (0.0, 2*pi*FF,  1, periodic=True)
         """.replace(
@@ -39,9 +52,11 @@ def run_sim(args):
             )
             .replace("pi", str(numpy.pi))
             .replace("FF", str(float(Npts - 1) / Npts))
+            .replace("xwidth", str(xwidth))
         )
         waveLength = 4
     else:
+        xwidth = 3.0*numpy.pi
         problem = "RAYLEIGH_TAYLOR_3D"
         imesh = (
             """
@@ -53,6 +68,7 @@ def run_sim(args):
             )
             .replace("pi", str(numpy.pi))
             .replace("FF", str(float(Npts - 1) / Npts))
+            .replace("xwidth", str(xwidth))
         )
         waveLength = 4
 
@@ -218,7 +234,10 @@ def run_sim(args):
     :rhov: = :rho:*:v:
     :rhow: = :rho:*:w:
     :mix:  = 4.0*:Yh:*:Yl:
+    :YhYh: = :Yh:*:Yh:
     """
+
+    #     :yybar: = 6.0*:Yh:*(1.0-:Yh:)
 
     # Add the EOM to the solver
     ss.EOM(textwrap.dedent(eom), parm_dict)
@@ -346,11 +365,36 @@ def run_sim(args):
     outVars = ["p", "u", "v", "w", "rho", "Yh"]
     ss.write(outVars)
 
-    mixW = []
-    timeW = []
+    def compute_mix_params(ss):
+        """Helper to compute values of mix width and variance at single time state"""
+        Yh = ss.var("Yh").mean(axis=[1, 2])
+        x  = ss.var("meshx")[:, 0, 0]
+        mixW = numpy.trapz( 6.*Yh*(1.0-Yh) , x )
 
-    while time < tstop:
+        # Compute variance across y dir
+        YhYh = ss.var("YhYh").mean(axis=[1, 2])
+        varY = numpy.trapz( YhYh - Yh*Yh, x )
 
+        return (mixW, varY)
+            
+    # Initialize time 0 data
+    mwtmp, varytmp = compute_mix_params(ss)
+    mixW = [mwtmp]
+
+    varY = [varytmp]
+    timeW = [0.0]
+
+    # Setup stop criteria
+    if args.tstop:
+        stop_func = lambda time: time < tstop
+        stop_arg = time
+    elif args.stop_width_fraction:
+        stop_func = lambda mixw: 1.5*mixw[-1] < xwidth*args.stop_width_fraction
+        stop_arg = mixW
+
+    iter_cnt = 0
+    max_iter = DEFAULTS['max_iter']
+    while stop_func(stop_arg): #time < tstop:
         # Update the EOM and get next dt
         time = ss.rk4(time, dt)
         dt = ss.variables["dt"].data * CFL
@@ -360,13 +404,11 @@ def run_sim(args):
         umax = ss.var("u").mean()
         ss.iprint("%s -- %s --- Umax: %s " % (ss.cycle, time, umax))
 
-        if ss.cycle % viz_freq == 0:
-            mixW.append(
-                numpy.trapz(ss.var("mix").mean(axis=[1, 2]), ss.var("meshx")[:, 0, 0])
-            )
-            timeW.append(time)
+        mwtmp, varytmp = compute_mix_params(ss)
+        mixW.append(mwtmp)
 
-
+        varY.append(varytmp)
+        timeW.append(time)
 
         if ss.cycle % dmp_freq == 0:
             ss.write(outVars)
@@ -383,15 +425,29 @@ def run_sim(args):
                 ss.plot.clf()
                 ss.plot.plot("mix", label="Mixing width")
 
-            if ss.PyMPI.master:
+            if ss.PyMPI.master and ss.cycle % viz_freq == 0:
                 # NOTE: built in plot function expects a mesh plot.  vars vs time need
                 # to fall back to raw matplotlib, and limiting it only to master mpi rank
                 # NOTE: add the RT alpha growth rate ~solution for comparison?
                 plt.figure(3)
-                plt.plot(timeW, mixW)
+                plt.plot(timeW, mixW, label='mixW')
+                # plt.plot(timeW, mixWnew, label='mixWnew')
                 plt.xlabel('time')
                 plt.ylabel('mixing width')
+
+                plt.figure(4)
+                plt.plot(timeW, varY, label='variance')
+                # plt.plot(timeW, mixWnew, label='mixWnew')
+                plt.xlabel('time')
+                plt.ylabel('variance')
                 plt.pause(0.01)
+
+        # Add tmp protection against infinite loops
+        iter_cnt += 1
+        if iter_cnt > max_iter:
+            print(f"REACHED MAX ITERATION COUNT OF {max_iter}: EXITING")
+            break
+
 
     # Save the mixing width curve data
     fname = problem + ".dat"
@@ -399,6 +455,8 @@ def run_sim(args):
     numpy.savetxt(fname, (timeW, mixW), header=header)
     print(f"Saved mixing width vs time curve to '{fname}'")  # Add more formal logger output?
 
+    if not headless:
+        plt.pause(5)
 
 def setup_argparse():
     parser = argparse.ArgumentParser(
@@ -466,11 +524,24 @@ def setup_argparse():
         help="Seed to use in random number generator"
     )
 
-    parser.add_argument(
+    stop_group = parser.add_argument_group(
+        title="Stop criteria",
+        description="Choose one of the simulation stopping conditions (Default=tstop)"
+    )
+    sg_exclusive = stop_group.add_mutually_exclusive_group()
+    sg_exclusive.add_argument(
         '-t',
         '--tstop',
-        default=100.0,
-        help="Simulation time to run to in units of"
+        default=None,
+        type=float,
+        help=f"Simulation time to run to in units of... Default: {DEFAULTS['tstop']}"
+    )
+    sg_exclusive.add_argument(
+        '--stop-width-fraction',
+        default=None,
+        type=float,
+        help="Specify stopping critiera to be when mean mixing width reaches this "
+        f"fraction of the x-domain width.  Range (0, 1]. Default: {DEFAULTS['stop-width-fraction']}."
     )
     # add flag for dtmax fraction?
     
