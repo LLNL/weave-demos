@@ -40,11 +40,12 @@ def run_sim(args):
         print("stop-width-fraction not specified")
     ## Define a mesh
     if is2D:
-        xwidth = 2.8*numpy.pi
+        widthToHeight = 4.0
+        xwidth = widthToHeight*numpy.pi
         problem = "RAYLEIGH_TAYLOR_2D"
         imesh = (
             """
-        xdom = (0.0, xwidth , int(Npts*1.4), periodic=False)
+        xdom = (-xwidth/2.0, xwidth/2.0 , int(Npts*widthToHeight), periodic=False)
         ydom = (0.0, 2*pi*FF,  Npts, periodic=True)
         zdom = (0.0, 2*pi*FF,  1, periodic=True)
         """.replace(
@@ -53,14 +54,16 @@ def run_sim(args):
             .replace("pi", str(numpy.pi))
             .replace("FF", str(float(Npts - 1) / Npts))
             .replace("xwidth", str(xwidth))
+            .replace("widthToHeight",str(widthToHeight))
         )
         waveLength = 4
     else:
-        xwidth = 3.0*numpy.pi
+        widthToHeight = 3.0
+        xwidth = widthToHeight*numpy.pi
         problem = "RAYLEIGH_TAYLOR_3D"
         imesh = (
             """
-        xdom = (0.0, 3.0*pi , int(Npts*1.5), periodic=False)
+        xdom = (-xwidth/2.0, xwidth/2.0, int(Npts*widthToHeigth), periodic=False)
         ydom = (0.0, 2*pi*FF,  Npts, periodic=True)
         zdom = (0.0, 2*pi*FF,  Npts, periodic=True)
         """.replace(
@@ -93,6 +96,12 @@ def run_sim(args):
     CPl = 1.4    # Constant pressure specific heat of light gas
     CVl = 1.0    # Constant volume specific heat of light gas
 
+    # Initial conditions
+    ranVelMag = args.random_velocity_magnitude
+    velMag    = args.velocity_magnitude
+    velMod    = args.velocity_modes
+    velThick  = args.velocity_thickness
+    
     parm_dict = {
         "gx": gx,
         "CPh": CPh,
@@ -105,7 +114,10 @@ def run_sim(args):
         "waveLength": waveLength,
         "rho_l": rho_l,
         "rho_h": rho_h,
-        "delta": 2.0 * numpy.pi / Npts * 4,
+        "delta": 2.0 * numpy.pi / Npts * velThick,
+        "ranVelMag": ranVelMag,
+        "velMag": velMag,
+        "velMod": velMod,
     }
 
     # Initialize a simulation object on a mesh
@@ -221,13 +233,6 @@ def run_sim(args):
     bc.const(['Yl'],['xn'],0.0)
     bc.extrap(['rho','Et'],['x1','xn'])
     bc.const(['u','v','w'],['x1','xn'],0.0)
-    # Sponge BCs
-    :leftBC:  = 1.0 - 0.5 * (1.0 + tanh( (meshx-1.0) / .1 ) )
-    :rightBC: = 0.5 * (1.0 + tanh( (meshx-8.0) / .1 ) )
-    :BC: = numpy.maximum(:leftBC:,:rightBC:)
-    :u: = gbar(:u:)*:BC: + :u:*(1.0 - :BC:)
-    :rho: = gbar(:rho:)*:BC: + :rho:*(1.0 - :BC:)
-    :Et: = gbar(:Et:)*:BC: + :Et:*(1.0 - :BC:)
     :rhoYh: = :rho:*:Yh:
     :rhoYl: = :rho:*:Yl:
     :rhou: = :rho:*:u:
@@ -236,8 +241,6 @@ def run_sim(args):
     :mix:  = 4.0*:Yh:*:Yl:
     :YhYh: = :Yh:*:Yh:
     """
-
-    #     :yybar: = 6.0*:Yh:*(1.0-:Yh:)
 
     # Add the EOM to the solver
     ss.EOM(textwrap.dedent(eom), parm_dict)
@@ -248,11 +251,11 @@ def run_sim(args):
     p0     = 1.0
     At     = ( (rho_h - rho_l)/(rho_h + rho_l) )
     # NOTE: WHY THIS PARTICULAR FRACTION OF THE RT GROWTH RATE?
-    u0     = sqrt( abs(gx*At/waveLength) ) * .1
+
 
     # Add interface
     # NOTE: diffuse interface?
-    :Yl: = .5 * (1.0-tanh( sqrt(pi)*( meshx - 1.4*pi ) / delta ))
+    :Yl: = .5 * (1.0-tanh( sqrt(pi)*( meshx ) / delta ))
     :Yh: = 1.0 - :Yl:
     :p:  += p0 
 
@@ -260,8 +263,15 @@ def run_sim(args):
     wgt = 4*:Yh:*:Yl:
     :v: *= 0.0
     :w: *= 0.0
-    # NOTE: what is gbar?
+
+    # gbar is 2D gaussian filter (smoothes stuff out)
+    # Add random velocity (filtered white noise)
+    u0  = sqrt( abs(gx*At/waveLength) ) * ranVelMag
     :u: = wgt * gbar( (random3D()-0.5)*u0 )
+
+    # Add regular modes
+    u1  = sqrt( abs(gx*At/waveLength) ) * velMag
+    :u: = :u: + wgt * u1 * - cos( meshy * velMod )
 
     :rho:       = rho_h * :Yh: + rho_l * :Yl:
 
@@ -356,8 +366,8 @@ def run_sim(args):
     dt = ss.variables["dt"].data * CFL
 
     # Viz/IO
-    viz_freq = 20
-    dmp_freq = 200
+    viz_freq = args.viz_freq_cycle
+    dmp_freq = args.dump_freq_cycle
 
     tstop = 100.0
     dtmax = dt * 0.1
@@ -515,6 +525,35 @@ def setup_argparse():
         default="random-velocity",
         help="Initial condition to run.",
     )
+
+    parser.add_argument(
+        "--random-velocity-magnitude",
+        type=float,
+        default=0.01,
+        help="Multiplier on random velocity field added in by Pyranda",
+    )
+
+    parser.add_argument(
+        "--velocity-magnitude",
+        type=float,
+        default=0.0,
+        help="Multiplier on structured velocity field added in by Pyranda",
+    )
+
+    parser.add_argument(
+        "--velocity-modes",
+        type=float,
+        default=1,
+        help="Number of modes on structured velocity field added in by Pyranda",
+    )
+
+    parser.add_argument(
+        "--velocity-thickness",
+        type=float,
+        default=4,
+        help="Number of zones thick for initial interface and velocity field added in by Pyranda",
+    )
+
 
     parser.add_argument(
         '-s',
