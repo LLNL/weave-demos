@@ -5,12 +5,15 @@ description:
 env:
     variables:
         OUTPUT_PATH: ./RT_STUDIES
-        DIM: "2D"               # Dimensionality of the model: 2D or 3D
-        VIZ_FREQ_CYCLE: 20      # Scalar data output interval [cycles]
-        DUMP_FREQ_CYCLE: 200    # Mesh data output interval [cycles]
-        
+        DIM: "2D"                # Dimensionality of the model: 2D or 3D
+        VIZ_FREQ_CYCLE: 200      # Scalar data output interval [cycles]
+        DUMP_FREQ_CYCLE: 1000    # Mesh data output interval [cycles]
+        STOP_WIDTH: 0.75         # Stop when mixing layer reaches this fraction of domain 
+        NPTS: 64
+        RANVEL: 1.0
         VENV_TARGET: $(OUTPUT_PATH)/PYRANDA_ENV
-        PYTHON: $(OUTPUT_PATH)/PYRANDA_ENV/bin/python # NOTE: apparently can't use other env vars here :/
+        #PYTHON: $(OUTPUT_PATH)/PYRANDA_ENV/bin/python # NOTE: apparently can't use other env vars here :/
+        PYTHON: /usr/workspace/pyranda/bin/pyranda3.9
     # labels:
     #     PYTHON: $(VENV_TARGET)/bin/python
     # NOTE: add better error message to empty 'labels' mapping in maestro
@@ -36,30 +39,30 @@ batch:
 
 
 study:
-    - name: make-env-lc
-      description: Build the MPI enabled version of LULESH.
-      run:
-          cmd: |
-            module load python/3.10
+    # - name: make-env-lc
+    #   description: Build the MPI enabled version of LULESH.
+    #   run:
+    #       cmd: |
+    #         module load python/3.10
 
-            python3 -m virtualenv $(VENV_TARGET)
-            source $(VENV_TARGET)/bin/activate
+    #         python3 -m virtualenv $(VENV_TARGET)
+    #         source $(VENV_TARGET)/bin/activate
 
-            pip install mpi4py --no-cache-dir
+    #         pip install mpi4py --no-cache-dir
 
-            pip install -r $(PYRANDA)/requirements.txt
+    #         pip install -r $(PYRANDA)/requirements.txt
 
-            pip install $(PYRANDA)
+    #         pip install $(PYRANDA)
 
-            # Test by running the advection example
-            cp $(PYRANDA)/examples/advection.py .
-            $(LAUNCHER) $(PYTHON) advection.py 100 1 # 100 pts, set test to true to skip latex doc generation
+    #         # Test by running the advection example
+    #         cp $(PYRANDA)/examples/advection.py .
+    #         $(LAUNCHER) $(PYTHON) advection.py 100 1 # 100 pts, set test to true to skip latex doc generation
 
-            #   add a test if the .dat exists?
+    #         #   add a test if the .dat exists?
 
-          procs: 1
-          walltime: "00:20:00"
-          depends: []
+    #       procs: 1
+    #       walltime: "00:20:00"
+    #       depends: []
 
     - name: run-pyranda
       description: Run pyranda
@@ -68,12 +71,14 @@ study:
             $(LAUNCHER) $(PYTHON) $(RAYLEIGH_TAYLOR_MODEL) --dim $(DIM) \
                                                            --atwood-number $(ATWOOD) \
                                                            --num-points $(NPTS) \
-                                                           --seed $(SEED) \
-                                                           --tstop $(TSTOP) \
+                                                           --velocity-magnitude $(VELOCITY_MAGNITUDE) \
+                                                           --stop-width-fraction $(STOP_WIDTH) \
                                                            --headless \
+                                                           --seed $(SEED) \
+                                                           --random-velocity-magnitude $(RANVEL) \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
                                                            --dump-freq-cycle $(DUMP_FREQ_CYCLE)
-          depends: [make-env-lc]
+          #depends: [make-env-lc]
           procs: 1
           walltime: "00:10:00"
 
@@ -102,18 +107,15 @@ study:
       
 
 global.parameters:
-    NPTS:
-        values: [64, 64, 64, 64, 64, 64, 64]
-        label: NPTS.%%
-
-    TSTOP:
-        values: ["100.0", "100.0", "100.0", "100.0", "100.0", "100.0", "100.0"] # NOTE: strings prevent conversion to floats, minimizing step names and workspace path tokens
-        label: TSTOP.%%
         
-    SEED:                       # Seed for random number generator that sets intial conditions
-        values: [1234, 1234, 1234, 1234, 1234, 1234, 1234]
+    VELOCITY_MAGNITUDE: 
+        values: ["0.85","0.90","0.95","1.0","1.05","1.10","1.15"]
+        label: VEL.%%
+
+    SEED: 
+        values: [1,2,3,4,5,6,7]
         label: SEED.%%
 
     ATWOOD:
-        values: ["0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"]
+        values: ["0.3", "0.35", "0.45", "0.5", "0.55", "0.60", "0.65"]
         label: ATWOOD.%%

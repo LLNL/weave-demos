@@ -33,11 +33,6 @@ def run_sim(args):
 
     headless = args.headless
 
-    print(args)
-    if not args.tstop:
-        print("tstop not specified")
-    if not args.stop_width_fraction:
-        print("stop-width-fraction not specified")
     ## Define a mesh
     if is2D:
         widthToHeight = 4.0
@@ -81,8 +76,8 @@ def run_sim(args):
 
     rho_l = args.light_density
     rho_h = rho_l*(args.atwood_number + 1.0)/(1.0 - args.atwood_number) # NOTE: singularity here: safer to set via rho_h + atwood?  Would fluid over vacuum scenario even be handeld by the miranda model below?
-    print(f"{args.atwood_number=}")
-    print(f"{rho_l=}, {rho_h=}")
+    #print(f"{args.atwood_number=}")
+    #print(f"{rho_l=}, {rho_h=}")
     # rho_l = 1.0  # Density of light fluid
     # rho_h = 3.0  # Density of heavy fluid
     mwH = rho_h # 3.0  # Molar masses of heavy/light fluids?
@@ -124,6 +119,13 @@ def run_sim(args):
     ss = pyrandaSim(problem, textwrap.dedent(imesh))
     ss.addPackage(pyrandaTimestep(ss))
     ss.addPackage(pyrandaBC(ss))
+
+
+    ss.iprint(args)
+    if not args.tstop:
+        ss.iprint("tstop not specified")
+    if not args.stop_width_fraction:
+        ss.iprint("stop-width-fraction not specified")
 
     # User defined function to take mean of data and return it as 3d field, dataBar
     def meanXto3d(pysim, data):
@@ -369,7 +371,10 @@ def run_sim(args):
     viz_freq = args.viz_freq_cycle
     dmp_freq = args.dump_freq_cycle
 
-    tstop = 100.0
+    # Statistics
+    stats_freq = 20
+
+    tstop = args.tstop
     dtmax = dt * 0.1
 
     outVars = ["p", "u", "v", "w", "rho", "Yh"]
@@ -385,7 +390,9 @@ def run_sim(args):
         YhYh = ss.var("YhYh").mean(axis=[1, 2])
         varY = numpy.trapz( YhYh - Yh*Yh, x )
 
-        return (mixW, varY)
+        mixedness = 1.0 - 6.0*varY/mixW
+
+        return (mixW, mixedness)
             
     # Initialize time 0 data
     mwtmp, varytmp = compute_mix_params(ss)
@@ -411,14 +418,20 @@ def run_sim(args):
         dt = min(dt, dtmax * 1.1)
         dtmax = dt * 1.0
 
+        # Setup stop criteria
+        if args.tstop:
+            stop_arg = time
+        elif args.stop_width_fraction:
+            stop_arg = mixW
+
         umax = ss.var("u").mean()
         ss.iprint("%s -- %s --- Umax: %s " % (ss.cycle, time, umax))
 
-        mwtmp, varytmp = compute_mix_params(ss)
-        mixW.append(mwtmp)
-
-        varY.append(varytmp)
-        timeW.append(time)
+        if ss.cycle % stats_freq == 0:
+            mwtmp, varytmp = compute_mix_params(ss)
+            mixW.append(mwtmp)
+            varY.append(varytmp)
+            timeW.append(time)
 
         if ss.cycle % dmp_freq == 0:
             ss.write(outVars)
@@ -440,12 +453,14 @@ def run_sim(args):
                 # to fall back to raw matplotlib, and limiting it only to master mpi rank
                 # NOTE: add the RT alpha growth rate ~solution for comparison?
                 plt.figure(3)
+                plt.clf()
                 plt.plot(timeW, mixW, label='mixW')
                 # plt.plot(timeW, mixWnew, label='mixWnew')
                 plt.xlabel('time')
                 plt.ylabel('mixing width')
 
                 plt.figure(4)
+                plt.clf()
                 plt.plot(timeW, varY, label='variance')
                 # plt.plot(timeW, mixWnew, label='mixWnew')
                 plt.xlabel('time')
@@ -461,8 +476,8 @@ def run_sim(args):
 
     # Save the mixing width curve data
     fname = problem + ".dat"
-    header = f"# 'time' 'mixing width'"
-    numpy.savetxt(fname, (timeW, mixW), header=header)
+    header = f"# 'time' 'mixing width' 'mixedness'"
+    numpy.savetxt(fname, (timeW, mixW, varY), header=header)
     print(f"Saved mixing width vs time curve to '{fname}'")  # Add more formal logger output?
 
     if not headless:
@@ -529,14 +544,14 @@ def setup_argparse():
     parser.add_argument(
         "--random-velocity-magnitude",
         type=float,
-        default=0.01,
+        default=0.0,
         help="Multiplier on random velocity field added in by Pyranda",
     )
 
     parser.add_argument(
         "--velocity-magnitude",
         type=float,
-        default=0.0,
+        default=1.0,
         help="Multiplier on structured velocity field added in by Pyranda",
     )
 
@@ -588,14 +603,14 @@ def setup_argparse():
     parser.add_argument(
         '--viz-freq-cycle',
         type=int,
-        default=20,
+        default=200,
         help="Cycle intervals at which to dump scalar curve data."
     )
 
     parser.add_argument(
         '--dump-freq-cycle',
         type=int,
-        default=200,
+        default=1000,
         help="Cycle intervals at which to dump mesh structured viz data (visit)."
     )
 
