@@ -10,7 +10,7 @@ env:
         DUMP_FREQ_CYCLE: 1000    # Mesh data output interval [cycles]
         STOP_WIDTH: 0.75         # Stop when mixing layer reaches this fraction of domain 
         NPTS: 64
-        RANVEL: 1.0
+        RANVEL: 0.0
         VENV_TARGET: $(OUTPUT_PATH)/PYRANDA_ENV
         #PYTHON: $(OUTPUT_PATH)/PYRANDA_ENV/bin/python # NOTE: apparently can't use other env vars here :/
         PYTHON: /usr/workspace/pyranda/bin/pyranda3.9
@@ -74,7 +74,6 @@ study:
                                                            --velocity-magnitude $(VELOCITY_MAGNITUDE) \
                                                            --stop-width-fraction $(STOP_WIDTH) \
                                                            --headless \
-                                                           --seed $(SEED) \
                                                            --random-velocity-magnitude $(RANVEL) \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
                                                            --dump-freq-cycle $(DUMP_FREQ_CYCLE)
@@ -112,9 +111,9 @@ global.parameters:
         values: ["0.85","0.90","0.95","1.0","1.05","1.10","1.15"]
         label: VEL.%%
 
-    SEED: 
-        values: [1,2,3,4,5,6,7]
-        label: SEED.%%
+    # SEED: 
+    #     values: [1,2,3,4,5,6,7]
+    #     label: SEED.%%
 
     ATWOOD:
         values: ["0.3", "0.35", "0.45", "0.5", "0.55", "0.60", "0.65"]

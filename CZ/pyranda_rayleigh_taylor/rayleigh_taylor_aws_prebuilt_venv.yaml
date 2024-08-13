@@ -6,8 +6,12 @@ env:
     variables:
         OUTPUT_PATH: ./RT_STUDIES
         DIM: "2D"               # Dimensionality of the model: 2D or 3D
-        VIZ_FREQ_CYCLE: 20      # Scalar data output interval [cycles]
-        DUMP_FREQ_CYCLE: 200    # Mesh data output interval [cycles]
+        VIZ_FREQ_CYCLE: 200     # Scalar data output interval [cycles]
+        DUMP_FREQ_CYCLE: 1000   # Mesh data output interval [cycles]
+        STOP_WIDTH: 0.75        # Stop when mixing layer reaches this fraction of domain
+        NPTS: 128               # Controls the resolution of the simulation
+        RANVEL: 1.0             # Random velocity
+
         
     dependencies:
       paths:
@@ -31,13 +35,15 @@ study:
             $(LAUNCHER) $(PYTHON) $(RAYLEIGH_TAYLOR_MODEL) --dim $(DIM) \
                                                            --atwood-number $(ATWOOD) \
                                                            --num-points $(NPTS) \
-                                                           --seed $(SEED) \
-                                                           --tstop $(TSTOP) \
+                                                           --velocity-magnitude $(VELOCITY_MAGNITUDE) \
+                                                           --stop-width-fraction $(STOP_WIDTH) \
                                                            --headless \
+                                                           --seed $(SEED) \
+                                                           --random-velocity-magnitude $(RANVEL) \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
                                                            --dump-freq-cycle $(DUMP_FREQ_CYCLE)
           procs: 1
-          walltime: "00:10:00"
+          walltime: "00:25:00"
 
     - name: post-process-simulation
       description: Post process individual simulation outputs
@@ -64,16 +70,12 @@ study:
       
 
 global.parameters:
-    NPTS:
-        values: [64, 64, 64, 64, 64, 64, 64]
-        label: NPTS.%%
-
-    TSTOP:
-        values: ["100.0", "100.0", "100.0", "100.0", "100.0", "100.0", "100.0"] # NOTE: strings prevent conversion to floats, minimizing step names and workspace path tokens
-        label: TSTOP.%%
+    VELOCITY_MAGNITUDE: 
+        values: ["0.85","0.90","0.95","1.0","1.05","1.10","1.15"]
+        label: VEL.%%
         
     SEED:                       # Seed for random number generator that sets intial conditions
-        values: [1234, 1234, 1234, 1234, 1234, 1234, 1234]
+        values: [1, 2, 3, 4, 5, 6, 7]
         label: SEED.%%
 
     ATWOOD:

@@ -10,8 +10,8 @@ from sklearn.gaussian_process import GaussianProcessRegressor as GPR
 rng = np.random.default_rng()
 
 # This is single mode cases (too easy for GP's)
-#dataDir = "RT_STUDIES/rayleigh_taylor_pyranda_20240810-173315/run-pyranda/*"
-dataDir = "RT_STUDIES/rayleigh_taylor_pyranda_20240811-215859/run-pyranda/*"
+# dataDir = "RT_STUDIES/rayleigh_taylor_pyranda_20240813-113206/run-pyranda/*"
+dataDir = "RT_STUDIES/rayleigh_taylor_pyranda_20240813-125700/run-pyranda/*"
 cases = glob.glob(dataDir)
 
 samples = []
@@ -29,6 +29,7 @@ for case in cases:
     plt.plot( data[0,:], qoi, '-o', label=os.path.basename(case) )
     #atwood   = float(os.path.basename(case).split('ATWOOD.')[1].split('.VEL.')[0])
     #velocity = float(os.path.basename(case).split('ATWOOD.')[1].split('.VEL.')[1])
+    breakpoint()
     atwood   = float(os.path.basename(case).split('ATWOOD.')[1].split('.SEED.')[0])
     velocity = float(os.path.basename(case).split('VEL.')[1])
 
@@ -41,8 +42,9 @@ for case in cases:
         samples.append( sample )
 
 samples = np.array( samples )
+
 header = f"# 'atwood' 'velocity' 'time' 'mix_width'"
-np.savetxt("rt_samples.csv", samples, delimiter=',')
+np.savetxt("rt_exp_data.csv", samples, delimiter=',')
 scaler = MMS()
 scaled_samples = scaler.fit_transform(samples[:,:3])
 
