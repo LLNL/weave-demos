@@ -1,6 +1,6 @@
 # Rayleigh Taylor Modeling with pyranda
 
-pyranda is an mpi parallel high order finited difference solver for arbitrary hyperbolic PDE systems (INSERT LINK).  This set of examples works through simulations of the Rayleigh-Taylor problem,
+pyranda is an mpi parallel high order finited difference solver for arbitrary hyperbolic PDE systems [pyranda](https://github.com/LLNL/pyranda).  This set of examples works through simulations of the Rayleigh-Taylor problem,
 which is an instability between interfaces of two fluids acting under non-impulsive accelerations (see Richtmyer-Meshkov for the impulsively accelerated version).
 
 ## Nominal behaviors

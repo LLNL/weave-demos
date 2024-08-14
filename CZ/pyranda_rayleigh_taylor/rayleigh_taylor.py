@@ -12,7 +12,7 @@ from pyranda import pyrandaSim, pyrandaBC, pyrandaTimestep
 DEFAULTS = {
     "tstop": 100.0,
     "stop-width-fraction": 0.5,
-    "max_iter": 10000
+    "max_iter": 20000
 }
 
 def run_sim(args):

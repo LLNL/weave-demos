@@ -9,7 +9,7 @@ env:
         VIZ_FREQ_CYCLE: 200      # Scalar data output interval [cycles]
         DUMP_FREQ_CYCLE: 1000    # Mesh data output interval [cycles]
         STOP_WIDTH: 0.75         # Stop when mixing layer reaches this fraction of domain 
-        NPTS: 64
+        NPTS: 32
         RANVEL: 0.0
         VENV_TARGET: $(OUTPUT_PATH)/PYRANDA_ENV
         #PYTHON: $(OUTPUT_PATH)/PYRANDA_ENV/bin/python # NOTE: apparently can't use other env vars here :/
@@ -72,6 +72,7 @@ study:
                                                            --atwood-number $(ATWOOD) \
                                                            --num-points $(NPTS) \
                                                            --velocity-magnitude $(VELOCITY_MAGNITUDE) \
+                                                           --velocity-thickness 2 \
                                                            --stop-width-fraction $(STOP_WIDTH) \
                                                            --headless \
                                                            --random-velocity-magnitude $(RANVEL) \
