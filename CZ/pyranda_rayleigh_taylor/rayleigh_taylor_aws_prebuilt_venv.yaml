@@ -43,6 +43,7 @@ study:
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
                                                            --dump-freq-cycle $(DUMP_FREQ_CYCLE)
           procs: 1
+          nested: True
           walltime: "00:25:00"
 
     - name: post-process-simulation
@@ -54,6 +55,7 @@ study:
             
           depends: [run-pyranda]
           procs: 1
+          nested: True
           walltime: "00:10:00"
 
     - name: post-process-all
@@ -66,6 +68,7 @@ study:
             
           depends: [post-process-simulation]
           procs: 1
+          nested: True
           walltime: "00:10:00"
       
 
