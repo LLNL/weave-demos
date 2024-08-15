@@ -4,12 +4,14 @@ from maestrowf.datastructures.core import ParameterGenerator
 # Generate sample points for the parameters from normal distributions
 # for our fake experimental data
 Nexperiments = 10
+atwood_mean = 0.35
+velocity_mean = 1.05
 
 # Atwood distribution samples
-atwood = np.round(0.48 + 0.04 * np.random.standard_normal(Nexperiments), 3)
+atwood = np.round(atwood_mean + 0.04 * np.random.standard_normal(Nexperiments), 3)
 
 # Velocity magnitude samples
-velocity = np.round(0.97 + 0.05 * np.random.standard_normal(Nexperiments), 3)
+velocity = np.round(velocity_mean + 0.05 * np.random.standard_normal(Nexperiments), 3)
 
 # Get a list of ints for the simulation random seed
 simseed  = list(range(Nexperiments))

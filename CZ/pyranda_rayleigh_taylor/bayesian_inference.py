@@ -8,6 +8,7 @@ import scipy.stats as sts
 from sklearn.preprocessing import MinMaxScaler as MMS
 from sklearn.gaussian_process import GaussianProcessRegressor as GPR
 from ibis import mcmc
+import argparse
 
 input_names = ['atwood_num', 'vel_mag']
 

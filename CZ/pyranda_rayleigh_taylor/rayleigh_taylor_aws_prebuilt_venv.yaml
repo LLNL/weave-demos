@@ -5,12 +5,16 @@ description:
 env:
     variables:
         OUTPUT_PATH: ./RT_STUDIES
-        DIM: "2D"               # Dimensionality of the model: 2D or 3D
-        VIZ_FREQ_CYCLE: 200     # Scalar data output interval [cycles]
-        DUMP_FREQ_CYCLE: 1000   # Mesh data output interval [cycles]
-        STOP_WIDTH: 0.75        # Stop when mixing layer reaches this fraction of domain
-        NPTS: 128               # Controls the resolution of the simulation
-        RANVEL: 1.0             # Random velocity
+        DIM: "2D"                                   # Dimensionality of the model: 2D or 3D
+        VIZ_FREQ_CYCLE: 200                         # Scalar data output interval [cycles]
+        DUMP_FREQ_CYCLE: 1000                       # Mesh data output interval [cycles]
+        STOP_WIDTH: 0.75                            # Stop when mixing layer reaches this fraction of domain
+        NPTS: 128                                   # Controls the resolution of the simulation
+        RANVEL: 1.0                                 # Random velocity
+        NUM_SIM: 15                                 # Number of simulations to run 
+        PARAM_RANGES: [[0.3, 0.65], [0.85, 1.15]]   # Ranges for latinhypercube sampling
+        LHS_SEED: 75                                # Random seed for latinhypercube sampling
+        NUM_EXP: 10                                 # Number of fake experimental data to generate
 
         
     dependencies:
