@@ -2,10 +2,10 @@ import argparse
 import sys
 import textwrap
 import numpy
-import matplotlib.pyplot as plt
-from matplotlib import cm
+# import matplotlib.pyplot as plt
+# from matplotlib import cm
 
-from pyranda import pyrandaSim, pyrandaBC, pyrandaTimestep
+# from pyranda import pyrandaSim, pyrandaBC, pyrandaTimestep
 
 
 # Setup some defaults
@@ -32,6 +32,15 @@ def run_sim(args):
         random_ic_seed = None
 
     headless = args.headless
+
+    if headless:
+        import matplotlib
+        matplotlib.use("Agg")          # headless plotting
+
+    import matplotlib.pyplot as plt
+    from matplotlib import cm
+        
+    from pyranda import pyrandaSim, pyrandaBC, pyrandaTimestep
 
     ## Define a mesh
     if is2D:
@@ -436,6 +445,17 @@ def run_sim(args):
         if ss.cycle % dmp_freq == 0:
             ss.write(outVars)
 
+
+        # Dump a png at the last time state
+        if not stop_func(stop_arg) and args.dump_pngs and ss.PyMPI.master and headless:
+            ss.plot.figure(5)
+            cfig = plt.gcf()
+            ss.plot.clf()
+            ss.plot.contourf("rho", 8, cmap="viridis", noPause=True)
+            rho_contour_name = f"rho_contour_at_{args.atwood_number}_npts_{Npts}_cycle_{ss.cycle}.png"
+            cfig.savefig(rho_contour_name)
+            # cfig.close()   # NOTE: can't do this or it breaks pyranda internals?
+                
         if not headless:
             if ss.cycle % viz_freq == 0:
 
@@ -443,6 +463,7 @@ def run_sim(args):
                 ss.plot.figure(1)
                 ss.plot.clf()
                 ss.plot.contourf("rho", 32, cmap="turbo")
+                
 
                 ss.plot.figure(2)
                 ss.plot.clf()
@@ -569,7 +590,6 @@ def setup_argparse():
         help="Number of zones thick for initial interface and velocity field added in by Pyranda",
     )
 
-
     parser.add_argument(
         '-s',
         '--seed',
@@ -619,7 +639,11 @@ def setup_argparse():
         action='store_true',
         help="Turn on headless mode to hide interactive plots"
     )
-    
+
+    parser.add_argument(
+        "--dump-pngs",
+        action='store_true',
+        help="Flag to turn on png exports of contour plots")
     # Potential other interesting args:
     # Problem name -> this controls output dir?
     # domain size (x, y, z), npts x, y, z
@@ -636,7 +660,8 @@ def main():
 
     try:
         run_sim(args)
-    except Exception:
+    except Exception as ex:
+        print(ex)
         return 1
 
     return 0
