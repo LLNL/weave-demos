@@ -41,6 +41,7 @@ for case in cases:
     plt.xlabel("Time")
     plt.ylabel("Mix Width")
     plt.title("Rayleigh-Taylor Simulations")
+    plt.savefig("rt_simulations.png")
 
     try:
         # without seed
@@ -57,6 +58,7 @@ for case in cases:
     plt.xlabel("Atwood number")
     plt.ylabel("Velocity magnitude")
     plt.title("Latin Hypercube Space-Filling Design")
+    plt.savefig("lhs_design.png")
 
     # For each time, qoi, get NTpts
     #  Sample = [atwood, velocity, w(0), w(1), w(2) ...]
@@ -121,5 +123,6 @@ for ii in range(NTpts):
     ax.set_xlabel('Atwood')
     ax.set_ylabel('Velocity')
     ax.set_zlabel('Width')
+    ax.figure.savefig(f"GP_at_{sample_time}_s.png")
 
 plt.pause(.1)

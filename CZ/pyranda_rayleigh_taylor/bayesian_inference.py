@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib
 matplotlib.use('Qt5Agg')
+import matplotlib.pyplot as plt
 from ibis import kosh_operators
 import kosh
 import h5py
@@ -26,7 +27,7 @@ scaled = True
 
 # store = kosh.connect("temp_testing.sql")c
 # dataset = store.open("uq_data")
-rt_exp_data = np.genfromtxt("rt_exp_data.csv", delimiter=',')
+rt_exp_data = np.genfromtxt("rt_exp_data_atw.35_vel1.05.csv", delimiter=',')
 rt_sim_data = np.genfromtxt("rt_sim_data.csv", delimiter=',')
 
 
@@ -47,17 +48,17 @@ for station in range(Nstations):
     surrogates[name] = GPR().fit(xsim, ygp)
 
 
-result = mcmc.DefaultMCMC()
+default_mcmc = mcmc.DefaultMCMC()
 for name,rng in zip(input_names,ranges):
-    result.add_input(name, rng[0],rng[1], rng[2], sts.uniform().pdf)
+    default_mcmc.add_input(name, rng[0],rng[1], rng[2], sts.uniform().pdf)
 
 for name,mean,std in zip(output_names,expMean,expStd):
     if "10" in name:
-        result.add_output("RTexp", name, surrogates[name], mean , std, input_names )
+        default_mcmc.add_output("RTexp", name, surrogates[name], mean , std, input_names )
 
 
 #result.add_output('mix_width', 'x', surrogate, .4 , .1, input_names)
-result.run_chain(total=10000,
+default_mcmc.run_chain(total=10000,
                        burn=500,
                        every=2,
                        start={name: .5 for name in input_names},
@@ -88,16 +89,18 @@ result.run_chain(total=10000,
 #                                  seed=seed,
 #                                  flattened=False)[:]
 
-chains = result.get_chains(flattened=flattened, scaled=scaled)
-# diagnostics = result.get_diagnostics(n_split=2, scaled=True)
-# resid = result.get_residuals()
-# log_pp = result.log_posterior_plot()
+chains = default_mcmc.get_chains(flattened=flattened, scaled=scaled)
+# diagnostics = default_mcmc.get_diagnostics(n_split=2, scaled=True)
+# resid = default_mcmc.get_residuals()
+# log_pp = default_mcmc.log_posterior_plot()
 
-# outvar = list(result.outputs.keys())[0]
-# resid_plot = result.residuals_plot(outvar, bins=10)
-#post_pp = result.posterior_predictive_plot(outvar, bins=10)
+outvar = list(default_mcmc.outputs.keys())[0]
+# resid_plot = default_mcmc.residuals_plot(outvar, bins=10)
+post_pp = default_mcmc.posterior_predictive_plot(outvar, bins=10)
+
+breakpoint()
 
 for input_n in input_names:
-	plot = result.trace_plot(input_name=input_n)
-	# corr_plot = result.autocorr_plot(input_name=input_n, N=50, n_split=2)
-	hist_plot = result.histogram_plot(input_name=input_n, bins=10, density=True, alpha=.5)
+	plot = default_mcmc.trace_plot(input_name=input_n)
+	# corr_plot = default_mcmc.autocorr_plot(input_name=input_n, N=50, n_split=2)
+	hist_plot = default_mcmc.histogram_plot(input_name=input_n, bins=10, density=True, alpha=.5)
