@@ -30,7 +30,7 @@ exp_dist = []
 flattened = False
 scaled = True
 
-store = kosh.connect("temp_testing.sql")c
+store = kosh.connect("temp_testing.sql")
 
 experiments_ensemble = next(store.find_ensemble(name="experiments"))
 sim_ensemble = next(store.find_ensembles(name=args.name))
