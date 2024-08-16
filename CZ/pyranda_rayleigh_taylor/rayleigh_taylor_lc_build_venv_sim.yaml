@@ -62,7 +62,7 @@ study:
           cmd: |
             $(PYTHON) $(RAYLEIGH_TAYLOR_PLOTTER) --name=$(basename $(SPECROOT)) --store $(STORE)
             
-          depends: [post-process-simulation*]
+          depends: [post-process-simulation_*]
       
 
 global.parameters:
