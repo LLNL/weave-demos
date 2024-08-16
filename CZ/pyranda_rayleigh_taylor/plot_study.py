@@ -38,7 +38,7 @@ sample_times = np.linspace(Tmin,Tmax,NTpts)
 print("SAMPLE SPACE SHAPE:", NTpts, sample_times.shape)
 
 
-N_cases = len(list(store.find(types="pyranda", ids_only=True)))
+N_cases = len(list(store.find(types="pyranda", run_type=args.run_type, ids_only=True)))
 for i, case in enumerate(store.find(types="pyranda", run_type=args.run_type), start=1):
     # Let's add this dataset to our ensemble
     print("******************************")
