@@ -4,6 +4,8 @@ import textwrap
 import numpy
 import matplotlib.pyplot as plt
 from matplotlib import cm
+from sina.model import Record
+import hashlib
 
 from pyranda import pyrandaSim, pyrandaBC, pyrandaTimestep
 
@@ -16,6 +18,13 @@ DEFAULTS = {
 }
 
 def run_sim(args):
+
+    # Create a record with unique id and type pyranda
+    r = Record(hashlib.sha256(repr(args).encode()).hexdigest(), "pyranda")
+    # put all args value in record
+    for att in [x for x in dir(args) if x[0]!="_"]:
+        r.add_data(att, getattr(args, att))
+
     Npts = args.num_points
     dim = args.dim
 
@@ -479,6 +488,14 @@ def run_sim(args):
     header = f"# 'time' 'mixing width' 'mixedness'"
     numpy.savetxt(fname, (timeW, mixW, varY), header=header)
     print(f"Saved mixing width vs time curve to '{fname}'")  # Add more formal logger output?
+    # Also add them to Sina record
+    cs = r.add_curve_set("variables") # We could have many curvsets at different frequencies
+    cs.add_independent("time", timeW)
+    cs.add_dependent("mixing width", mixW)
+    cs.add_dependent("mixedness", varY)
+
+    # At this point we cn save the sina json file
+    r.to_file("sina.json")
 
     if not headless:
         plt.pause(5)
@@ -619,6 +636,8 @@ def setup_argparse():
         action='store_true',
         help="Turn on headless mode to hide interactive plots"
     )
+
+    parser.add_argument("--run-type", default="sim")
     
     # Potential other interesting args:
     # Problem name -> this controls output dir?
