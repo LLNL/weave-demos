@@ -1,24 +1,32 @@
 description:
-    name: rayleigh_taylor_pyranda
-    description: A study for running Rayleigh-Taylor mixing simulations using pyranda.
+    name: rayleigh_taylor_overview_pyranda
+    description: |
+      A study for running Rayleigh-Taylor mixing simulations using pyranda.  This is a
+      small experiment of fast running models demonstrating Atwood number effects
     
 env:
     variables:
-        OUTPUT_PATH: ./RT_STUDIES
+        OUTPUT_PATH: ./RT_OVERVIEW_STUDIES
         DIM: "2D"               # Dimensionality of the model: 2D or 3D
         VIZ_FREQ_CYCLE: 200     # Scalar data output interval [cycles]
         DUMP_FREQ_CYCLE: 1000   # Mesh data output interval [cycles]
-        STOP_WIDTH: 0.75        # Stop when mixing layer reaches this fraction of domain
-        NPTS: 128               # Controls the resolution of the simulation
+        TSTOP: 50.0             # Stop at time = 50
+        NPTS: 64               # Controls the resolution of the simulation
         RANVEL: 1.0             # Random velocity
+        # VELOCITY_MAGNITUDE: 0.0 # Single mode velocity magnitude scaling factor
 
         
     dependencies:
       paths:
         - name: RAYLEIGH_TAYLOR_MODEL
           path: rayleigh_taylor.py # Implicitly at $(SPECROOT)/rayleigh_taylor.py
+          
         - name: PYTHON
+          # path: PATH/TO/YOUR/PYTHON/EXECUTABLE
           path: /usr/apps/weave/weave-develop-cpu/bin/python
+
+        - name: OVERVIEW_PLOTTER
+          path: overview_post_proc.py
           
 batch:
     type        : slurm
@@ -36,37 +44,29 @@ study:
                                                            --atwood-number $(ATWOOD) \
                                                            --num-points $(NPTS) \
                                                            --velocity-magnitude $(VELOCITY_MAGNITUDE) \
-                                                           --stop-width-fraction $(STOP_WIDTH) \
+                                                           --random-velocity-magnitude $(RANVEL) \
+                                                           --tstop $(TSTOP) \
                                                            --headless \
                                                            --seed $(SEED) \
-                                                           --random-velocity-magnitude $(RANVEL) \
+                                                           --dump-pngs \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
                                                            --dump-freq-cycle $(DUMP_FREQ_CYCLE)
+
+            # Store the parameters to a simple yaml record for the report
+            echo "{'atwood': {'value': $(ATWOOD), 'label': 'Atwood Number'}, 'ranvel': {'value':$(RANVEL), 'label': 'Random IC Velocity Magnitude'}, 'velmag': {'value': $(VELOCITY_MAGNITUDE), 'label': 'Fixed IC Velocity Magnitude'}, 'seed': {'value': $(SEED), 'label': 'Seed'}}" > sim_record.yaml
           procs: 1
           nested: True
           walltime: "00:25:00"
 
-    - name: post-process-simulation
-      description: Post process individual simulation outputs
-      run:
-          cmd: |
-            echo "Placeholder for extra post-processing"
-            echo "Parent workspace: $(run-pyranda.workspace)"
-            
-          depends: [run-pyranda]
-          procs: 1
-          nested: True
-          walltime: "00:10:00"
-
     - name: post-process-all
-      description: Post process all simulation outputs
+      description: Post process all simulation outputs into a summary plot
       run:
           cmd: |
-            # NOTE: may only want this one vs this + individual given simplicity of outputs?
-            echo "Placeholder for extra collective post-processing step"
-            echo "Parent workspace: $(post-process-simulation.workspace)"
-            
-          depends: [post-process-simulation]
+            # NOTE: this drops you at parent dir of all run-pyranda workspaces due to _* in depends
+            echo "Parent workspace: $(run-pyranda.workspace)"
+
+            $(PYTHON) $(OVERVIEW_PLOTTER) --headless $(run-pyranda.workspace)/*
+          depends: [run-pyranda_*]
           procs: 1
           nested: True
           walltime: "00:10:00"
@@ -74,13 +74,12 @@ study:
 
 global.parameters:
     VELOCITY_MAGNITUDE: 
-        values: ["0.85","0.90","0.95","1.0","1.05","1.10","1.15"]
-        label: VEL.%%
-        
+        values: ["0.0", "1.0", "0.0", "1.0", "0.0", "1.0"]
+        label: VEL.%%  
     SEED:                       # Seed for random number generator that sets intial conditions
-        values: [1, 2, 3, 4, 5, 6, 7]
+        values: [17, 17, 17, 17, 17, 17]
         label: SEED.%%
 
     ATWOOD:
-        values: ["0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"]
+        values: ["0.2", "0.2", "0.4", "0.4", "0.6", "0.6"]
         label: ATWOOD.%%
