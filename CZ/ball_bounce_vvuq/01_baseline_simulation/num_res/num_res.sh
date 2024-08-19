@@ -5,7 +5,7 @@
 rm -rf ./01_baseline_simulation/num_res/data/ && mkdir ./01_baseline_simulation/num_res/data/
 rm -rf ./01_baseline_simulation/num_res/images/ && mkdir ./01_baseline_simulation/num_res/images/
 
-SCRIPT=./ball_bounce.py
+SCRIPT=./01_baseline_simulation/ball_bounce_experiment.py
 
 OUT_FILE=./01_baseline_simulation/num_res/data/num_res_15_output.dsv
 FREQUENCY=15

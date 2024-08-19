@@ -5,7 +5,7 @@
 rm -rf ./01_baseline_simulation/baseline/data/ && mkdir ./01_baseline_simulation/baseline/data/
 rm -rf ./01_baseline_simulation/baseline/images/ && mkdir ./01_baseline_simulation/baseline/images/
 
-SCRIPT=./ball_bounce.py
+SCRIPT=./01_baseline_simulation/ball_bounce_experiment.py
 
 OUT_FILE=./01_baseline_simulation/baseline/data/baseline_0_output.dsv
 X_POS_INITIAL=49.37
