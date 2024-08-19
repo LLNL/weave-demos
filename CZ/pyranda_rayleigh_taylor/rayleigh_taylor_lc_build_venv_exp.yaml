@@ -1,0 +1,121 @@
+description:
+    name: rayleigh_taylor_pyranda
+    description: A study for running Rayleigh-Taylor mixing simulations using pyranda.
+    
+env:
+    variables:
+        OUTPUT_PATH: ./RT_STUDIES
+        DIM: "2D"                # Dimensionality of the model: 2D or 3D
+        VIZ_FREQ_CYCLE: 200      # Scalar data output interval [cycles]
+        DUMP_FREQ_CYCLE: 1000    # Mesh data output interval [cycles]
+        STOP_WIDTH: 0.75         # Stop when mixing layer reaches this fraction of domain 
+        NPTS: 128
+        RANVEL: 0.25
+        VENV_TARGET: $(OUTPUT_PATH)/PYRANDA_ENV
+        #PYTHON: $(OUTPUT_PATH)/PYRANDA_ENV/bin/python # NOTE: apparently can't use other env vars here :/
+        PYTHON: /usr/workspace/pyranda/bin/pyranda3.9
+    # labels:
+    #     PYTHON: $(VENV_TARGET)/bin/python
+    # NOTE: add better error message to empty 'labels' mapping in maestro
+    # labels:
+        # NOTE: wire up input deck to accept this? or just leave it generic..
+        # MIXCURVE_FILE: mix_width_at_$(ATWOOD.label).dat
+
+    dependencies:
+      paths:
+        - name: RAYLEIGH_TAYLOR_MODEL
+          path: rayleigh_taylor.py # Implicitly at $(SPECROOT)/rayleigh_taylor.py
+      git:
+        - name: PYRANDA
+          path: $(OUTPUT_PATH)
+          # url: git@github.com:LLNL/pyranda.git
+          url: https://github.com/LLNL/pyranda.git
+
+batch:
+    type        : slurm
+    host        : rzwhippet
+    bank        : wbronze
+    queue       : pdebug
+
+
+study:
+    # - name: make-env-lc
+    #   description: Build the MPI enabled version of LULESH.
+    #   run:
+    #       cmd: |
+    #         module load python/3.10
+
+    #         python3 -m virtualenv $(VENV_TARGET)
+    #         source $(VENV_TARGET)/bin/activate
+
+    #         pip install mpi4py --no-cache-dir
+
+    #         pip install -r $(PYRANDA)/requirements.txt
+
+    #         pip install $(PYRANDA)
+
+    #         # Test by running the advection example
+    #         cp $(PYRANDA)/examples/advection.py .
+    #         $(LAUNCHER) $(PYTHON) advection.py 100 1 # 100 pts, set test to true to skip latex doc generation
+
+    #         #   add a test if the .dat exists?
+
+    #       procs: 1
+    #       walltime: "00:20:00"
+    #       depends: []
+
+    - name: run-pyranda
+      description: Run pyranda
+      run:
+          cmd: |
+            $(LAUNCHER) $(PYTHON) $(RAYLEIGH_TAYLOR_MODEL) --dim $(DIM) \
+                                                           --atwood-number $(ATWOOD) \
+                                                           --num-points $(NPTS) \
+                                                           --velocity-magnitude $(VELOCITY_MAGNITUDE) \
+                                                           --velocity-thickness 8 \
+                                                           --stop-width-fraction $(STOP_WIDTH) \
+                                                           --headless \
+                                                           --seed $(SEED) \
+                                                           --random-velocity-magnitude $(RANVEL) \
+                                                           --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
+                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE)
+          #depends: [make-env-lc]
+          procs: 32
+          walltime: "00:30:00"
+
+    - name: post-process-simulation
+      description: Post process individual simulation outputs
+      run:
+          cmd: |
+            echo "Placeholder for extra post-processing"
+            echo "Parent workspace: $(run-pyranda.workspace)"
+            
+          depends: [run-pyranda]
+          procs: 1
+          walltime: "00:10:00"
+
+    - name: post-process-all
+      description: Post process all simulation outputs
+      run:
+          cmd: |
+            # NOTE: may only want this one vs this + individual given simplicity of outputs?
+            echo "Placeholder for extra collective post-processing step"
+            echo "Parent workspace: $(post-process-simulation.workspace)"
+            
+          depends: [post-process-simulation]
+          procs: 1
+          walltime: "00:10:00"
+      
+
+global.parameters:
+    VELOCITY_MAGNITUDE: 
+        values: ["0.85","0.90","0.95","1.0","1.05","1.10","1.15"]
+        label: VEL.%%
+
+    SEED: 
+        values: [1,2,3,4,5,6,7]
+        label: SEED.%%
+
+    ATWOOD:
+        values: ["0.3", "0.35", "0.45", "0.5", "0.55", "0.60", "0.65"]
+        label: ATWOOD.%%
