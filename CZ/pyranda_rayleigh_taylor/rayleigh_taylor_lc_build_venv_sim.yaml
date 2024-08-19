@@ -21,6 +21,8 @@ env:
           path: rayleigh_taylor.py # Implicitly at $(SPECROOT)/rayleigh_taylor.py
         - name: RAYLEIGH_TAYLOR_PLOTTER
           path: plot_study.py # Implicitly at $(SPECROOT)/plot_study.py
+        - name: RAYLEIGH_TAYLOR_BAYESIAN
+          path: bayesian_inference.py # Implicitly at $(SPECROOT)/bayesian_inference.py
 
 batch:
     type        : slurm
@@ -56,11 +58,19 @@ study:
             
           depends: [run-pyranda]
 
-    - name: post-process-all
-      description: Plots and GP 1
+    - name: plot-all
+      description: Plots and Prepare for GP
       run:
           cmd: |
-            $(PYTHON) $(RAYLEIGH_TAYLOR_PLOTTER) --name=$(basename $(SPECROOT)) --store $(STORE)
+            $(PYTHON) $(RAYLEIGH_TAYLOR_PLOTTER) --name=$(basename $(dirname $(WORKSPACE))) --store $(STORE)
+            
+          depends: [post-process-simulation_*]
+      
+    - name: bayesian-ibis
+      description: Bayesians
+      run:
+          cmd: |
+            $(PYTHON) $(RAYLEIGH_TAYLOR_BAYESIAN) --name=$(basename $(dirname $(WORKSPACE))) --store $(STORE)
             
           depends: [post-process-simulation_*]
       

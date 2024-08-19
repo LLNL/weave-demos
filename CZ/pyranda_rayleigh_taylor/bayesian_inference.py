@@ -12,7 +12,7 @@ import argparse
 
 p = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 p.add_argument("--store", help="path to kosh/Sina store")
-p.add_argument("--name", help="name for the ensembe of datasets to load", required=True)
+p.add_argument("--name", help="name for the ensemble of datasets to load", required=True)
 
 args = p.parse_args()
 
@@ -30,9 +30,9 @@ exp_dist = []
 flattened = False
 scaled = True
 
-store = kosh.connect("temp_testing.sql")
+store = kosh.connect(args.store)
 
-experiments_ensemble = next(store.find_ensemble(name="experiments"))
+experiments_ensemble = next(store.find_ensembles(name="experiments"))
 sim_ensemble = next(store.find_ensembles(name=args.name))
 # dataset = store.open("uq_data")
 exp_uri = next(experiments_ensemble.find(mime_type="pandas/csv")).uri

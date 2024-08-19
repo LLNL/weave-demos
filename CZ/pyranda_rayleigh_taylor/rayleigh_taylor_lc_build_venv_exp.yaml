@@ -66,8 +66,6 @@ study:
             echo "Parent workspace: $(post-process-simulation.workspace)"
             
           depends: [post-process-simulation]
-          procs: 1
-          walltime: "00:10:00"
       
 
 global.parameters:
