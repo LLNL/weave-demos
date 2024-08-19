@@ -4,6 +4,7 @@ description:
     
 env:
     variables:
+        STORE: pyranda.sql
         OUTPUT_PATH: ./RT_STUDIES
         DIM: "2D"                # Dimensionality of the model: 2D or 3D
         VIZ_FREQ_CYCLE: 200      # Scalar data output interval [cycles]
@@ -11,25 +12,13 @@ env:
         STOP_WIDTH: 0.75         # Stop when mixing layer reaches this fraction of domain 
         NPTS: 128
         RANVEL: 0.25
-        VENV_TARGET: $(OUTPUT_PATH)/PYRANDA_ENV
-        #PYTHON: $(OUTPUT_PATH)/PYRANDA_ENV/bin/python # NOTE: apparently can't use other env vars here :/
-        PYTHON: /usr/workspace/pyranda/bin/pyranda3.9
-    # labels:
-    #     PYTHON: $(VENV_TARGET)/bin/python
-    # NOTE: add better error message to empty 'labels' mapping in maestro
-    # labels:
-        # NOTE: wire up input deck to accept this? or just leave it generic..
-        # MIXCURVE_FILE: mix_width_at_$(ATWOOD.label).dat
+        PYTHON: /usr/apps/weave/weave-develop-cpu/bin/python3
+        NEXPERIMENTS: 20
 
     dependencies:
       paths:
         - name: RAYLEIGH_TAYLOR_MODEL
           path: rayleigh_taylor.py # Implicitly at $(SPECROOT)/rayleigh_taylor.py
-      git:
-        - name: PYRANDA
-          path: $(OUTPUT_PATH)
-          # url: git@github.com:LLNL/pyranda.git
-          url: https://github.com/LLNL/pyranda.git
 
 batch:
     type        : slurm
@@ -39,31 +28,6 @@ batch:
 
 
 study:
-    # - name: make-env-lc
-    #   description: Build the MPI enabled version of LULESH.
-    #   run:
-    #       cmd: |
-    #         module load python/3.10
-
-    #         python3 -m virtualenv $(VENV_TARGET)
-    #         source $(VENV_TARGET)/bin/activate
-
-    #         pip install mpi4py --no-cache-dir
-
-    #         pip install -r $(PYRANDA)/requirements.txt
-
-    #         pip install $(PYRANDA)
-
-    #         # Test by running the advection example
-    #         cp $(PYRANDA)/examples/advection.py .
-    #         $(LAUNCHER) $(PYTHON) advection.py 100 1 # 100 pts, set test to true to skip latex doc generation
-
-    #         #   add a test if the .dat exists?
-
-    #       procs: 1
-    #       walltime: "00:20:00"
-    #       depends: []
-
     - name: run-pyranda
       description: Run pyranda
       run:
@@ -78,8 +42,8 @@ study:
                                                            --seed $(SEED) \
                                                            --random-velocity-magnitude $(RANVEL) \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
-                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE)
-          #depends: [make-env-lc]
+                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE) \
+                                                           --run-type=exp
           procs: 32
           walltime: "00:30:00"
 
@@ -87,12 +51,11 @@ study:
       description: Post process individual simulation outputs
       run:
           cmd: |
-            echo "Placeholder for extra post-processing"
+            echo "INgest into store"
             echo "Parent workspace: $(run-pyranda.workspace)"
+            sina ingest -d $(OUTPUT_PATH)/$(STORE) $(run-pyranda.workspace)/sina.json
             
           depends: [run-pyranda]
-          procs: 1
-          walltime: "00:10:00"
 
     - name: post-process-all
       description: Post process all simulation outputs
@@ -103,8 +66,6 @@ study:
             echo "Parent workspace: $(post-process-simulation.workspace)"
             
           depends: [post-process-simulation]
-          procs: 1
-          walltime: "00:10:00"
       
 
 global.parameters:

@@ -2,20 +2,32 @@ import numpy as np
 import matplotlib
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
-import glob
+import kosh
 import os
 from sklearn.preprocessing import MinMaxScaler as MMS
 from sklearn.gaussian_process import GaussianProcessRegressor as GPR
+import argparse
+
+p = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+p.add_argument("--store", help="path to kosh/Sina store")
+p.add_argument("--name", help="name for the ensembe of datasets plotted", required=True)
+p.add_argument("--run-type", default="sim", help="run type to search for")
+
+args = p.parse_args()
 
 rng = np.random.default_rng()
 
 # Version 2 of sim/exp (making thickness the same at t0 for the 2)
 #  Note on velocity-thickness
-dataDir = "RT_STUDIES/rayleigh_taylor_pyranda_20240814-072446/run-pyranda/*"  # Sim-data (32/2)
 #dataDir = "RT_STUDIES/rayleigh_taylor_pyranda_20240814-074047/run-pyranda/*"  # Exp-data (128/8)
+store = kosh.connect(args.store)
 
-cases = glob.glob(dataDir)
-
+# Create an ensemble or use an existing one
+try:
+    ensemble = next(store.find_ensembles(name=args.name))
+except Exception:
+    # does not exist yet
+    ensemble = store.create_ensemble(name=args.name)
 # Get NT times at which the layer mixing widths hit NT % of max
 NTpts = 11
 Tmin = 0.0
@@ -23,50 +35,70 @@ Tmax = 60.0  # maybe even 70?
 samples = []  # atwood, vel, t0,... tN
 
 sample_times = np.linspace(Tmin,Tmax,NTpts)
+print("SAMPLE SPACE SHAPE:", NTpts, sample_times.shape)
 
 
-for case in cases:
-    dataFile = os.path.join(case,"RAYLEIGH_TAYLOR_2D.dat")
-    data = np.loadtxt( dataFile )
-    time  = data[0,:] # time
-    width = data[1,:]  # Width
-    mixed = data[2,:]  # Mixedness
+N_cases = len(list(store.find(types="pyranda", run_type=args.run_type, ids_only=True)))
+for i, case in enumerate(store.find(types="pyranda", run_type=args.run_type), start=1):
+    # Let's add this dataset to our ensemble
+    print("******************************")
+    print("DS:", case.id)
+    print("******************************")
+    ensemble.add(case)
+
+    # Le'ts retrieve var of interest
+    time  = case["variables/time"][:] # time
+    width = case["variables/mixing width"][:]  # Width
+    mixed = case["variables/mixedness"][:]  # Mixedness
+    atwood   = case.atwood_number
+    velocity = case.velocity_magnitude
+    lbl = f"Vel: {velocity} - At: {atwood}"
     plt.figure(3)
-    plt.plot( data[0,:], width, '-o', label=os.path.basename(case) )
+    plt.plot( time, width, '-o', label=lbl)
+    if i == N_cases:
+        fnm = "all_mixing_width.png"
+        plt.savefig(fnm)
+        ensemble.associate(fnm, "png", metadata={"title":lbl}) 
 
-    try:
-        # without seed
-        atwood   = float(os.path.basename(case).split('ATWOOD.')[1].split('.VEL.')[0])
-        velocity = float(os.path.basename(case).split('ATWOOD.')[1].split('.VEL.')[1])
-    except:
-        # with seed 
-        atwood   = float(os.path.basename(case).split('ATWOOD.')[1].split('.SEED.')[0])
-        velocity = float(os.path.basename(case).split('VEL.')[1])
 
-    if (case == cases[-1]):
+    if i == N_cases:
         print("Atwood: %s  Vel: %s" % (atwood,velocity))
         plt.figure(4)
-        plt.plot( data[0,:], width, '-o', label=os.path.basename(case) )
+        plt.plot(time, width, '-o', label=lbl)
         plt.legend()
+        fnm = f"atwood_{atwood}-vel{velocity}_mixing_width.png"
+        plt.savefig(fnm)
+        # Associate plot with ensemble
+        #ensemble.associate(fnm, "png", metadata={"title":lbl}) 
 
     plt.figure(1)
     plt.plot(atwood,velocity,'ko')
+    if i == N_cases:
+        fnm = "atwood_vs_vel.png"
+        plt.savefig(fnm)
+        ensemble.associate(fnm, "png", metadata={"title":'atwood vs velocity'}) 
 
     print( width.max(), time.max() )
 
     # For each time,qoi, get NTpts
     #  Sample = [atwood, velocity, w(0), w(1), w(2) ...]
     sample_widths = np.interp(sample_times,time,width)
-    sample = np.insert( sample_widths, 0, velocity)
-    sample = np.insert( sample, 0, atwood)
+    sample = np.insert( sample_widths, 0, atwood)
+    sample = np.insert( sample, 1, velocity)
     samples.append( sample )
 
 plt.pause(.1)
 
-
-
 samples = np.array( samples )
+header = f"# 'atwood' 'velocity' "
+for ii in range(NTpts):
+    header += " 'width-%s' " % ii
 
+# Save for next step
+fnm = f"rt_{args.run_type}_data.csv"
+np.savetxt(fnm, samples, delimiter=',',header=header)
+#associate with ensemble
+ensemble.associate(fnm, "pandas/csv", metadata={"gp_data":True})
 
 
 def getGP(x,y):
@@ -84,8 +116,6 @@ for ii in range(NTpts):
     sample_time = sample_times[ii]
     y = samples[:,2+ii]  # Get width at this time-slice
     GP_times.append(  getGP(xgp,y)   )
-
-
 
 predicted_widths = []
 predicted_std    = []
@@ -105,19 +135,13 @@ plt.pause(.1)
 
 # samples = np.array( samples )
 
-header = f"# 'atwood' 'velocity' "
-for ii in range(NTpts):
-    header += " 'width-%s' " % ii
-
-#np.savetxt("rt_exp_data.csv", samples, delimiter=',',header=header)
-np.savetxt("rt_sim_data.csv", samples, delimiter=',',header=header)
 
 scaler = MMS()
 scaled_samples = scaler.fit_transform(samples[:,:3])
 
 surrogate_model = GPR().fit(scaled_samples, samples[:,3])
 
-time = data[0,:].reshape(-1,1)
+time = time.reshape(-1,1)
 atw = np.zeros(time.shape) + atwood
 vel = np.zeros(time.shape) + velocity
 inputs = np.concatenate((atw, vel, time), axis=1)
