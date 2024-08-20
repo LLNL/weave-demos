@@ -3,6 +3,7 @@ from trata.sampler import LatinHyperCubeSampler as LHS
 from maestrowf.datastructures.core import ParameterGenerator
 
 def get_custom_generator(env, **kwargs):
+
     # Settings for the Latinhypercube sampler
     Nruns = int(kwargs.get("NRUNS", env.find("NRUNS").value))
     test_box = [[0.3, 0.65], [0.85, 1.15]]

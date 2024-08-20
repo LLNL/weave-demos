@@ -4,6 +4,7 @@ description:
     
 env:
     variables:
+        STORE: /g/g19/cdoutrix/git/weave_demos/CZ/pyranda_rayleigh_taylor/pyranda.sql
         OUTPUT_PATH: ./RT_STUDIES
         DIM: "2D"               # Dimensionality of the model: 2D or 3D
         VIZ_FREQ_CYCLE: 200     # Scalar data output interval [cycles]
@@ -11,14 +12,18 @@ env:
         STOP_WIDTH: 0.75        # Stop when mixing layer reaches this fraction of domain
         NPTS: 128               # Controls the resolution of the simulation
         RANVEL: 1.0             # Random velocity
+        NRUNS: 15               # Number of simulation runs
+        NMODELS: 1              # Number of times to train GP models
 
         
     dependencies:
       paths:
         - name: RAYLEIGH_TAYLOR_MODEL
           path: rayleigh_taylor.py # Implicitly at $(SPECROOT)/rayleigh_taylor.py
-        - name: PYTHON
-          path: /usr/apps/weave/weave-develop-cpu/bin/python
+        - name: RAYLEIGH_TAYLOR_PLOTTER
+          path: plot_study.py # Implicitly at $(SPECROOT)/plot_study.py
+        - name: RAYLEIGH_TAYLOR_BAYESIAN
+          path: bayesian_inference.py # Implicitly at $(SPECROOT)/bayesian_inference.py
           
 batch:
     type        : slurm
@@ -50,26 +55,31 @@ study:
       description: Post process individual simulation outputs
       run:
           cmd: |
-            echo "Placeholder for extra post-processing"
-            echo "Parent workspace: $(run-pyranda.workspace)"
+            echo "Ingest sina file into store"
+            sina ingest -d $(STORE) $(run-pyranda.workspace)/sina.json
             
           depends: [run-pyranda]
-          procs: 1
-          nested: True
-          walltime: "00:10:00"
 
-    - name: post-process-all
-      description: Post process all simulation outputs
+    - name: plot-all
+      description: Plots and Prepare for GP
       run:
           cmd: |
-            # NOTE: may only want this one vs this + individual given simplicity of outputs?
-            echo "Placeholder for extra collective post-processing step"
-            echo "Parent workspace: $(post-process-simulation.workspace)"
+            $(PYTHON) $(RAYLEIGH_TAYLOR_PLOTTER) --name=$(basename $(dirname $(WORKSPACE))) 
+                                                 --store $(STORE)
+                                                 --nmodels $(NMODELS)
             
-          depends: [post-process-simulation]
-          procs: 1
-          nested: True
-          walltime: "00:10:00"
+          depends: [post-process-simulation_*]
+      
+    - name: bayesian-ibis
+      description: Bayesian inference
+      run:
+          cmd: |
+            $(PYTHON) $(RAYLEIGH_TAYLOR_BAYESIAN) --name=$(basename $(dirname $(WORKSPACE))) 
+                                                  --store $(STORE)
+                                                  --nmodels $(NMODELS)
+            
+          depends: [post-process-simulation_*]
+      
       
 
 global.parameters:
@@ -77,7 +87,7 @@ global.parameters:
         values: ["0.85","0.90","0.95","1.0","1.05","1.10","1.15"]
         label: VEL.%%
         
-    SEED:                       # Seed for random number generator that sets intial conditions
+    SEED:  # Seed for random number generator that sets intial conditions
         values: [1, 2, 3, 4, 5, 6, 7]
         label: SEED.%%
 
