@@ -5,14 +5,15 @@ description:
 env:
     variables:
         STORE: /g/g19/cdoutrix/git/weave_demos/CZ/pyranda_rayleigh_taylor/pyranda.sql
-        NRUNS: 15
         OUTPUT_PATH: ./RT_STUDIES
         DIM: "2D"                # Dimensionality of the model: 2D or 3D
         VIZ_FREQ_CYCLE: 200      # Scalar data output interval [cycles]
         DUMP_FREQ_CYCLE: 1000    # Mesh data output interval [cycles]
         STOP_WIDTH: 0.75         # Stop when mixing layer reaches this fraction of domain 
-        NPTS: 32
-        RANVEL: 0.0
+        NPTS: 32                 # Controls the resolution of the simulation
+        RANVEL: 0.0              # Random velocity
+        NRUNS: 15                # Number of simulation runs
+        NMODELS: 1               # Number of times to train GP models
         PYTHON: /usr/apps/weave/weave-develop-cpu/bin/python3
 
     dependencies:
@@ -62,7 +63,9 @@ study:
       description: Plots and Prepare for GP
       run:
           cmd: |
-            $(PYTHON) $(RAYLEIGH_TAYLOR_PLOTTER) --name=$(basename $(dirname $(WORKSPACE))) --store $(STORE)
+            $(PYTHON) $(RAYLEIGH_TAYLOR_PLOTTER) --name=$(basename $(dirname $(WORKSPACE))) 
+                                                 --store $(STORE)
+                                                 --nmodels $(NMODELS)
             
           depends: [post-process-simulation_*]
       
@@ -70,7 +73,9 @@ study:
       description: Bayesians
       run:
           cmd: |
-            $(PYTHON) $(RAYLEIGH_TAYLOR_BAYESIAN) --name=$(basename $(dirname $(WORKSPACE))) --store $(STORE)
+            $(PYTHON) $(RAYLEIGH_TAYLOR_BAYESIAN) --name=$(basename $(dirname $(WORKSPACE))) 
+                                                  --store $(STORE)
+                                                  --nmodels $(NMODELS)
             
           depends: [post-process-simulation_*]
       
