@@ -5,7 +5,7 @@ description:
 env:
     variables:
         OUTPUT_PATH: /usr/workspace/gunny/debug/aws_radiuss_tutorial/
-        STORE: /usr/workspace/gunny/aws_radiuss_tutorial/pyranda.sql
+        STORE: /usr/workspace/gunny/debug/aws_radiuss_tutorial/pyranda.sql
         DIM: "2D"                   # Dimensionality of the model: 2D or 3D
         VIZ_FREQ_CYCLE: 200         # Scalar data output interval [cycles]
         DUMP_FREQ_CYCLE: 1000       # Mesh data output interval [cycles]
@@ -31,7 +31,8 @@ env:
           path: /usr/WS1/gunny/virtualenvs/merlin_py_3_10/bin/python
           
 batch:
-    type        : slurm
+    # type        : slurm
+    type        : flux
     bank        : wbronze
     queue       : pdebug
     # flux_exec   : -o initrc=/dev/null
@@ -55,6 +56,7 @@ study:
           procs: 1
           nested: True
           walltime: "00:25:00"
+        #   flux: -o initrc=/dev/null
           task_queue: sim_queue
 
     - name: post-process-simulation
@@ -62,9 +64,10 @@ study:
       run:
           cmd: |
             echo "Ingest sina file into store"
-            sina ingest -d $(STORE) $(run-pyranda.workspace)/sina.json
+            # sina ingest -d $(STORE) $(run-pyranda.workspace)/$(MERLIN_SAMPLE_PATH)/sina.json
+            find $(run-pyranda.workspace) -name "sina.json" -exec sina ingest -d $(STORE) {} \;
 
-          depends: [run-pyranda]
+          depends: [run-pyranda_*]
           task_queue: nonsim_queue
 
     - name: plot-all
@@ -130,7 +133,7 @@ merlin:
                 steps: [all]
                 nodes: 1
             # simworker:
-            #     args: -l INFO --concurrency 1 --prefetch-multiplier 1 -Ofair
+            #     args: -l INFO --concurrency 56 --prefetch-multiplier 1 -Ofair
             #     steps: [run-pyranda]
             # nonsimworker:
             #     args: -l INFO --concurrency 1 --prefetch-multiplier 1 -Ofair

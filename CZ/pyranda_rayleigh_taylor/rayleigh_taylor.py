@@ -509,7 +509,18 @@ def run_sim(args):
     header = f"# 'time' 'mixing width' 'mixedness'"
     numpy.savetxt(fname, (timeW, mixW, varY), header=header)
     print(f"Saved mixing width vs time curve to '{fname}'")  # Add more formal logger output?
+
+    def convert_to_float32(var_to_convert):
+        for i, entry in enumerate(var_to_convert):
+            try:
+                var_to_convert[i] = float(entry)
+            except Exception:
+                pass
+
     # Also add them to Sina record
+    convert_to_float32(timeW)
+    convert_to_float32(mixW)
+    convert_to_float32(varY)
     cs = r.add_curve_set("variables") # We could have many curvsets at different frequencies
     cs.add_independent("time", timeW)
     cs.add_independent("mixing width", mixW)
