@@ -8,6 +8,13 @@ import scipy.stats as sts
 from sklearn.preprocessing import MinMaxScaler as MMS
 from sklearn.gaussian_process import GaussianProcessRegressor as GPR
 from ibis import mcmc
+import argparse
+
+p = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+p.add_argument("--store", help="path to kosh/Sina store")
+p.add_argument("--name", help="name for the ensemble of datasets to load", required=True)
+
+args = p.parse_args()
 
 input_names = ['atwood_num', 'vel_mag']
 
@@ -23,10 +30,15 @@ exp_dist = []
 flattened = False
 scaled = True
 
-# store = kosh.connect("temp_testing.sql")c
+store = kosh.connect(args.store)
+
+experiments_ensemble = next(store.find_ensembles(name="experiments"))
+sim_ensemble = next(store.find_ensembles(name=args.name))
 # dataset = store.open("uq_data")
-rt_exp_data = np.genfromtxt("rt_exp_data.csv", delimiter=',')
-rt_sim_data = np.genfromtxt("rt_sim_data.csv", delimiter=',')
+exp_uri = next(experiments_ensemble.find(mime_type="pandas/csv")).uri
+sim_uri = next(sim_ensemble.find(mime_type="pandas/csv")).uri
+rt_exp_data = np.genfromtxt(exp_uri, delimiter=',')
+rt_sim_data = np.genfromtxt(sim_uri, delimiter=',')
 
 
 # Process experimental data, get means/std at each time station
