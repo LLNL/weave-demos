@@ -46,7 +46,7 @@ study:
                                                            --seed $(SEED) \
                                                            --random-velocity-magnitude $(RANVEL) \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
-                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE)
+                                                           --dump-freq $(DUMP_FREQ_CYCLE)
           procs: 1
           nested: True
           walltime: "00:25:00"

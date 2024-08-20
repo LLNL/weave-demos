@@ -46,7 +46,7 @@ study:
                                                            --headless \
                                                            --random-velocity-magnitude $(RANVEL) \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
-                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE)
+                                                           --dump-freq $(DUMP_FREQ_CYCLE)
           procs: 1
           walltime: "00:10:00"
 

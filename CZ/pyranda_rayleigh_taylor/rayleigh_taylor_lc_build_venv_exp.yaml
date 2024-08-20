@@ -42,7 +42,7 @@ study:
                                                            --seed $(SEED) \
                                                            --random-velocity-magnitude $(RANVEL) \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
-                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE) \
+                                                           --dump-freq $(DUMP_FREQ_CYCLE) \
                                                            --run-type=exp
           procs: 32
           walltime: "00:30:00"
