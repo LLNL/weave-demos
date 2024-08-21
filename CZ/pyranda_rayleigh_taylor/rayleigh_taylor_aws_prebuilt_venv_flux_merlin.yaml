@@ -1,0 +1,145 @@
+description:
+    name: rayleigh_taylor_pyranda
+    description: A study for running Rayleigh-Taylor mixing simulations using pyranda.
+    
+env:
+    variables:
+        OUTPUT_PATH: /shared_data/RT_STUDIES
+        STORE: /shared_data/pyranda.sql
+        DIM: "2D"                   # Dimensionality of the model: 2D or 3D
+        VIZ_FREQ_CYCLE: 200         # Scalar data output interval [cycles]
+        DUMP_FREQ_CYCLE: 1000       # Mesh data output interval [cycles]
+        STOP_WIDTH: 0.75            # Stop when mixing layer reaches this fraction of domain
+        NPTS: 32                    # Controls the resolution of the simulation
+        RANVEL: 1.0                 # Random velocity
+        N_RUNS: 15                  # Number of entries in each parameter set
+        N_SAMPLES: 2                # Number of samples to generate for this study
+        NMODELS: 1                  # Number of times to train GP models
+        SAMPLE_BOUNDS: "[[0, 1000]]"  # The upper and lower bounds for our samples (seed in this case)
+        # PREV_WORKSPACE: " "         # A variable to track the previous workspace for iterative workflows
+        # ITER: 1                     # The current iteration number
+        # MAX_ITER: 2                 # The maximum amount of iterations
+        
+    dependencies:
+      paths:
+        - name: RAYLEIGH_TAYLOR_MODEL
+          path: rayleigh_taylor.py # Implicitly at $(SPECROOT)/rayleigh_taylor.py
+        - name: RAYLEIGH_TAYLOR_PLOTTER
+          path: plot_study.py # Implicitly at $(SPECROOT)/plot_study.py
+        - name: RAYLEIGH_TAYLOR_BAYESIAN
+          path: bayesian_inference.py # Implicitly at $(SPECROOT)/bayesian_inference.py
+        - name: PYTHON
+          path: /usr/apps/weave/weave-develop-cpu/bin/python
+          
+batch:
+    type        : flux
+    flux_exec   : -o initrc=/dev/null
+
+
+study:
+    - name: run-pyranda
+      description: Run pyranda
+      run:
+          cmd: |
+            $(PYTHON) $(RAYLEIGH_TAYLOR_MODEL) --dim $(DIM) \
+                                                           --atwood-number $(ATWOOD) \
+                                                           --num-points $(NPTS) \
+                                                           --velocity-magnitude $(VELOCITY_MAGNITUDE) \
+                                                           --stop-width-fraction $(STOP_WIDTH) \
+                                                           --headless \
+                                                           --seed $(SEED) \
+                                                           --random-velocity-magnitude $(RANVEL) \
+                                                           --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
+                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE)
+          procs: 1
+          nested: True
+          walltime: "00:25:00"
+          flux: -o initrc=/dev/null
+          task_queue: sim_queue
+
+    - name: post-process-simulation
+      description: Post process individual simulation outputs
+      run:
+          cmd: |
+            echo "Ingest sina file into store: $(STORE)"
+            find $(run-pyranda.workspace) -name "sina.json" -exec sina ingest -d $(STORE) {} \;
+
+          depends: [run-pyranda_*]
+          task_queue: nonsim_queue
+
+    - name: plot-all
+      description: Plots and Prepare for GP
+      run:
+          cmd: |
+            $(PYTHON) $(RAYLEIGH_TAYLOR_PLOTTER) --name=$(basename $(dirname $(WORKSPACE))) --store $(STORE) --nmodels $(NMODELS)
+            
+          depends: [post-process-simulation_*]
+          task_queue: nonsim_queue
+
+    - name: bayesian-ibis
+      description: Bayesians
+      run:
+          cmd: |
+            $(PYTHON) $(RAYLEIGH_TAYLOR_BAYESIAN) --name=$(basename $(dirname $(WORKSPACE))) --store $(STORE) --nmodels $(NMODELS) --specroot $(SPECROOT)
+            
+          depends: [plot-all_*]
+          task_queue: nonsim_queue
+
+    # - name: iterate
+    #   description: 
+    #   run:
+    #     cmd: |
+    #         # Check to see if we should stop iterating
+    #         if [ $(ITER) -ge $(MAX_ITER) ] ; then
+    #             echo "done"
+    #         else
+    #             # Up the iteration count by one
+    #             next_iter=$(ITER)
+    #             ((next_iter=next_iter+1))
+    #             echo "Starting iteration " $next_iter
+
+    #             # Move back to the SPECROOT so that the output of our next run isn't nested in the current run
+    #             cd $(SPECROOT)
+
+    #             # Update the previous workspace for the next iteration (TODO do we need this or can we just use a variable in env?)
+    #             # export PREV_WORKSPACE=
+
+    #             # Use command line substitution to pass in the next iteration value
+    #             merlin run $(MERLIN_SPEC_EXECUTED_RUN) --vars ITER=$next_iter PREV_WORKSPACE=$(MERLIN_WORKSPACE) --pgen iterative_pgen.py
+    #         fi
+      
+
+global.parameters:
+    VELOCITY_MAGNITUDE: 
+        #values: ["0.85","0.90","0.95","1.0","1.05","1.10","1.15"]
+        values: ["0.85", "0.90"]
+        label: VEL.%%
+        
+    # SEED:                       # Seed for random number generator that sets intial conditions
+    #     values: [1, 2, 3, 4, 5, 6, 7]
+    #     label: SEED.%%
+
+    ATWOOD:
+        #values: ["0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"]
+        values: ["0.2", "0.3"]
+        label: ATWOOD.%%
+
+merlin:
+    resources:
+        workers:
+            single_worker:
+                args: -l INFO --concurrency 2 --prefetch-multiplier 1 -Ofair
+                steps: [all]
+                nodes: 1
+            # simworker:
+            #     args: -l INFO --concurrency 56 --prefetch-multiplier 1 -Ofair
+            #     steps: [run-pyranda]
+            # nonsimworker:
+            #     args: -l INFO --concurrency 1 --prefetch-multiplier 1 -Ofair
+            #     steps: [post-process-simulation, post-process-all]
+    samples:
+        generate:
+            cmd: |
+                spellbook make-samples -n $(N_SAMPLES) -dims 1 -scale "$(SAMPLE_BOUNDS)" -round round -outfile=$(MERLIN_INFO)/samples.npy
+        file: $(MERLIN_INFO)/samples.npy  # can be npy, csv, or tab
+        column_labels: [SEED]

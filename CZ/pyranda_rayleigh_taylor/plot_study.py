@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib
-matplotlib.use('Qt5Agg')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import kosh
 import os
@@ -12,7 +12,7 @@ p = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatt
 p.add_argument("--store", help="path to kosh/Sina store")
 p.add_argument("--name", help="name for the ensembe of datasets plotted", required=True)
 p.add_argument("--run-type", default="sim", help="run type to search for")
-p.add_argument("--nmodels", help="number of times to train models")
+p.add_argument("--nmodels", type=int, help="number of times to train models")
 
 args = p.parse_args()
 
@@ -32,7 +32,7 @@ except Exception:
 
 # Get NT times at which the layer mixing widths hit NT % of max
 # We will train a models at a certain points in time
-NTpts = nmodels
+NTpts = args.nmodels
 Tmin = 0.0
 Tmax = 60.0  # maybe even 70?
 samples = []  # atwood, vel, t0,... tN
@@ -60,7 +60,7 @@ for i, case in enumerate(store.find(types="pyranda", run_type=args.run_type), st
     plt.figure(2)
     plt.plot( time, width, '-o', label=lbl)
     for st in sample_times:
-	plt.axvline(x=st, color='b', label=f"{st} s")
+        plt.axvline(x=st, color='b', label=f"{st} s")
     plt.xlabel("Time")
     plt.ylabel("Mix Width")
     plt.title("Rayleigh-Taylor Simulations")
@@ -86,6 +86,7 @@ for i, case in enumerate(store.find(types="pyranda", run_type=args.run_type), st
     sample_widths = np.interp(sample_times, time, width)
     sample = np.insert( sample_widths, 0, atwood)
     sample = np.insert( sample, 1, velocity)
+
     samples.append( sample )
 
 samples = np.array( samples )

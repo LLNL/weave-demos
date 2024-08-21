@@ -679,6 +679,11 @@ def setup_argparse():
         action='store_true',
         help="Flag to turn on png exports of contour plots")
 
+    parser.add_argument(
+        "--run-type",
+        default="sim",
+        help="The type of run for sina records"
+    )
     # Potential other interesting args:
     # Problem name -> this controls output dir?
     # domain size (x, y, z), npts x, y, z
