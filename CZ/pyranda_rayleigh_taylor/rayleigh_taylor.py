@@ -48,7 +48,8 @@ def run_sim(args):
 
     import matplotlib.pyplot as plt
     from matplotlib import cm
-        
+    plt.rcParams['figure.constrained_layout.use'] = True
+
     from pyranda import pyrandaSim, pyrandaBC, pyrandaTimestep
 
     ## Define a mesh
@@ -429,6 +430,7 @@ def run_sim(args):
 
     iter_cnt = 0
     max_iter = DEFAULTS['max_iter']
+    img_num = 1
     while stop_func(stop_arg): #time < tstop:
         # Update the EOM and get next dt
         time = ss.rk4(time, dt)
@@ -455,14 +457,18 @@ def run_sim(args):
             ss.write(outVars)
 
 
-        # Dump a png at the last time state
-        if not stop_func(stop_arg) and args.dump_pngs and ss.PyMPI.master and headless:
+        # Dump a pngs
+        # TODO: rework to decouple this from headless mode
+        if (not stop_func(stop_arg) or ss.cycle % viz_freq == 0) and args.dump_pngs and ss.PyMPI.master and headless:
             ss.plot.figure(5)
             cfig = plt.gcf()
             ss.plot.clf()
-            ss.plot.contourf("rho", 8, cmap="viridis", noPause=True)
-            rho_contour_name = f"rho_contour_at_{args.atwood_number}_npts_{Npts}_cycle_{ss.cycle}.png"
-            cfig.savefig(rho_contour_name)
+            ss.plot.contourf("rho", 8, cmap="viridis_r", noPause=True)
+            # TODO: make a switch for dumping movies 
+            rho_contour_name = f"rho_contour_at_{args.atwood_number}_npts_{Npts}_frame_{img_num:04d}.png"
+            img_num += 1        # ffmpeg needs consecutive numbers, not cycles
+            cfig.gca().autoscale(axis='x', tight=True)
+            cfig.savefig(rho_contour_name, dpi=150)
             # cfig.close()   # NOTE: can't do this or it breaks pyranda internals?
                 
         if not headless:
