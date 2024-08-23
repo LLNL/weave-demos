@@ -515,11 +515,22 @@ def run_sim(args):
     header = f"# 'time' 'mixing width' 'mixedness'"
     numpy.savetxt(fname, (timeW, mixW, varY), header=header)
     print(f"Saved mixing width vs time curve to '{fname}'")  # Add more formal logger output?
+
+    def convert_to_float32(var_to_convert):
+        for i, entry in enumerate(var_to_convert):
+            try:
+                var_to_convert[i] = float(entry)
+            except Exception:
+                pass
+
     # Also add them to Sina record
+    convert_to_float32(timeW)
+    convert_to_float32(mixW)
+    convert_to_float32(varY)
     cs = r.add_curve_set("variables") # We could have many curvsets at different frequencies
     cs.add_independent("time", timeW)
-    cs.add_dependent("mixing width", mixW)
-    cs.add_dependent("mixedness", varY)
+    cs.add_independent("mixing width", mixW)
+    cs.add_independent("mixedness", varY)
 
     # At this point we cn save the sina json file
     r.to_file("sina.json")
@@ -668,6 +679,11 @@ def setup_argparse():
         action='store_true',
         help="Flag to turn on png exports of contour plots")
 
+    parser.add_argument(
+        "--run-type",
+        default="sim",
+        help="The type of run for sina records"
+    )
     # Potential other interesting args:
     # Problem name -> this controls output dir?
     # domain size (x, y, z), npts x, y, z

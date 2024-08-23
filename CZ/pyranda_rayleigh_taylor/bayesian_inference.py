@@ -1,7 +1,8 @@
+import os
 import numpy as np
 import matplotlib
-matplotlib.use('Qt5Agg')
-from ibis import kosh_operators
+matplotlib.use('Agg')
+#from ibis import kosh_operators
 import kosh
 import h5py
 import scipy.stats as sts
@@ -13,7 +14,8 @@ import argparse
 p = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 p.add_argument("--store", help="path to kosh/Sina store")
 p.add_argument("--name", help="name for the ensemble of datasets to load", required=True)
-p.add_argument("--nmodels", help="number of times to train models")
+p.add_argument("--nmodels", type=int, help="number of times to train models")
+p.add_argument("--specroot", help="the specroot")
 
 args = p.parse_args()
 
@@ -21,7 +23,7 @@ args = p.parse_args()
 input_names = ['atwood_num', 'vel_mag']
 
 output_names = []
-for i in range(nmodels):
+for i in range(args.nmodels):
     output_names.append( 'mix_width-%s' % i)
 
 seed = 15
@@ -37,10 +39,12 @@ experiments_ensemble = next(store.find_ensembles(name="experiments"))
 sim_ensemble = next(store.find_ensembles(name=args.name))
 # dataset = store.open("uq_data")
 exp_uri = next(experiments_ensemble.find(mime_type="pandas/csv")).uri
+exp_uri = os.path.join(args.specroot, exp_uri)
 sim_uri = next(sim_ensemble.find(mime_type="pandas/csv")).uri
 rt_exp_data = np.genfromtxt(exp_uri, delimiter=',')
 rt_sim_data = np.genfromtxt(sim_uri, delimiter=',')
-
+print(f"rt_exp_data: {rt_exp_data.shape}")
+print(f"rt_sim_data: {rt_sim_data.shape}")
 
 # Separate inputs and outputs for experimental and simulation data
 xexp = rt_exp_data[:,:2]
@@ -54,21 +58,29 @@ expStd  = yexp.std(axis=0)
 
 # Build the GP surrogates for the number of models
 surrogates = {}
-for i in range(nmodels):
+for i in range(args.nmodels):
     ygp = ysim[:,i]
     name = output_names[i]
     surrogates[name] = GPR().fit(xsim, ygp)
 
+print(f"xsim: {xsim}")
+print(f"ysim: {ysim}")
+a = np.array([[1., 2.], [3., 4.], [5., 6.]])
+print(f"surrogate predict {surrogates[output_names[0]].predict(xsim.astype(np.float64))}")
 # Create the IBIS MCMC object and define inputs and outputs
 default_mcmc = mcmc.DefaultMCMC()
 for name,rng in zip(input_names, ranges):
     default_mcmc.add_input(name, rng[0], rng[1], rng[2], sts.uniform().pdf)
 
 for name,mean,std in zip(output_names, expMean, expStd):
-    if "10" in name:
-        default_mcmc.add_output("RTexp", name, surrogates[name], mean , std, input_names )
+    default_mcmc.add_output("RTexp", name, surrogates[name], mean , std, input_names )
 
-
+print(f"input_names: {input_names}")
+print(f"ranges: {ranges}")
+print(f"output_names: {output_names}")
+print(f"expMean: {expMean}")
+print(f"expStd: {expStd}")
+print(f"surrogates: {surrogates}")
 # Run the MCMC chains to get samples approximating the posterior distribution
 default_mcmc.run_chain(total=10000,
                        burn=500,
