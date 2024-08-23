@@ -4,7 +4,7 @@ description:
     
 env:
     variables:
-        OUTPUT_PATH: /shared_data/RT_STUDIES
+        OUTPUT_PATH: ./RT_STUDIES
         STORE: /shared_data/pyranda.sql
         DIM: "2D"                   # Dimensionality of the model: 2D or 3D
         VIZ_FREQ_CYCLE: 200         # Scalar data output interval [cycles]
@@ -12,8 +12,8 @@ env:
         STOP_WIDTH: 0.75            # Stop when mixing layer reaches this fraction of domain
         NPTS: 32                    # Controls the resolution of the simulation
         RANVEL: 1.0                 # Random velocity
-        N_RUNS: 15                  # Number of entries in each parameter set
-        N_SAMPLES: 2                # Number of samples to generate for this study
+        NRUNS: 15                  # Number of entries in each parameter set
+        NSAMPLES: 2                # Number of samples to generate for this study
         NMODELS: 1                  # Number of times to train GP models
         SAMPLE_BOUNDS: "[[0, 1000]]"  # The upper and lower bounds for our samples (seed in this case)
         # PREV_WORKSPACE: " "         # A variable to track the previous workspace for iterative workflows
@@ -140,6 +140,6 @@ merlin:
     samples:
         generate:
             cmd: |
-                spellbook make-samples -n $(N_SAMPLES) -dims 1 -scale "$(SAMPLE_BOUNDS)" -round round -outfile=$(MERLIN_INFO)/samples.npy
+                spellbook make-samples -n $(NSAMPLES) -dims 1 -scale "$(SAMPLE_BOUNDS)" -round round -outfile=$(MERLIN_INFO)/samples.npy
         file: $(MERLIN_INFO)/samples.npy  # can be npy, csv, or tab
         column_labels: [SEED]
