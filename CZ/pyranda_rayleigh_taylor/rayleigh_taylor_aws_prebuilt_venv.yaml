@@ -24,6 +24,8 @@ env:
           path: plot_study.py # Implicitly at $(SPECROOT)/plot_study.py
         - name: RAYLEIGH_TAYLOR_BAYESIAN
           path: bayesian_inference.py # Implicitly at $(SPECROOT)/bayesian_inference.py
+        - name: PYTHON
+          path: /usr/apps/weave/weave-develop-cpu/bin/python3
           
 batch:
     type        : slurm
