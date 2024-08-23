@@ -29,11 +29,12 @@ env:
           path: overview_post_proc.py
           
 batch:
-    type        : slurm
+    type        : flux
     host        : rzwhippet
     bank        : wbronze
     queue       : pdebug
-
+    args:
+      initrc: /dev/null         # Temp patch to deal with aws flux shell issues
 
 study:
     - name: run-pyranda

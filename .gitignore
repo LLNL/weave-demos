@@ -9,3 +9,4 @@ output/
 *.sqlite
 *.hdf5
 weave_demos_venv/
+*merlin_workers_*.out
