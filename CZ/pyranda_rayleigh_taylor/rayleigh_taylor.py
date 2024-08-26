@@ -526,11 +526,23 @@ def run_sim(args):
     numpy.savetxt(fname, (timeW, mixW, varY), header=header)
     print(f"Saved mixing width vs time curve to '{fname}'")  # Add more formal logger output?
     if ss.PyMPI.master:
+        def convert_to_float32(var_to_convert):
+            for i, entry in enumerate(var_to_convert):
+                try:
+                    var_to_convert[i] = float(entry)
+                except Exception:
+                    pass
+
+        # Also add them to Sina record
+        convert_to_float32(timeW)
+        convert_to_float32(mixW)
+        convert_to_float32(varY)
+
         # Also add them to Sina record
         cs = r.add_curve_set("variables") # We could have many curvsets at different frequencies
-        cs.add_independent("time", timeW.astype(numpy.float32))
-        cs.add_dependent("mixing width", mixW.astype(numpy.float32))
-        cs.add_dependent("mixedness", varY.astype(numpy.float32))
+        cs.add_independent("time", timeW)
+        cs.add_dependent("mixing width", mixW)
+        cs.add_dependent("mixedness", varY)
         # At this point we cn save the sina json file
         r.to_file("sina.json")
 
