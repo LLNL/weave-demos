@@ -13,8 +13,8 @@ def get_custom_generator(env, **kwargs):
     lhs_values = LHS.sample_points(box=test_box, num_points=Nruns, seed=seed)
 
     # Separate and round the variables
-    atwood   = np.round(np.array(list(lhs_values[:, 0]), dtype=float),3)
-    velocity = np.round(np.array(list(lhs_values[:, 1]), dtype=float),3)
+    atwood   = np.round(np.array(list(lhs_values[:, 0]), dtype=float),3).tolist()
+    velocity = np.round(np.array(list(lhs_values[:, 1]), dtype=float),3).tolist()
 
 
     p_gen = ParameterGenerator()
