@@ -24,6 +24,8 @@ env:
           path: plot_study.py # Implicitly at $(SPECROOT)/plot_study.py
         - name: RAYLEIGH_TAYLOR_BAYESIAN
           path: bayesian_inference.py # Implicitly at $(SPECROOT)/bayesian_inference.py
+        - name: PYTHON
+          path: /usr/apps/weave/weave-develop-cpu/bin/python3
           
 batch:
     type        : slurm
@@ -46,7 +48,7 @@ study:
                                                            --seed $(SEED) \
                                                            --random-velocity-magnitude $(RANVEL) \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
-                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE)
+                                                           --dump-freq $(DUMP_FREQ_CYCLE)
           procs: 1
           nested: True
           walltime: "00:25:00"

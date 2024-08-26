@@ -48,6 +48,14 @@ def main():
         import matplotlib
         matplotlib.use('Agg')
 
+    # Initialize global formatting: using presentation sizes.
+    # TODO: add mpl style sheet options for easy switching
+    plt.rcParams['axes.labelsize'] = 'medium'
+    plt.rcParams['axes.titlesize'] = 'medium'
+    plt.rcParams['font.size'] = 14
+    plt.rcParams['legend.fontsize'] = 'small'
+    plt.rcParams['xtick.labelsize'] = 'small'
+    plt.rcParams['ytick.labelsize'] = 'small'
     data_sets = []
     col_name_re = re.compile(r"['](?P<column_name>[^\"^\']+)[']")
     for workspace in args.workspaces:
@@ -83,7 +91,7 @@ def main():
         data_sets.append(record)
 
     plt.style.use('seaborn-v0_8')     # For non-white background
-    fig = plt.figure(layout='tight', figsize=(9, 6))
+    fig = plt.figure(layout='tight', figsize=(6, 6))
     ax = plt.subplot(111)
     filter_leg_keys = ['data', 'ranvel', 'seed']
     linestyle_cycle = cycler(lstyle=['-', '--', '-.', ':'])
@@ -105,6 +113,7 @@ def main():
     plt.rcParams['axes.prop_cycle'] = plt.cycler("color", cmap_trunc(np.linspace(0, 1, len(list(at_groups)))))
     color_cycle = cycler(color=plt.rcParams['axes.prop_cycle'].by_key()['color'])    
     at_color_styles = {at: color['color'] for color, at in zip(color_cycle, at_groups)}
+
 
     for record in data_sets:
         rlabel = ', '.join([f"{value['label']}={value['value']:.2g}" for key, value in record.items() if key not in filter_leg_keys])
@@ -151,7 +160,6 @@ def main():
               
     ax.set_xlabel('Time')
     ax.set_ylabel('Mixing Width')
-
     fig.savefig('mixing_width_vs_time.png')
 
     if not args.headless:

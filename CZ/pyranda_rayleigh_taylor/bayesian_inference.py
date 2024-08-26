@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import kosh
 import scipy.stats as sts
@@ -8,12 +9,11 @@ import argparse
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-
-# Get the arguments from the workflow manager (Maestro or Merlin)
 p = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 p.add_argument("--store", help="path to kosh/Sina store")
 p.add_argument("--name", help="name for the ensemble of datasets to load", required=True)
-p.add_argument("--nmodels", help="number of points in time to train models")
+p.add_argument("--nmodels", type=int, help="number of times to train models")
+p.add_argument("--specroot", help="the specroot")
 
 args = p.parse_args()
 
@@ -32,11 +32,15 @@ exp_uri = next(experiments_ensemble.find(mime_type="pandas/csv")).uri
 
 # The simulation data was just generated with the workflow manager (Maestro or Merlin)
 sim_ensemble = next(store.find_ensembles(name=args.name))
+
+exp_uri = next(experiments_ensemble.find(mime_type="pandas/csv")).uri
+exp_uri = os.path.join(args.specroot, exp_uri)
 sim_uri = next(sim_ensemble.find(mime_type="pandas/csv")).uri
 
 # Use the URI to read in datasets
 rt_exp_data = np.genfromtxt(exp_uri, delimiter=',')
 rt_sim_data = np.genfromtxt(sim_uri, delimiter=',')
+
 
 # Separate inputs and outputs for experimental and simulation data
 xexp = rt_exp_data[:, :2]

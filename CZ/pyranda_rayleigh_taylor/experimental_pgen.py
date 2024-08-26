@@ -15,7 +15,7 @@ def get_custom_generator(env, **kwargs):
     # Velocity magnitude samples
     velocity = np.round(0.97 + 0.05 * np.random.standard_normal(Nexperiments), 3)
 
-    # Get a list of ints for the simulation random seed
+    # Get a list of ints for the random seed
     simseed  = list(range(Nexperiments))
 
     p_gen = ParameterGenerator()

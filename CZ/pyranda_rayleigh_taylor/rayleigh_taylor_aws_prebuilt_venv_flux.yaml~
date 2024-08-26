@@ -4,24 +4,20 @@ description:
     
 env:
     variables:
-        STORE: pyranda.sql
         OUTPUT_PATH: ./RT_STUDIES
-        DIM: "2D"                # Dimensionality of the model: 2D or 3D
-        VIZ_FREQ_CYCLE: 200      # Scalar data output interval [cycles]
-        DUMP_FREQ_CYCLE: 1000    # Mesh data output interval [cycles]
-        STOP_WIDTH: 0.75         # Stop when mixing layer reaches this fraction of domain 
-        NPTS: 128
-        RANVEL: 0.25
-        PYTHON: /usr/apps/weave/weave-develop-cpu/bin/python3
-        NEXPERIMENTS: 20
-
+        DIM: "2D"               # Dimensionality of the model: 2D or 3D
+        VIZ_FREQ_CYCLE: 20      # Scalar data output interval [cycles]
+        DUMP_FREQ_CYCLE: 200    # Mesh data output interval [cycles]
+        
     dependencies:
       paths:
         - name: RAYLEIGH_TAYLOR_MODEL
           path: rayleigh_taylor.py # Implicitly at $(SPECROOT)/rayleigh_taylor.py
-
+        - name: PYTHON
+          path: /usr/apps/weave/weave-develop-cpu/bin/python
+          
 batch:
-    type        : slurm
+    type        : flux
     host        : rzwhippet
     bank        : wbronze
     queue       : pdebug
@@ -32,30 +28,29 @@ study:
       description: Run pyranda
       run:
           cmd: |
-            $(LAUNCHER) $(PYTHON) $(RAYLEIGH_TAYLOR_MODEL) --dim $(DIM) \
+            $(LAUNCHER) -o initrc=/dev/null $(PYTHON) $(RAYLEIGH_TAYLOR_MODEL) --dim $(DIM) \
                                                            --atwood-number $(ATWOOD) \
                                                            --num-points $(NPTS) \
-                                                           --velocity-magnitude $(VELOCITY_MAGNITUDE) \
-                                                           --velocity-thickness 8 \
-                                                           --stop-width-fraction $(STOP_WIDTH) \
-                                                           --headless \
                                                            --seed $(SEED) \
-                                                           --random-velocity-magnitude $(RANVEL) \
+                                                           --tstop $(TSTOP) \
+                                                           --headless \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
-                                                           --dump-freq $(DUMP_FREQ_CYCLE) \
-                                                           --run-type=exp
-          procs: 32
-          walltime: "00:30:00"
+                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE)
+          procs: 2
+          nested: True
+          walltime: "00:15:00"
 
     - name: post-process-simulation
       description: Post process individual simulation outputs
       run:
           cmd: |
-            echo "INgest into store"
+            echo "Placeholder for extra post-processing"
             echo "Parent workspace: $(run-pyranda.workspace)"
-            sina ingest -d $(OUTPUT_PATH)/$(STORE) $(run-pyranda.workspace)/sina.json
             
           depends: [run-pyranda]
+          procs: 1
+          nested: True
+          walltime: "00:10:00"
 
     - name: post-process-all
       description: Post process all simulation outputs
@@ -66,17 +61,24 @@ study:
             echo "Parent workspace: $(post-process-simulation.workspace)"
             
           depends: [post-process-simulation]
+          procs: 1
+          nested: True
+          walltime: "00:10:00"
       
 
 global.parameters:
-    VELOCITY_MAGNITUDE: 
-        values: ["0.85","0.90","0.95","1.0","1.05","1.10","1.15"]
-        label: VEL.%%
+    NPTS:
+        values: [64, 64, 64, 64, 64, 64, 64]
+        label: NPTS.%%
 
-    SEED: 
-        values: [1,2,3,4,5,6,7]
+    TSTOP:
+        values: ["100.0", "100.0", "100.0", "100.0", "100.0", "100.0", "100.0"] # NOTE: strings prevent conversion to floats, minimizing step names and workspace path tokens
+        label: TSTOP.%%
+        
+    SEED:                       # Seed for random number generator that sets intial conditions
+        values: [1234, 1234, 1234, 1234, 1234, 1234, 1234]
         label: SEED.%%
 
     ATWOOD:
-        values: ["0.3", "0.35", "0.45", "0.5", "0.55", "0.60", "0.65"]
+        values: ["0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"]
         label: ATWOOD.%%

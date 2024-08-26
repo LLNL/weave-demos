@@ -19,12 +19,6 @@ DEFAULTS = {
 
 def run_sim(args):
 
-    # Create a record with unique id and type pyranda
-    r = Record(hashlib.sha256(repr(args).encode()).hexdigest(), "pyranda")
-    # put all args value in record
-    for att in [x for x in dir(args) if x[0]!="_"]:
-        r.add_data(att, getattr(args, att))
-
     Npts = args.num_points
     dim = args.dim
 
@@ -48,7 +42,8 @@ def run_sim(args):
 
     import matplotlib.pyplot as plt
     from matplotlib import cm
-        
+    plt.rcParams['figure.constrained_layout.use'] = True
+
     from pyranda import pyrandaSim, pyrandaBC, pyrandaTimestep
 
     ## Define a mesh
@@ -138,6 +133,13 @@ def run_sim(args):
     ss.addPackage(pyrandaTimestep(ss))
     ss.addPackage(pyrandaBC(ss))
 
+
+    if ss.PyMPI.master:
+        # Create a record with unique id and type pyranda
+        r = Record(hashlib.sha256(repr(args).encode()).hexdigest(), "pyranda")
+        # put all args value in record
+        for att in [x for x in dir(args) if x[0]!="_"]:
+            r.add_data(att, getattr(args, att))
 
     ss.iprint(args)
     if not args.tstop:
@@ -387,8 +389,13 @@ def run_sim(args):
 
     # Viz/IO
     viz_freq = args.viz_freq_cycle
-    dmp_freq = args.dump_freq_cycle
-
+    dmp_freq = args.dump_freq
+    dmp_freq_time = args.dump_freq_time
+    print("FREQS:", viz_freq, dmp_freq, dmp_freq_time)
+    if not dmp_freq_time:  # Cycle-based dump
+        dmp_freq = int(dmp_freq)
+        if dmp_freq == 0:
+            raise RuntimeError("Frequency in cycles type must be at least 1")
     # Statistics
     stats_freq = 20
 
@@ -428,7 +435,9 @@ def run_sim(args):
         stop_arg = mixW
 
     iter_cnt = 0
+    last_dmp = -1.E20 # last time we did a dump
     max_iter = DEFAULTS['max_iter']
+    img_num = 1
     while stop_func(stop_arg): #time < tstop:
         # Update the EOM and get next dt
         time = ss.rk4(time, dt)
@@ -451,18 +460,25 @@ def run_sim(args):
             varY.append(varytmp)
             timeW.append(time)
 
-        if ss.cycle % dmp_freq == 0:
+        if (not dmp_freq_time and ss.cycle % dmp_freq == 0) \
+            or \
+            (dmp_freq_time and (time - last_dmp)> dmp_freq):
             ss.write(outVars)
+            last_dmp = time
 
 
-        # Dump a png at the last time state
-        if not stop_func(stop_arg) and args.dump_pngs and ss.PyMPI.master and headless:
+        # Dump a pngs
+        # TODO: rework to decouple this from headless mode
+        if (not stop_func(stop_arg) or ss.cycle % viz_freq == 0) and args.dump_pngs and ss.PyMPI.master and headless:
             ss.plot.figure(5)
             cfig = plt.gcf()
             ss.plot.clf()
-            ss.plot.contourf("rho", 8, cmap="viridis", noPause=True)
-            rho_contour_name = f"rho_contour_at_{args.atwood_number}_npts_{Npts}_cycle_{ss.cycle}.png"
-            cfig.savefig(rho_contour_name)
+            ss.plot.contourf("rho", 8, cmap="viridis_r", noPause=True)
+            # TODO: make a switch for dumping movies 
+            rho_contour_name = f"rho_contour_at_{args.atwood_number}_npts_{Npts}_frame_{img_num:04d}.png"
+            img_num += 1        # ffmpeg needs consecutive numbers, not cycles
+            cfig.gca().autoscale(axis='x', tight=True)
+            cfig.savefig(rho_contour_name, dpi=150)
             # cfig.close()   # NOTE: can't do this or it breaks pyranda internals?
                 
         if not headless:
@@ -509,14 +525,26 @@ def run_sim(args):
     header = f"# 'time' 'mixing width' 'mixedness'"
     numpy.savetxt(fname, (timeW, mixW, varY), header=header)
     print(f"Saved mixing width vs time curve to '{fname}'")  # Add more formal logger output?
-    # Also add them to Sina record
-    cs = r.add_curve_set("variables") # We could have many curvsets at different frequencies
-    cs.add_independent("time", timeW)
-    cs.add_dependent("mixing width", mixW)
-    cs.add_dependent("mixedness", varY)
+    if ss.PyMPI.master:
+        def convert_to_float32(var_to_convert):
+            for i, entry in enumerate(var_to_convert):
+                try:
+                    var_to_convert[i] = float(entry)
+                except Exception:
+                    pass
 
-    # At this point we cn save the sina json file
-    r.to_file("sina.json")
+        # Also add them to Sina record
+        convert_to_float32(timeW)
+        convert_to_float32(mixW)
+        convert_to_float32(varY)
+
+        # Also add them to Sina record
+        cs = r.add_curve_set("variables") # We could have many curvsets at different frequencies
+        cs.add_independent("time", timeW)
+        cs.add_dependent("mixing width", mixW)
+        cs.add_dependent("mixedness", varY)
+        # At this point we cn save the sina json file
+        r.to_file("sina.json")
 
     if not headless:
         plt.pause(5)
@@ -645,10 +673,17 @@ def setup_argparse():
     )
 
     parser.add_argument(
-        '--dump-freq-cycle',
-        type=int,
+        '--dump-freq',
+        type=float,
         default=1000,
-        help="Cycle intervals at which to dump mesh structured viz data (visit)."
+        help="Intervals at which to dump mesh structured viz data (visit)."
+    )
+
+    parser.add_argument(
+        '--dump-freq-time',
+        help="Dump frequency is time not cycles",
+        action="store_true",
+        default=False,
     )
 
     parser.add_argument(
@@ -662,6 +697,11 @@ def setup_argparse():
         action='store_true',
         help="Flag to turn on png exports of contour plots")
 
+    parser.add_argument(
+        "--run-type",
+        default="sim",
+        help="The type of run for sina records"
+    )
     # Potential other interesting args:
     # Problem name -> this controls output dir?
     # domain size (x, y, z), npts x, y, z
