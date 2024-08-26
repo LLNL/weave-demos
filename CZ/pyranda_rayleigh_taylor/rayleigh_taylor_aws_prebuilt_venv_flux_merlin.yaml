@@ -4,7 +4,7 @@ description:
     
 env:
     variables:
-        OUTPUT_PATH: ./RT_STUDIES
+        OUTPUT_PATH: /shared_data/RT_STUDIES
         STORE: /shared_data/pyranda.sql
         DIM: "2D"                   # Dimensionality of the model: 2D or 3D
         VIZ_FREQ_CYCLE: 200         # Scalar data output interval [cycles]
