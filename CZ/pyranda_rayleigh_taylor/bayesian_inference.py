@@ -53,6 +53,9 @@ ysim = rt_sim_data[:, 2:]
 scaler = MMS()
 scaled_xsim = scaler.fit_transform(xsim)
 
+# Also scale experimental data in the same way
+scaled_xexp = scaler.transform(xexp)
+
 ########################################################
 
 #####    Defining the MCMC sampling function   ########
@@ -68,7 +71,7 @@ default_mcmc = mcmc.DefaultMCMC()
 input_names = ['atwood_num', 'vel_mag']
 
 # Calculate standard deviation for simulation input features
-sim_std = np.std(xsim, axis=1)
+sim_std = np.std(scaled_xsim, axis=1)
 
 ranges = [[.3, .8], [.7, 1.3]]
 
@@ -91,11 +94,11 @@ surrogates = {}
 for i in range(nmodels):
     ygp = ysim[:, i]
     name = output_names[i]
-    surrogates[name] = GPR().fit(xsim, ygp)
+    surrogates[name] = GPR().fit(scaled_xsim, ygp)
 
 # Calculate experimental mean and standard deviation
-expMean = yexp.mean(axis=0)
-expStd = yexp.std(axis=0)
+expMean = scaled_yexp.mean(axis=0)
+expStd = scaled_yexp.std(axis=0)
 
 for name, mean, std in zip(output_names, expMean, expStd):
     default_mcmc.add_output("RTexp", name, surrogates[name], mean, std, input_names)
@@ -113,7 +116,6 @@ chains = default_mcmc.get_chains(flattened=False, scaled=True)
 
 # Plot the posterior distribution
 outvar = list(default_mcmc.outputs.keys())[0]
-# resid_plot = default_mcmc.residuals_plot(outvar, bins=10)
 post_pp = default_mcmc.posterior_predictive_plot(outvar, bins=10)
 
 # Plot the MCMC sampling trace plots to check for good mixing
