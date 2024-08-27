@@ -51,7 +51,7 @@ study:
                                                            --seed $(SEED) \
                                                            --dump-pngs \
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
-                                                           --dump-freq-cycle $(DUMP_FREQ_CYCLE)
+                                                           --dump-freq $(DUMP_FREQ_CYCLE)
 
             # Store the parameters to a simple yaml record for the report
             echo "{'atwood': {'value': $(ATWOOD), 'label': 'Atwood Number'}, 'ranvel': {'value':$(RANVEL), 'label': 'Random IC Velocity Magnitude'}, 'velmag': {'value': $(VELOCITY_MAGNITUDE), 'label': 'Fixed IC Velocity Magnitude'}, 'seed': {'value': $(SEED), 'label': 'Seed'}}" > sim_record.yaml
