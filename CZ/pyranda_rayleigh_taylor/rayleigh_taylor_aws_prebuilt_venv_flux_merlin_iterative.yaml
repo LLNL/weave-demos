@@ -12,10 +12,14 @@ env:
         STOP_WIDTH: 0.75            # Stop when mixing layer reaches this fraction of domain
         NPTS: 32                    # Controls the resolution of the simulation
         RANVEL: 1.0                 # Random velocity
-        NRUNS: 15                  # Number of entries in each parameter set
-        NSAMPLES: 2                # Number of samples to generate for this study
+        NRUNS: 15                   # Number of entries in each parameter set
+        NCAND: 10                   # Number of candidate points that adaptive sampling will choose from
+        NSAMPLES: 2                 # Number of samples to generate for this study
         NMODELS: 1                  # Number of times to train GP models
         SAMPLE_BOUNDS: "[[0, 1000]]"  # The upper and lower bounds for our samples (seed in this case)
+        PREV_WORKSPACE: "placeholder"         # A variable to track the previous workspace for iterative workflows
+        ITER: 1                     # The current iteration number
+        MAX_ITER: 2                 # The maximum amount of iterations
         
     dependencies:
       paths:
@@ -81,6 +85,32 @@ study:
             
           depends: [plot-all_*]
           task_queue: nonsim_queue
+
+    - name: iterate
+      description: Send off the next iteration of this study 
+      run:
+          cmd: |
+            # Check to see if we should stop iterating
+            if [ $(ITER) -ge $(MAX_ITER) ] ; then
+                echo "done"
+            else
+                # Up the iteration count by one
+                next_iter=$(ITER)
+                ((next_iter=next_iter+1))
+                echo "Starting iteration " $next_iter
+
+                # Move back to the SPECROOT so that the output of our next run isn't nested in the current run
+                cd $(SPECROOT)
+
+                # Update the previous workspace for the next iteration (TODO do we need this or can we just use a variable in env?)
+                # export PREV_WORKSPACE=$(basename $(dirname $(WORKSPACE)))
+
+                # Use command line substitution to pass in the next iteration value
+                merlin run rayleigh_taylor_aws_prebuilt_venv_flux_merlin_iterative.yaml --vars ITER=$next_iter PREV_WORKSPACE=$(basename $(MERLIN_WORKSPACE)) --pgen iterative_pgen.py
+            fi
+          depends: [bayesian-ibis_*]
+          task_queue: nonsim_queue
+      
 
 global.parameters:
     VELOCITY_MAGNITUDE: 

@@ -1,3 +1,4 @@
+import kosh
 import numpy as np
 from trata.sampler import LatinHyperCubeSampler as LHS
 from trata.adaptive_sampler import ExpectedImprovementSampler as EIS
@@ -21,21 +22,24 @@ def get_custom_generator(env, **kwargs):
     if curr_iter == 1:
 
         # Generating some initial inputs
-        next_points = trata.sampler.LHS.sample_points(num_points=Nruns,
-                                                         box=ls_test_box,
-                                                         seed=20)
+        next_points = LHS.sample_points(num_points=Nruns,
+                                        box=ls_test_box,
+                                        seed=20)
         # Separate and round the variables
-        atwood   = np.round(np.array(list(lhs_values[:, 0]), dtype=np.float),3)
-        velocity = np.round(np.array(list(lhs_values[:, 1]), dtype=np.float),3)
-
-        first_iter = False  # somehow pass this back to maestro?
+        atwood   = np.round(np.array(list(next_points[:, 0]), dtype=float),3).tolist()
+        velocity = np.round(np.array(list(next_points[:, 1]), dtype=float),3).tolist()
 
     else:
 
-        # Something like this to get current points from the store
-        # TODO args.name should be PREV_WORKSPACE from yaml
-        current_inputs = next(store.find_ensembles(name=args.name))
-        current_outputs = next(store.find_ensembles(name=args.name))
+        # Connect to the Kosh store and read in simulation dataset
+        store_name = kwargs.get("STORE", env.find("STORE").value)
+        prev_workspace = kwargs.get("PREV_WORKSPACE", env.find("PREV_WORKSPACE").value)
+        store = kosh.connect(store_name)
+        sim_ensemble = next(store.find_ensembles(name=prev_workspace))
+        sim_uri = next(sim_ensemble.find(mime_type="pandas/csv")).uri
+        rt_sim_data = np.genfromtxt(sim_uri, delimiter=",")
+        current_inputs = rt_sim_data[:,:2]
+        current_outputs = rt_sim_data[:,2:]
 
         # Scale inputs for the surrogate model
         scaler = MMS()
@@ -45,19 +49,23 @@ def get_custom_generator(env, **kwargs):
         surrogate_model = gpr().fit(scaled_inputs, current_outputs)
 
         # Generate some candidate points that adaptive sampling will choose from 
-        candidate_points = trata.sampler.LHS.sample_points(num_points=Ncand,
-                                                           box=ls_test_box,
-                                                           seed=20)
+        candidate_points = LHS.sample_points(num_points=Ncand,
+                                             box=ls_test_box,
+                                             seed=20)
 
         # Chooses samples from candidate points based on 2 criteria:
         # model error and output sensitivity
         next_points = EIS.sample_points(num_points=Nruns,
-                                    cand_points=np_candidate_points,
-                                    model=surrogate_model)
+                                        cand_points=candidate_points,
+                                        X=current_inputs,
+                                        Y=current_outputs,
+                                        model=surrogate_model)
 
         # Separate and round the variables
-        atwood   = np.round(np.array(list(next_points[:, 0]), dtype=np.float),3)
-        velocity = np.round(np.array(list(next_points[:, 1]), dtype=np.float),3)
+        atwood   = np.round(np.array(list(next_points[:, 0]), dtype=float),3).tolist()
+        velocity = np.round(np.array(list(next_points[:, 1]), dtype=float),3).tolist()
+
+    p_gen = ParameterGenerator()
 
     params = {"ATWOOD": {"values": atwood,
                                 "label": "ATWOOD.%%"},
