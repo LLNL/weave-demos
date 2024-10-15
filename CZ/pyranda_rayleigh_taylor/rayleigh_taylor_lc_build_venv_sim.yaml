@@ -4,7 +4,7 @@ description:
     
 env:
     variables:
-        STORE: /g/g19/cdoutrix/git/weave_demos/CZ/pyranda_rayleigh_taylor/pyranda.sql
+        STORE: /g/g16/olson59/workspace/weave/weave-demos/CZ/pyranda_rayleigh_taylor/experiments/pyranda.sql
         OUTPUT_PATH: ./RT_STUDIES
         DIM: "2D"                # Dimensionality of the model: 2D or 3D
         VIZ_FREQ_CYCLE: 200      # Scalar data output interval [cycles]
@@ -14,7 +14,7 @@ env:
         RANVEL: 0.0              # Random velocity
         NRUNS: 15                # Number of simulation runs
         NMODELS: 1               # Number of times to train GP models
-        PYTHON: /usr/apps/weave/weave-develop-cpu/bin/python3
+        PYTHON: /g/g16/olson59/workspace/old_numpy/test_venv/bin/python3
 
     dependencies:
       paths:
@@ -48,7 +48,7 @@ study:
                                                            --viz-freq-cycle $(VIZ_FREQ_CYCLE) \
                                                            --dump-freq $(DUMP_FREQ_CYCLE)
           procs: 1
-          walltime: "00:10:00"
+          walltime: "00:25:00"
 
     - name: post-process-simulation
       description: Post process individual simulation outputs

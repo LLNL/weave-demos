@@ -1,11 +1,13 @@
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')
+matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
+from matplotlib import cm
 import kosh
 import os
 from sklearn.preprocessing import MinMaxScaler as MMS
 from sklearn.gaussian_process import GaussianProcessRegressor as GPR
+from sklearn.model_selection import LeaveOneOut
 import argparse
 
 p = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -45,9 +47,9 @@ if len(sample_times) == 1:
 N_cases = len(list(store.find(types="pyranda", run_type=args.run_type, ids_only=True)))
 for i, case in enumerate(store.find(types="pyranda", run_type=args.run_type), start=1):
     # Let's add this dataset to our ensemble
-    print("******************************")
-    print("DS:", case.id)
-    print("******************************")
+    #print("******************************")
+    #print("DS:", case.id)
+    #print("******************************")
     ensemble.add(case)
 
     # Le'ts retrieve var of interest
@@ -105,6 +107,8 @@ ensemble.associate(fnm, "pandas/csv", metadata={"gp_data":True})
 #   Fitting GP Models
 ############################
 
+from matplotlib.colors import Normalize
+
 xgp = samples[:,0:2]  # Get inputs
 scaler = MMS()
 scaled_samples = scaler.fit_transform(xgp)
@@ -133,13 +137,50 @@ for ii in range(NTpts):
     ax = fig.add_subplot(111, projection='3d')
     pred2d = pred.reshape(at2d.shape)
     std2d = std.reshape(at2d.shape)
-    ax.plot_surface(at2d, vel2d, pred2d)
-    ax.contourf(at2d, vel2d, std2d, zdir='z', offset=0, cmap='coolwarm')
+    mycol = cm.jet((std2d - std.min()) / (std.max() - std.min()))
+    cmap = plt.colormaps["jet"]
+    plot = ax.plot_surface(at2d, vel2d, pred2d, facecolors=mycol)
+    fig.colorbar(cm.ScalarMappable(norm=Normalize(0, 1), cmap=cmap), ax=ax, label="Standard Error")
+    #fig.colorbar(plot)
+    #ax.contourf(at2d, vel2d, std2d, zdir='z', offset=0, cmap='coolwarm')
     ax.set_xlabel('Atwood')
     ax.set_ylabel('Velocity')
     ax.set_zlabel('Width')
+    plt.title(f"GP Model at {sample_times[ii]} s")
     fnm = f"GP_at_{sample_time}_s.png"
     ax.figure.savefig(fnm)
     ensemble.associate(fnm, "png", metadata={"title":'2D GP'})
+
+# Leave-one-out cross validation
+loo = LeaveOneOut()
+
+outputs = samples[:, 2:]
+
+time_point_error = []
+for ii in range(NTpts):
+    loo_pred = []
+    loo_bar = []
+    loo_sqerror = []
+    for i, (train_index, test_index) in enumerate(loo.split(scaled_samples)):
+        y = outputs[:, ii]
+        gp_model = GPR().fit(scaled_samples[train_index, :], y[train_index])
+        pred, std = gp_model.predict(scaled_samples[test_index, :], return_std=True)
+        loo_pred.append(pred)
+        loo_bar.append((pred + std * 1.96) - (pred - std * 1.96))
+        loo_sqerror.append((y[test_index] - pred)**2)
+    plt.figure(3 + NTpts + ii)
+    plt.errorbar(outputs[:, ii].flatten(),
+                 np.array(loo_pred).flatten(),
+                 yerr=np.array(loo_bar).flatten(),
+                 fmt='o',
+                 label='GP')
+    plt.plot([2,7], [2,7], 'r-', label='Exact')
+    plt.xlabel("Actual Mix Width")
+    plt.ylabel("Predicted Mix Width")
+    plt.title(f"Leave-One_Out Cross Validation {sample_times[ii]} s")
+    plt.legend()
+    fnm = f"LOO_xv_at_{sample_times[ii]}_s.png"
+    plt.savefig(fnm)
+    ensemble.associate(fnm, "png", metadata={"title":'LOO cross val'})
 
 plt.pause(.1)
